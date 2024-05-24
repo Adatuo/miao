@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<!-- saved from url=(0099)file:///F:/%E5%89%8D%E7%AB%AF/html/page.html#%E6%88%91%E6%98%AF%E9%A1%B5%E9%9D%A2%E5%BA%95%E9%83%A8 -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
+    <head>
+        <meta charset="utf-8">
         <title>
             Document
         </title>
@@ -9,12 +8,11 @@
             dt, dd {    
                 padding-left: 20px; /* 设置左边距为 20px */
             }
-
-
+        
         </style>
     </head>
-<body><div>  
-    
+<div>  
+    <body>
 
         <h1>lorem</h1>
         <h2>Lorem,ipsum</h2>
@@ -31,16 +29,20 @@
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maxime, porro magni. Unde sequi omnis amet labore eum. Omnis, nihil eligendi aperiam beatae non eius debitis magni culpa incidunt dolorem amet.
         </p>
 
-        <a href="https://www.jd.com/" target="_blank">在新窗口打开京东</a>
+        <a href="https://www.jd.com" target="_blank">在新窗口打开京东</a>
         <a href="mailto:1755070652@qq.com">点我发邮件</a>
-        <a href="file:///F:/%E5%89%8D%E7%AB%AF/html/page.html#%E6%88%91%E6%98%AF%E9%A1%B5%E9%9D%A2%E5%BA%95%E9%83%A8">跳转到页面底部</a>
+        <a href="#我是页面底部">跳转到页面底部</a>
         <a href="https://adatuo.github.io/miao/css-zen-garden.html" download="CSSgarden">点我下载文件</a>
 
         <br>
     <!--图片--> 
-    
-        <img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.zUtH4iPrWdMtE95K3oOzwAHaIy?w=148&amp;h=180&amp;c=7&amp;r=0&amp;o=5&amp;dpr=1.3&amp;pid=1.7" alt="图片载入失败" width="200" height="300">
-    
+    <body>
+        <img
+            src="https://tse3-mm.cn.bing.net/th/id/OIP-C.zUtH4iPrWdMtE95K3oOzwAHaIy?w=148&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+            alt="图片载入失败"
+            width="200"
+            height="300">
+    </body>
         <hr>
         <hr>
 
@@ -59,8 +61,10 @@
 
         <br>
     
-        
-       
+        <p>&lt;!--这是一条注释--&gt;</p>
+      
+        <!--function a()-->
+    <body>
         <dl>
             <dt>
                 function a() { 
@@ -72,6 +76,7 @@
                 }
             </dt>
         </dl>
+    </body>
     
         <hr>
 
@@ -115,52 +120,97 @@
         <br>
 
         <!--搜索框-->
-        
-        <h1>Google搜索</h1>
-        <input type="text">
+    <body>    
+        <h1>Bing搜索</h1>
+        <form action="https://cn.bing.com/search" target="_blank">
+           
+        <input name="q" type="text">
+        <input type="hidden" name="PC" value="U316">
+        <input type="hidden" name="form" value="CHROMN">
         <button type="submit">在新窗口打开搜索结果</button>
-        
+        </form>
+    </body>    
         <hr>
 
         <!--个人信息调查表-->
+    <body>    
+        <form>
+        <div>个人信息调查表</div>
+
+        <br> 
+
+        <div>性别
+            <br>
+            <input id="male" name="gender" type="radio" value="male" ><label for="male">男</label>
         
-        <p>个人信息调查表</p>
+            <input id="female" name="gender" type="radio" value="female"><label for="female">女</label>
 
-        <p>性别</p>
-
-            <input type="radio" value="male">
-            <label>男</label>
-
-            <input type="radio" value="female">
-            <label>女</label>
+            <input id="secret" name="gender" type="radio" value="secret"><label for="secret">保密</label>
+        </div>    
+            
             <br>    
     
-        <p>年龄</p>        
-        <select name="年龄" id="agea bout">
+        <div>年龄
+            <br>      
+        <select name="age" id="ageabout">
             <option value="">--请选择--</option>
-            <option value="儿童">儿童</option>
-            <option value="少年">少年</option>
-            <option value="青年">青年</option>
-            <option value="中年">中年</option>
-            <option value="老年">老年</option>
+            <option value="children">儿童</option>
+            <option value="young">少年</option>
+            <option value="younger">青年</option>
+            <option value="mid">中年</option>
+            <option value="old">老年</option>
         </select>
+        </div>
 
-        <p>生日</p>
-        <input type="date">
+        <br>
 
-        <p>生辰</p>
-        <input type="time">
+        <div>生日
+            <br>
+        <input name="birthday" type="date" value="birthday">
+        </div>
 
-        <p>照片</p>
-        <input type="file">
+        <br> 
 
-        <p>自我介绍</p>
-        <textarea style="width: 194px; height: 73px;">在这里介绍自己</textarea>
+        <div>生辰
+            <br>
+        <input name="birthdaytime" type="time" value="birthdaytime">
+        </div>    
+
+        <br>
+
+        <div>照片<br>
+            <input name="photo" type="file" value="photo" id="photo" hidden>
+            <label for="photo">&lt;点我上传照片&gt;</label>
+        </div>
+
+        <br>
         
-        
+        <div>自我介绍
+            <br>
+            <textarea value="selfIntro" >在这里介绍自己</textarea></div>
+
+        <br>
+
+
+        <!--fieldset-->
+        <fieldset>
+            <legend>全部禁用</legend>
+            <input disabled type="text">
+            <input disabled type="text">
+            <input disabled type="text">
+        </fieldset>
+
+        <br>
+
+        <div><button>提交</button>
+            <input type="reset"></div>
+    </form>
+        <hr>
+    </body>    
         <div id="我是页面底部">
             <h3>我是页面底部</h3>
         </div>
+    </body> 
 
-     
-</div></body></html>
+
+</div>
