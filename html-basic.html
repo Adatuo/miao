@@ -4,12 +4,6 @@
         <title>
             Document
         </title>
-        <style><!--增加缩进距离-->
-            dt, dd {    
-                padding-left: 20px; /* 设置左边距为 20px */
-            }
-        
-        </style>
     </head>
 <div>  
     <body>
@@ -61,21 +55,22 @@
 
         <br>
     
+        <!--piao-->
+        <marquee>piao</marquee>
+
+        <!--这是一条注释-->
         <p>&lt;!--这是一条注释--&gt;</p>
       
         <!--function a()-->
     <body>
-        <dl>
-            <dt>
-                function a() { 
-            </dt>
-            <dd>
-                return 0
-            </dd>
-            <dt>
-                }
-            </dt>
-        </dl>
+        <pre>
+            <code>
+            function a() {
+                return 8
+              }
+            </code> 
+        </pre>
+            
     </body>
     
         <hr>
@@ -134,7 +129,7 @@
 
         <!--个人信息调查表-->
     <body>    
-        <form>
+        <form action="">
         <div>个人信息调查表</div>
 
         <br> 
@@ -153,12 +148,21 @@
         <div>年龄
             <br>      
         <select name="age" id="ageabout">
-            <option value="">--请选择--</option>
-            <option value="children">儿童</option>
-            <option value="young">少年</option>
-            <option value="younger">青年</option>
-            <option value="mid">中年</option>
-            <option value="old">老年</option>
+            
+            <option value="hidden">请选择</option>
+
+            <optgroup value="hidden"><label>少年</label>
+            <option value="children">1-16</option>
+            </optgroup>
+
+            <optgroup value="hidden"><label>中年</label>
+                <option value="children">17-50</option>
+                </optgroup>
+
+            <optgroup value="hidden"><label>老年</label>
+                    <option value="children">51-100</option>
+            </optgroup>        
+        
         </select>
         </div>
 
@@ -187,30 +191,88 @@
         
         <div>自我介绍
             <br>
-            <textarea value="selfIntro" >在这里介绍自己</textarea></div>
+            <textarea value="selfIntro" name="" id="" cols="30" rows="10">&lt;/testarea></textarea></div>
 
         <br>
 
 
         <!--fieldset-->
-        <fieldset>
+        <fieldset disabled>
             <legend>全部禁用</legend>
-            <input disabled type="text">
-            <input disabled type="text">
-            <input disabled type="text">
+            <input  type="text">
+            <input  type="text">
+            <input  type="text">
         </fieldset>
 
         <br>
 
         <div><button>提交</button>
-            <input type="reset"></div>
+            <button type="reset">提交</button>
+            <!-- <input type="reset"> --></div>
     </form>
         <hr>
-    </body>    
+    
+        <table border="1" >
+            <col />
+            <col bgcolor="red"/>
+
+            <tr>  
+                <td>编号</td>
+                <td >品名</td>
+                <td>进价</td>
+                <td>出价</td> 
+            </tr>
+
+            <tr>  
+                <td>aaa</td>
+                <td  >a</td>
+                <td rowspan="2">a</td>
+                <td>a</td> 
+            </tr>
+
+            <tr>  
+                <td>a</td>
+                <td  >a</td>
+                <td>a</td>
+            </tr>
+
+            <tr>  
+                <td>a</td>
+                <td  >a</td>
+                <td>a</td>
+                <td>a</td> 
+            </tr>
+            <tr>  
+                <td>a</td>
+                <td  bgcolor="red">a</td>
+                <td>a</td>
+                <td>a</td> 
+            </tr>
+            
+        </table>
+
+        <hr>
+        <br>
+
+        <div>
+        <a href="https://nodejs.org/" target="qwe">nodejs</a>
+        </div>
+
+        <iframe name="qwe" src="http://p5js.org" frameborder="0"></iframe>
+    
+        <div>aaa&nbsp;&nbsp;&nbsp;bbb</div>
+
+        <pre>aaa   bbb</pre>
+
+        >>>>>>>>>>>>>>>>>>>>>>>>>>
+        <<<<<<<<<<<<<<<<<<<<<<<<<
+
+        &lt;span>&lt;/span>
         <div id="我是页面底部">
             <h3>我是页面底部</h3>
         </div>
     </body> 
+
 
 
 </div>
