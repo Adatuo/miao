@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>block-basic</title>
+  <style>
+    main{
+        border: 20px 20px solid red;/* 不用这行 */
+        background-color: red;
+        margin: 20px; /* 上下左右都留空 */
+    }
+    main.v {
+        margin: auto;
+         width: 596px; /*虽然都一样数值，但是还是有细微不对其*/
+    }  
+
+   div.e{
+        font-size: 25px;
+        border: solid rgb(13, 12, 12);
+        margin: auto;        /*  默认左右auto,效果就是居中，但是不改变上下 */
+        padding:0px 20px;  /* 之前的太大了 */
+        width: 600px;
+        background-color: white; 
+        box-sizing: border-box; /* 定一下元素高度的计算方式 */
+        overflow: auto;
+    }
+    div p{
+        height: 160px;
+        overflow: auto;
+    }
+    
+    div.r {
+        background-color: goldenrod; 
+        height: 50px;         
+    }
+    div.r:hover {
+        margin-left: -10px;
+        margin-right: -10px;
+        background-color: rgb(22, 229, 74);        
+    }
+
+
+    section{
+       
+        width: 0;      
+        margin: auto;
+        border: 60px solid palegreen;
+        border-color:rgb(0,0,0,0) rgb(0,0,0,0) palegreen rgb(0,0,0,0);
+        border-width: 0px 20px 20px 20px ;
+    }
+
+  </style>
+</head>
+<body>
+    <main>
+        <main class="v">
+   <p >Lorem ipsum dolor sit amet consectetur 
+    adipisicing elit. Suscipit iusto voluptate error placeat 
+    qui voluptatem, facilis labore eum blanditiis harum 
+    laboriosam sunt totam. Iure aperiam autem sapiente 
+    consequatur, maxime assumenda!</p>
+        </main>
+    </main>
+
+<div class="e"> 
+    <p >
+        Lorem, ipsum dolor sit amet consectetur 
+        adipisicing elit. Repudiandae vero a rerum 
+        eveniet ea, dolore aliquam odit veniam dolor earum, 
+        illum pariatur fuga nam doloremque, assumenda non 
+        corrupti aut ipsa.
+    </p>  
+
+    <div class="r"></div>     <!-- 若将<p class="q"></p>放入会受影响，背景色会受限于q -->
+
+    <p>
+        Lorem, ipsum dolor sit amet consectetur 
+        adipisicing elit. Repudiandae vero a rerum 
+        eveniet ea, dolore aliquam odit veniam dolor earum, 
+        illum pariatur fuga nam doloremque, assumenda non 
+        corrupti aut ipsa.
+        Lorem, ipsum dolor sit amet consectetur 
+        adipisicing elit. Repudiandae vero a rerum 
+        eveniet ea, dolore aliquam odit veniam dolor earum, 
+        illum pariatur fuga nam doloremque, assumenda non 
+        corrupti aut ipsa.
+    </p> 
+</div>
+<section></section>
+       
+
+        
+
+</body>
+</html>
