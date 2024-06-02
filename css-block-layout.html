@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>css-block-layout</title>
+  <style>
+     body{ /*body也是盒子的其中之一，但是是最外层，
+              margin: 0就是让body的边距也消失。所以有了填满的效果 */
+      margin: 0;
+    }
+    div.a{       
+        background-color: black;
+        margin-top: 0;
+        overflow: hidden;
+    }
+    .p1 {
+        color: white;
+        margin: auto;
+        width: 600px;        
+    } 
+    .p2 {
+        margin: auto;
+        width: 600px;        
+    }
+
+    section div:not([class="d"]){
+      width: 180px;
+      height: 40px;
+      border: 3px solid black;
+      margin-top:15px ;
+      text-align:center;  
+      line-height: 40px;/*调整文字的基准线以居中，因为文字是根据基准线来判断位置的*/
+    }
+
+    section div.d{     
+      margin: auto;
+      width: 600px;
+    }
+
+    section div.d div{
+      background-color: violet;
+    } 
+
+    section div.d div:hover{
+      background-color: red;
+    } 
+        
+    section div:nth-child(n+5){
+      margin-left: 210px;
+      
+    }
+
+    section div:nth-child(n+9){
+      margin-left: 418px;
+    }
+
+    section div:nth-child(5){
+      margin-top: -228px;
+    }
+
+    section div:nth-child(9){
+      margin-top: -228px;
+    }
+
+    main{
+      width: 600px;
+      margin: auto;   
+    }
+    
+    ul{
+      list-style: none;
+      padding: 0;/* ul是整个表，去掉内边距以对其 */
+      border: 0 0 16px 0 solid black;
+    }
+
+    li{
+      border-bottom: 1px solid black;  /*给底边框一个像素,做出下划线的效果 */
+
+    }
+
+    li:last-child{
+      border: none;
+   }
+
+   span p{
+    text-align:center;
+    background-color: blueviolet;
+   }
+
+  </style>
+</head>
+<body>
+
+
+<div class="a">
+    <div class="b">
+    <p class="p1">hello world 请调整浏览器窗口大小查看效果hello world 请调整浏览器窗口大小查看效果hello world 请调整浏览器窗口大小查看效果hello world 请调整浏览器窗口大小查看效果hello world 请调整浏览器窗口大小查看效果hello world 请调整浏览器窗口大小查看效果</p>
+  </div>    
+</div>
+</div>
+
+<div class="c">
+  <p class="p2">
+    页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px
+  </p>
+</div>
+
+<section>
+  <div class="d">   
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+  <div>4</div>
+  <div>5</div>
+  <div>6</div>
+  <div>7</div>
+  <div>8</div>
+  <div>9</div>
+  <div>10</div>
+  <div>11</div>
+  <div>12</div>
+  </div>
+</section>
+
+<main>
+  <ul>
+    <li>link</li>
+    <li>link</li>
+    <li>link</li>
+    <li>link</li>
+    <li>link</li>
+  </ul>
+</main>
+
+<span>
+  <p>©版权所有
+    <br>
+  本页所有布局均使用块元素</p>
+</span>
+
+</body>
+</html>
