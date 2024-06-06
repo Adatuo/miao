@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>oald-layout-block</title>
+  <style>
+    html,body{
+        margin: 0;
+       height: 100%;  /* 若没有添加后面无法继承高度 */}
+
+    section{
+         font-size: 0;/*  去除隐藏元素 */
+         height: 100%;
+    }
+
+    aside{
+        font-size:16px;
+        width: 200px;
+        background-color: pink;
+        border: 1px solid; /* 加个边框 */
+        height: 100%;
+        box-sizing: border-box; 
+        display: inline-block; 
+        overflow: auto;
+    }
+
+     div{
+        height: 100%;
+         width: calc(100% - 600px); /*正常流的写法 */
+        display: inline-block;
+    }
+    
+   main{ /* 从下到上填充 */
+        height: calc(100% - 100px); 
+                         /* width 没写高度自动填满    */
+        overflow: auto;
+        font-size:16px;
+        background-color: rgb(99, 42, 165);
+    }
+    header{ /* 从下到上填充 */
+         height: 100px; 
+                         /* width 没写高度自动填满    */
+        overflow: auto;
+        font-size:32px;
+        background-color: green;  
+         
+    }
+
+    p{  
+       vertical-align:middle;  /* line-height:middle; 也可以*/
+        text-align: center ;    /* 文本居中 */
+    }
+    p.a{
+        text-align: right;
+    }
+    h1{
+        vertical-align:middle;
+    }
+
+  </style>
+</head>
+<body>
+
+    <section>
+    <aside>
+        <p>OALD Se7en</p>
+        <input type="text">
+        <button type="button">dian</button>
+        <ul>
+            <li><a href="">word1</a></li>
+            <li><a href="">word2</a></li>
+            <li><a href="">word3</a></li>
+            <li><a href="">word4</a></li>
+            <li><a href="">word5</a></li>
+            <li><a href="">word6</a></li>
+            <li><a href="">word7</a></li>
+            <li><a href="">word8</a></li>
+            <li><a href="">word9</a></li>
+            <li><a href="">word10</a></li>
+            <li><a href="">word11</a></li>
+            <li><a href="">word12</a></li>
+            <li><a href="">word13</a></li>
+            <li><a href="">word14</a></li>
+            <li><a href="">word15</a></li>
+            <li><a href="">word16</a></li>
+            <li><a href="">word17</a></li>
+            <li><a href="">word18</a></li>
+            <li><a href="">word19</a></li>
+            <li><a href="">word20</a></li>
+            <li><a href="">word21</a></li>
+            <li><a href="">word22</a></li>
+            <li><a href="">word23</a></li>
+            <li><a href="">word24</a></li>
+            <li><a href="">word25</a></li>
+            <li><a href="">word26</a></li>
+            <li><a href="">word27</a></li>
+            <li><a href="">word28</a></li>
+            <li><a href="">word29</a></li>
+            <li><a href="">word30</a></li>
+            <li><a href="">word31</a></li>
+            <li><a href="">word32</a></li>
+            <li><a href="">word33</a></li>
+            <li><a href="">word34</a></li>
+            <li><a href="">word35</a></li>
+            <li><a href="">word36</a></li>
+            <li><a href="">word37</a></li>
+            <li><a href="">word38</a></li>
+            <li><a href="">word39</a></li>
+            <li><a href="">word40</a></li>
+            <li><a href="">word41</a></li>
+            <li><a href="">word42</a></li>
+            <li><a href="">word43</a></li>
+            <li><a href="">word44</a></li>
+            <li><a href="">word45</a></li>
+            <li><a href="">word46</a></li>
+            <li><a href="">word47</a></li>
+            <li><a href="">word48</a></li>
+            <li><a href="">word49</a></li>
+            <li><a href="">word50</a></li>
+           </ul>
+    </aside>    
+    <div>
+        <header>
+           <h1>Fantasy</h1> 
+        </header>
+        <main>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</p>
+        <ol>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+            <li>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat optio rem doloremque tenetur nesciunt assumenda ratione eum mollitia consequuntur sequi natus itaque, illo, inventore laborum enim. Voluptatum nam nostrum deleniti.</li>
+           </ul>
+        </ol>
+        </main>
+    </div>
+
+    <aside>
+        <p class="a">Vocabulary</p>
+    </aside>
+    <aside>
+        <p class="a">History</p>
+    </aside>
+    </section>
+
+</body>
+</html>
