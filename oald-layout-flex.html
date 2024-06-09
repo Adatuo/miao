@@ -4,61 +4,60 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>oald-layout-flex</title>
-    <style>
-        body{
-            margin: 0;
-        }
-        div{
-            /* max-height: 1000px; 不太对*/
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1;
-            height: 100% ;
-            width: 100%;
-        }
-        span{
-            width: 100px;
-       }
-
-        span.a{    
-            flex-shrink: 0;
-            background-color: olive;
-            overflow: auto;
-          }
-    div.b{
-      font-size: 16px;
-      height: 100%;
-      display: inline-block;  
-      overflow: auto; 
-    }
-    div.fantasy{
-      height: 100px;
-      background-color:rgb(255, 132, 0);
-      overflow: auto;      
-    }
-    div.lorem aside{
-      overflow: auto;
-      height: calc(100% - 100px);
-      background-color: brown;
-    }
-        span.b{
-            background-color: olive;
-            flex-shrink: 0;
-            border: 2px solid black;
-            overflow: auto;
-        }
-        span.c{
-            background-color: olive;
-            flex-shrink: 0;
-            overflow: auto;
-        }
-    </style>
-
 </head>
-<body>
+<style>
+    body{
+        margin: 0;
+    }
 
+    div{
+       display: flex;   /* 激活弹性盒 */
+        height: 100%;
+              
+    }
+
+    span.a{
+        width: 200px;       
+        background-color: rgb(255, 0, 230);
+        overflow: scroll; 
+         flex-shrink: 0; /*可能是因为main里的字太多，
+                            也有可能是因为初始宽度太宽。让其不要收缩就行 */
+    }
+
+    section{    /* 没有设置宽度，就让字排一排一直排 */
+       display: flex;
+       flex-direction: column;
+         flex-grow: 1;   /*让section占剩余空间*/
+    } 
+
+     header{
+      height: 100px;     
+      background-color: rgb(7, 89, 196);
+      overflow: scroll;  
+    } 
+    main{      
+        background-color: rgb(54, 196, 7);    
+        overflow: scroll;   
+        flex-grow: 1;   /*让main占剩余空间*/
+    }
+    span.d{
+        width: 200px;
+        overflow: scroll; 
+        background-color: rgb(255, 0, 230);
+        flex-shrink: 0; /*可能是因为main里的字太多，
+                            也有可能是因为初始宽度太宽。让其不要收缩就行 */
+
+    }
+    span.e{
+        width: 200px;
+        overflow: scroll; 
+        background-color: rgb(255, 0, 230);
+        flex-shrink: 0;
+    }
+</style>
+<body>
     <div>
-        <span class="a">
+        <span class="a">OaLd
             <ul>
                 <li><a href="">word1</a></li>
                 <li><a href="">word2</a></li>
@@ -110,62 +109,38 @@
                 <li><a href="">word48</a></li>
                 <li><a href="">word49</a></li>
                 <li><a href="">word50</a></li>
-               </ul>
-        </span>
+            </ul> 
+        </span>           
 
-        <div class="b">
- 
-            <div class="fantasy">
-              <p>fantasy</p>
-            </div>
-            <div class="lorem">
-          <aside>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, at ut voluptatem tempore id quas distinctio quae ad placeat sapiente rerum illum aliquid esse aliquam. Praesentium recusandae enim beatae ad.
-          </aside>
-            </div>
-        </div>
-        <span class="b">Vocabulary</span>
-        <span class="c">History</span>
+       <section>
+        <header>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi asperiores, adipisci earum illo minus ipsam? Enim qui maxime, explicabo est consectetur delectus vel deleniti voluptatem voluptatibus dignissimos laboriosam id cum?
+        </header>
+     <main>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate dolor, natus totam amet eveniet asperiores nemo illo sapiente voluptatibus, perferendis voluptatum magni commodi error laboriosam consequuntur a officiis iusto inventore?
+            Labore, minima blanditiis. Praesentium dignissimos neque dolor, et aut nisi a. Nostrum nemo temporibus numquam suscipit iusto vitae ratione minima labore earum quasi quaerat, provident sit placeat repudiandae doloremque aliquam.
+            Laborum cupiditate modi obcaecati odit recusandae, voluptatibus quaerat aspernatur fuga voluptate totam reiciendis magni, quos nostrum, nesciunt molestias doloribus reprehenderit magnam? Voluptatem aperiam ducimus voluptas possimus soluta non sapiente animi.
+            Aspernatur distinctio eos facilis expedita dolores? Ducimus temporibus possimus velit amet fuga dolores facere fugit? Atque doloribus vel voluptatibus nam eaque, at fugit, obcaecati ipsam quaerat eos quis non ratione.
+            Sint pariatur minima magni harum unde officia molestias, libero incidunt ipsum distinctio? Repudiandae minus, deserunt eligendi reiciendis maiores, quaerat, quod eaque repellat at ab dolor possimus? Explicabo soluta dolorem laudantium?
+            Reiciendis molestias vel quis consequuntur! Doloremque, iure. Consectetur, animi! Nam temporibus, similique dolor, iure hic blanditiis quae aliquam rerum quibusdam placeat eaque recusandae nostrum corporis, veniam cupiditate aliquid voluptatum est!
+            Placeat, ratione perspiciatis laudantium minima illo debitis ipsa voluptate cum sint voluptatum ut velit asperiores soluta? Repellat commodi tenetur ipsum molestias fugiat consectetur eius laboriosam, veritatis laborum, culpa provident reprehenderit.
+            Dolorem totam ullam ad assumenda, itaque qui molestiae saepe hic, rem soluta illo repellat cupiditate dolore libero odio dolorum! Saepe voluptas placeat quas vero harum sed tempora magni tenetur numquam.
+            Fuga magnam harum possimus perspiciatis quos adipisci in sunt cumque sint quas at culpa, rem, nihil nesciunt suscipit vitae ducimus illo explicabo odit? Laborum, fugit! Earum architecto quae amet temporibus.
+            Nemo iure repellat a nobis autem excepturi ipsam, delectus impedit, rem ab inventore dolore numquam praesentium. Sed, eveniet. Tempore necessitatibus architecto iste, est sequi reprehenderit ipsam consequuntur nam nulla suscipit!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate dolor, natus totam amet eveniet asperiores nemo illo sapiente voluptatibus, perferendis voluptatum magni commodi error laboriosam consequuntur a officiis iusto inventore?
+            Labore, minima blanditiis. Praesentium dignissimos neque dolor, et aut nisi a. Nostrum nemo temporibus numquam suscipit iusto vitae ratione minima labore earum quasi quaerat, provident sit placeat repudiandae doloremque aliquam.
+            Laborum cupiditate modi obcaecati odit recusandae, voluptatibus quaerat aspernatur fuga voluptate totam reiciendis magni, quos nostrum, nesciunt molestias doloribus reprehenderit magnam? Voluptatem aperiam ducimus voluptas possimus soluta non sapiente animi.
+            Aspernatur distinctio eos facilis expedita dolores? Ducimus temporibus possimus velit amet fuga dolores facere fugit? Atque doloribus vel voluptatibus nam eaque, at fugit, obcaecati ipsam quaerat eos quis non ratione.
+            Sint pariatur minima magni harum unde officia molestias, libero incidunt ipsum distinctio? Repudiandae minus, deserunt eligendi reiciendis maiores, quaerat, quod eaque repellat at ab dolor possimus? Explicabo soluta dolorem laudantium?
+            Reiciendis molestias vel quis consequuntur! Doloremque, iure. Consectetur, animi! Nam temporibus, similique dolor, iure hic blanditiis quae aliquam rerum quibusdam placeat eaque recusandae nostrum corporis, veniam cupiditate aliquid voluptatum est!
+            Placeat, ratione perspiciatis laudantium minima illo debitis ipsa voluptate cum sint voluptatum ut velit asperiores soluta? Repellat commodi tenetur ipsum molestias fugiat consectetur eius laboriosam, veritatis laborum, culpa provident reprehenderit.
+            Dolorem totam ullam ad assumenda, itaque qui molestiae saepe hic, rem soluta illo repellat cupiditate dolore libero odio dolorum! Saepe voluptas placeat quas vero harum sed tempora magni tenetur numquam.
+            Fuga magnam harum possimus perspiciatis quos adipisci in sunt cumque sint quas at culpa, rem, nihil nesciunt suscipit vitae ducimus illo explicabo odit? Laborum, fugit! Earum architecto quae amet temporibus.
+            Nemo iure repel
+        </main> 
+        </section> 
+        <span class="d">Vocabulary</span>
+        <span class="e">History</span>
     </div>
-
 </body>
 </html>
