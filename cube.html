@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cube</title>
+    <style>
+
+        body{
+           display: flex;  /* 声明定位 */
+            justify-content: center; /* 居中 */
+            align-items: center;/* 居中 */
+            height: 100vh;
+        }
+
+
+        div.a{
+          position: relative;   /* 作为后面的定位祖先 */
+            height: 200px;
+            width: 200px;
+            border: 2px solid black;
+            transform: rotateX(45deg) rotateY(45deg); /* 图形倾斜角度 */
+            
+            
+        }
+        div.b{
+            position: absolute;/*  定位到a */
+            height: 200px;
+            width: 200px;
+            border: 2px solid black;
+            transform: rotateX(135deg) rotateY(135deg);/* 图形旋转角度 */
+            translate: 144px;
+        }
+        div.c{
+            position: absolute; /*  定位到a */
+            height: 200px;
+            width: 200px;
+            border-style: dashed solid solid dashed ;    
+            transform: rotateX(135deg) rotateY(135deg);/* 图形旋转角度 */
+            translate: 0 -100px; 
+        }
+        div.d{
+            position: absolute; /*  定位到a */
+            height: 200px;
+            width: 200px;
+            border-style:solid solid dashed dashed  ;   /*  虚线 */
+            transform: rotateX(45deg) rotateY(45deg);/* 图形旋转角度 */
+            translate: 144px -100px; 
+        }
+    </style>
+</head>
+<body>
+   
+   
+    <div class="a"></div>
+    <div class="b"></div>
+    <div class="c"></div>
+    <div class="d"></div>
+    
+</body>
+</html>
