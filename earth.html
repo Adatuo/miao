@@ -37,18 +37,26 @@
             top: -25px;  /* 半径贴近轨道 */
             left: calc(250px - 150px); /* 轨道居中 */
             transform: rotateZ(45deg) scaleY(0.5) ;  /* 中和旋转使得圆球不变形 不知道为什么scaleY(0.5)，反正0.5就不变形了*/
-            
+            animation: self-cubekeep 20s linear infinite;
         }
 
          @keyframes planet-rotate {
             0% {
-                transform:  scaleY(0.5) rotate(0);
+                transform:  scaleY(0.5) rotate(0); /*  scaleY(0.5)保持椭圆旋转，rotate(0)转多少度 */
             }
             100% {
                 transform:  scaleY(0.5) rotate(360deg);
             }
             }
 
+        @keyframes self-cubekeep {
+            0% {
+                transform: rotate(0) scaleY(1) ; /*  scaleY(1)保持圆形旋转，rotate(0)转多少度 */
+            }
+            100% {
+                transform: rotate(360deg) scaleY(1) ;
+            }
+            }
 
     </style>
 </head>
