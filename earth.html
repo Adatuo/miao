@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>earth</title>
+    <style>
+        body{
+           
+            display: flex;  /* 弹性盒定位 */
+            justify-content: center; /* 元素在行中的水平分布,左,右,中,space-between,space-around,space-evenly */
+            align-items: center;/* 所有的行在整个包含块的垂直方向的分布/只有一行时无效,只有一行的时候元素的高度就是那个行 */
+            height: 100vh;/* vh就是当前屏幕可见高度的1%，也就是height100vh == height:100%，
+                            但是有个好处是当元素没有内容时候，设置height100%该元素不会被撑开，
+                            但是设置height:100vh，该元素会被撑开屏幕高度一致。 */
+        }
+
+        div.a{
+            position: relative; /* 作为后面的定位祖先 */
+            border: 2px solid rgb(12, 12, 12);/* 轨道 边框*/
+            width: 250px;
+            height: 250px;   
+            /* border-radius: 50% 即使轨道为圆形，b也没有在中心点上 */
+            transform: scaleY(0.5) rotateZ(45deg); /* rotateZ旋转轨道，并压扁Y轴高度变一半变成菱形 */
+            border-radius: 50%; /*  让轨道变成椭圆 */
+            transform-style: preserve-3d; /*  3D效果 */
+
+            animation: planet-rotate 20s linear infinite;
+        }
+
+        div.b{
+            width: 50px;
+            height: 50px;
+            position: absolute;/*  定位到a */
+            border-radius: 50%;/*  圆形 */
+            background-color: aquamarine;
+            top: -25px;  /* 半径贴近轨道 */
+            left: calc(250px - 150px); /* 轨道居中 */
+            transform: rotateZ(45deg) scaleY(0.5) ;  /* 中和旋转使得圆球不变形 不知道为什么scaleY(0.5)，反正0.5就不变形了*/
+            
+        }
+
+         @keyframes planet-rotate {
+            0% {
+                transform:  scaleY(0.5) rotate(0);
+            }
+            100% {
+                transform:  scaleY(0.5) rotate(360deg);
+            }
+            }
+
+
+    </style>
+</head>
+<body>
+    <div class="a"> <!-- 轨道 -->
+        <div class="b"> 
+          
+        </div>
+    </div> 
+    
+    
+</body>
+</html>
