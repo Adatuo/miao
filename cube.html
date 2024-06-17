@@ -7,10 +7,13 @@
     <style>
 
         body{
-           display: flex;  /* 声明定位 */
-            justify-content: center; /* 居中 */
-            align-items: center;/* 居中 */
-            height: 100vh;
+           display: flex;  /* 弹性盒定位 */
+            justify-content: center; /* 元素在行中的水平分布,左,右,中,space-between,space-around,space-evenly */
+            align-items: center;/* 所有的行在整个包含块的垂直方向的分布/只有一行时无效,只有一行的时候元素的高度就是那个行 */
+            height: 100vh;/* vh就是当前屏幕可见高度的1%，也就是height100vh == height:100%，
+                            但是有个好处是当元素没有内容时候，设置height100%该元素不会被撑开，
+                            但是设置height:100vh，该元素会被撑开屏幕高度一致。 */
+
         }
 
 
@@ -20,6 +23,8 @@
             width: 200px;
             border: 2px solid black;
             transform: rotateX(45deg) rotateY(45deg); /* 图形倾斜角度 */
+            background-color: aquamarine;
+            opacity: .9;/*  图片透明度 */
             
             
         }
@@ -30,6 +35,9 @@
             border: 2px solid black;
             transform: rotateX(135deg) rotateY(135deg);/* 图形旋转角度 */
             translate: 144px;
+            background-color: rgb(20, 57, 224);
+            opacity: .7;/*  图片透明度 */
+            
         }
         div.c{
             position: absolute; /*  定位到a */
@@ -38,6 +46,8 @@
             border-style: dashed solid solid dashed ;    
             transform: rotateX(135deg) rotateY(135deg);/* 图形旋转角度 */
             translate: 0 -100px; 
+            background-color: rgb(255, 172, 127);
+            opacity: .5;/*  图片透明度 */
         }
         div.d{
             position: absolute; /*  定位到a */
@@ -45,7 +55,9 @@
             width: 200px;
             border-style:solid solid dashed dashed  ;   /*  虚线 */
             transform: rotateX(45deg) rotateY(45deg);/* 图形旋转角度 */
-            translate: 144px -100px; 
+            translate: 144px -100px;
+            background-color: rgb(20, 224, 23); 
+            opacity: .3;/*  图片透明度 */
         }
     </style>
 </head>
