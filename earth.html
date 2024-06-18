@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>earth</title>
     <style>
-        body{
-           
+        /* 思路和大喵的不太一样 */
+        body{           
             display: flex;  /* 弹性盒定位 */
             justify-content: center; /* 元素在行中的水平分布,左,右,中,space-between,space-around,space-evenly */
             align-items: center;/* 所有的行在整个包含块的垂直方向的分布/只有一行时无效,只有一行的时候元素的高度就是那个行 */
@@ -25,7 +25,7 @@
             border-radius: 50%; /*  让轨道变成椭圆 */
             transform-style: preserve-3d; /*  3D效果 */
 
-            animation: planet-rotate 20s linear infinite;
+            animation: planet-rotate 10s linear infinite;  /* 10s加快速度 */
         }
 
         div.b{
@@ -37,7 +37,7 @@
             top: -25px;  /* 半径贴近轨道 */
             left: calc(250px - 150px); /* 轨道居中 */
             transform: rotateZ(45deg) scaleY(0.5) ;  /* 中和旋转使得圆球不变形 不知道为什么scaleY(0.5)，反正0.5就不变形了*/
-            animation: self-cubekeep 20s linear infinite;
+            animation: self-cubekeep 10s linear infinite; /* 10s加快速度 */
         }
 
          @keyframes planet-rotate {
@@ -54,7 +54,7 @@
                 transform: rotate(0) scaleY(1) ; /*  scaleY(1)保持圆形旋转，rotate(0)转多少度 */
             }
             100% {
-                transform: rotate(360deg) scaleY(1) ;
+                transform: rotate(-360deg) scaleY(1) ; /* 与公转反向自转以保持始终是正面 */
             }
             }
 
@@ -63,7 +63,7 @@
 <body>
     <div class="a"> <!-- 轨道 -->
         <div class="b"> 
-          
+          (●'◡'●)
         </div>
     </div> 
     
