@@ -1,0 +1,260 @@
+
+<!-- saved from url=(0051)https://class.damiaoedu.com:44313/codes/js/noi.html -->
+<html class="trancy-zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <head>
+<script type="ok" id="ch0103/01">
+  var a = Number(prompt('请输入A'))
+  var b = Number(prompt('请输入B'))
+
+  var c = a + b
+
+  console.log(c)
+</script>
+
+<script type="ok" id="ch0103/02">
+  var a = Number(prompt('请输入A'))
+  var b = Number(prompt('请输入B'))
+  var c = Number(prompt('请输入C'))
+
+  var result = (a + b) * c
+
+  console.log(result)
+</script>
+
+<script type="ok" id="ch0103/03">
+
+  var a = Number(prompt('请输入A'))
+  var b = Number(prompt('请输入B'))
+  var c = Number(prompt('请输入C'))
+
+  var result = (a + b) / c
+
+  console.log(result)
+	
+</script>
+
+<script type="ok" id="ch0103/04">
+
+  var a = parseInt(prompt('请输入除数（除数非零）'))
+  var b = parseInt(prompt('请输入被除数'))
+
+  var result1 = a / b
+  var result2 = a % b
+
+  console.log(result1)
+  console.log(result2)
+	
+</script>
+
+<script type="ok" id="ch0103/05">
+
+  var a = parseFloat((prompt('请输入整数')))
+  var b = parseFloat((prompt('请输入整数（不为0）')))
+
+  var result = a / b
+ 
+
+  console.log(result)
+
+	
+</script>
+
+<script type="ok" id="ch0103/06">
+
+  var a = Number((prompt('请输入确诊数(10433)')))
+  var b = Number((prompt('请输入死亡数（60）')))
+
+  var result = b / a
+ 
+
+  console.log((result * 100).toFixed(3) + '%') //先✖100，然后使用toFixed()函数，保留几位小数
+
+	
+</script>
+
+<script type="ok" id="ch0103/07">
+
+  var x = Number((prompt('请输入x(不超过100)')))
+  var a = Number((prompt('请输入a(不超过100)')))
+  var b = Number((prompt('请输入b(不超过100)')))
+  var c = Number((prompt('请输入c(不超过100)')))
+  var d = Number((prompt('请输入d(不超过100)')))
+  var result = a * x ** 3 + b * x ** 2 + c * x + d
+
+  console.log(result.toFixed(7))	
+</script>
+
+<script type="ok" id="ch0103/8">
+
+  var F = Number(prompt('请输入华氏温度（f >= -459.67）'))
+
+  var C = 5 * (F-32) / 9
+  
+  console.log(C.toFixed(5))	
+</script>
+
+<script type="ok" id="ch0103/9">
+
+  var r = Number(prompt('圆的半径r（0 < r <= 10,000）'))
+
+  var pi = 3.14159
+
+  var D = 2 * r
+
+  var C = 2 * r * pi  //var C = 2 * r * * pi 错误的
+
+  var A = pi * r ** 2
+  
+  console.log(D.toFixed(4),C.toFixed(4),A.toFixed(4))	
+</script>
+
+<script type="ok" id="ch0103/10">
+
+ var r1 = parseFloat(prompt('r1电阻'))
+
+ var r2 = parseFloat(prompt('r2电阻'))
+
+ var R = 1/(1/r1 + 1/r2)
+  
+  console.log(R.toFixed(2))	
+</script>
+
+<script type="ok" id="ch0103/11">
+
+  var a = parseFloat(prompt('请输入a(a > 0)'))
+ 
+  var b = parseFloat(prompt('请输入b(b > 0)'))
+
+  var c = a % b
+   
+   console.log(c)	
+ </script>
+
+<script type="ok" id="ch0103/12">
+
+  var r = parseFloat(prompt('请输入球的半径r(r > 0)'))
+
+  var π = 3.14
+ 
+  var V = 4 / 3 * π * r ** 3
+ 
+  console.log(V.toFixed(2))	
+ </script>
+
+ <script type="ok" id="ch0103/13">
+
+  var a = parseInt(prompt('请输入一个三位数'))
+
+  var b = (a % 1000  - a % 100) / 100
+
+  var c = (a % 100 - a % 10) / 10
+
+  var d = a % 10
+ 
+  console.log(d+''+c+''+b+'')	
+ </script>
+
+<script type="ok" id="ch0103/14">
+
+  var h = parseFloat(prompt('请输入圆桶的高度h(h > 0)'))
+
+  var r = parseFloat(prompt('请输入圆桶的半径r(r > 0)'))
+ 
+  var L = parseFloat((Math.PI * r ** 2 * h) / 1000) //Math.PI=π
+
+  var backt_Num = Math.ceil(20 / L) //向上取整，半桶也是桶
+
+  console.log(backt_Num)	
+ </script>
+
+<script type="ok" id="ch0103/15">
+
+  var n = parseInt(prompt('请输入整数n'))
+
+  var x = parseInt(prompt('请输入整数x'))
+ 
+  var y = parseInt(prompt('请输入整数y(y <= n * x)'))
+
+  var Apple_Num = parseInt((n * x - y) / x)
+
+  console.log(Apple_Num)	
+ </script>
+
+<script type="ok" id="ch0103/16">
+
+  var Xa = Number(prompt('请输入(Xa,Ya)，的Xa(绝对值均不超过10000)'))
+
+  var Ya = Number(prompt('请输入(Xa,Ya)，的Ya(绝对值均不超过10000)'))
+ 
+  var Xb = Number(prompt('请输入(Xb,Yb)，的Xb(绝对值均不超过10000)'))
+
+  var Yb = Number(prompt('请输入(Xb,Yb)，的Yb(绝对值均不超过10000)'))
+
+  var length = ((Xb - Xa) ** 2 + (Yb - Ya) ** 2) ** 0.5
+
+  console.log(length.toFixed(3))	
+ </script> 
+
+ <script type="ok" id="ch0103/17">
+
+  var X1 = Number(prompt('请输入(X1,Y1)，的X1'))
+
+  var Y1 = Number(prompt('请输入(X1,Y1)，的Y1'))
+ 
+  var X2 = Number(prompt('请输入(X2,Y2)，的X2'))
+
+  var Y2 = Number(prompt('请输入(X2,Y2)，的Y2'))
+
+  var X3 = Number(prompt('请输入(X3,Y3)，的X3'))
+
+  var Y3 = Number(prompt('请输入(X3,Y3)，的Y3'))
+
+  
+  
+  var a = ((X2 - X1) ** 2 + (Y2 - Y1) ** 2) ** 0.5
+
+  var b = ((X3 - X2) ** 2 + (Y3 - Y2) ** 2) ** 0.5
+
+  var c = ((X3 - X1) ** 2 + (Y3 - Y1) ** 2) ** 0.5
+
+  var s = (a + b + c) / 2
+
+  var A = (s * (s - a) * (s - b) * (s - c)) ** 0.5
+
+  console.log(A.toFixed(2))	
+ </script> 
+ <script type="ok" id="ch0103/18">
+
+  var a1 = parseInt(prompt('请输入整数a1(-100 <= a1)'))
+
+  var a2 = parseInt(prompt('请输入整数a2(a​2 <= 100)'))
+ 
+  var n = parseInt(prompt('请输入整数n(0 < n <= 1000')))
+
+  var add_Num = a2 - a1
+
+  var aN = a1 + (add_Num * (n - 1)) //等差数列公式
+
+  console.log(aN)	
+ </script>
+
+ <script type="ok" id="ch0103/19">
+  var a = parseInt(prompt('请输入正整数A(1 <= A)'))
+  var b = parseInt(prompt('请输入正整数B(B <= 50000)'))
+
+  var c = a * b
+
+  console.log(c)
+</script>
+
+<script type="ok" id="ch0103/20">
+  
+  var b = parseInt(prompt('请输入正整数n(0 <= n < 31)'))
+
+  var a = 2 ** b
+
+  console.log(a)
+</script>
+</head>
+<body>
+</body>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index-mi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="F:\前端\add\font-awesome.css">
+
+</head>
+<body class="overflow-scroll"> <!-- 给整个界面加上滚动条 -->
+ <div id="header-box-background" class="bg-[#333] h-[40px]"> <!--header-box-background背景色填充 -->
+        <div id="header-center-background" class="w-[1226px] h-full mx-auto text-slate-300 text-xs leading-[40px] "> <!-- bg-red-500确定位置用 m-auto块上下左右居中、mx-auto块水平居中、line-height(leading)行高等于容器高度“单行文本”就可以垂直居中。text-align:center“单行文本”水平居中-->
+            <!-- <div id="header-box" class="">         -->
+                        <div id="header-center-box" class="float-left">  <!--float-left,让整个块浮动到左边边来，留出更大的空间给sign-box -->
+                            <a class="hover:text-sky-50" href="https://www.mi.com/shop">小米商城</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://home.miui.com/">MIUI</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://iot.mi.com/">IoT</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://i.mi.com/">云服务</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://airstar.com/home">天星数科</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://www.xiaomiyoupin.com/">有品</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://xiaoai.mi.com/">小爱开放平台</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://qiye.mi.com/">企业团购</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://www.mi.com/shop/aptitude/list?id=41">资质执照</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://www.mi.com/shop/aptitude/list">协议规则</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a class="hover:text-sky-50" href="https://www.mi.com/appdownload">下载App</a>
+                            <span class="text-gray-500 ">|</span>
+                            <a href="https://xiaomishare.mi.com/?from=micom">智能生活</a>
+                        </div>
+
+            <!-- </div>     -->
+
+                <div id="shop-cart" class="hover:bg-indigo-200 hover:text-orange-500 float-right group relative"> <!-- float浮动是有先后顺序的，所以放在前面。两个hover一个背景色，一个文字颜色 -->
+                    <!-- <i class="fas fa-shopping-cart"></i>购物车(0) -->
+                     <i class="fa group fa-shopping-cart"></i>购物车(0) <!-- 无法显示图标 -->
+                     <div id="shop-cart-message"class="text-black bg-indigo-200 group-hover:block hidden absolute h-[95px] w-[315px] leading-[95px] text-center top-full right-0 "> <!--绝对定位right，将元素挤到左边。top-full，似乎没有变化。leading-[95px] text-center垂直居中-->
+                        购物车中还没有商品，赶紧选购吧！
+                     </div>
+                </div>
+
+                
+
+                <div id="sign-box" class="float-right mr-4 "> <!-- float-right浮动到右边来，但是因为header-center-box的块没有设置宽度占满了全宽，从而被挤到了下一行 -->
+                    <a class="hover:text-sky-50" href="https://account.xiaomi.com/fe/service/login/password?_qrsize=180&sid=mi_eshop&qs=%253Fcallback%253Dhttp%25253A%25252F%25252Forder.mi.com%25252Flogin%25252Fcallback%25253Ffollowup%25253Dhttps%2525253A%2525252F%2525252Fwww.mi.com%2525252Fshop%252526sign%25253DODA5NjU3ZjZkYjkxMWE3ZjVkYTE5M2MxMDNlYmJkYzJhZGFjNzBhYg%25252C%25252C%2526sid%253Dmi_eshop%2526_qrsize%253D180&callback=http%3A%2F%2Forder.mi.com%2Flogin%2Fcallback%3Ffollowup%3Dhttps%253A%252F%252Fwww.mi.com%252Fshop%26sign%3DODA5NjU3ZjZkYjkxMWE3ZjVkYTE5M2MxMDNlYmJkYzJhZGFjNzBhYg%2C%2C&_sign=yBTYxCh0uB6YSglhQfg4uoP%2BRz4%3D&serviceParam=%7B%22checkSafePhone%22%3Afalse%2C%22checkSafeAddress%22%3Afalse%2C%22lsrp_score%22%3A0.0%7D&showActiveX=false&theme=&needTheme=false&bizDeviceType=&_locale=zh_CN">登录</a>
+                    <a class="hover:text-sky-50" href="https://cn.account.xiaomi.com/fe/service/register?source=&region=CN&sid=mi_eshop&qs=sid%3Dmi_eshop&callback=https%3A%2F%2Forder.mi.com%2Flogin%2Fcallback&_locale=zh_CN&_uRegion=CN">注册</a>
+                    <a class="hover:text-sky-50" href="https://cn.account.xiaomi.com/fe/service/register?source=&region=CN&sid=mi_eshop&qs=sid%3Dmi_eshop&callback=https%3A%2F%2Forder.mi.com%2Flogin%2Fcallback&_locale=zh_CN&_uRegion=CN">消息通知</a>         
+                </div>
+
+
+        </div>
+    </div>
+
+<!--<div id="header-secound-background" class="">  </div>貌似同一个盒子就可以 -->
+<div id="position-box" class="relative">  <!-- 用于electronic-goods-list2的定位 --> 
+    <div id="header-secound-center-box" class="h-[100px] w-[1226px] mx-auto flex items-center"><!--用弹性盒使得图标垂直居中 Align？align-items 属性设置了所有直接子元素的 align-self 值作为一个组。在 Flexbox 中，它控制子元素在交叉轴上的对齐。Justify？-->
+        <div id="logo-box">
+            <a href="https://www.mi.com/index.html">
+                <img class="h-[50px] w-[50px]" src="https://cdn.cnbj1.fds.api.mi-img.com/s02.mifile.cn/assets/static/image/logo-mi2.png" alt="小米商城">
+            </a>
+        </div>
+        
+        <div id="electronic-goods-list" class=""> 
+            <ul class="flex self-stretch  ml-[185px]"> <!-- flex,默认flex-direction: row横向 self-stretch，align-self 会对齐当前 grid 或 flex 行中的元素，并覆盖已有的 align-items 的值。虽然视觉上看起来没区别，但是在布局上看是与header-secound-center-box有距离的-->
+                <li class="px-2 group">Xiaomi手机
+                    <div id="electronic-goods-list2" class="w-full left-0 top-full h-[230px] absolute hidden group-hover:block border-2 ">    
+                        <ul class="h-[230px] w-[1226px] mx-auto ">
+                            <li class="">
+                                <a href="https://www.mi.com/shop/buy/detail?product_id=16536&selected=16536&pClass=p">
+                                    <img src="https://www.wanwupai.com/upload/jdimgs/20230105/80622dd5e260b2c4a34741c007409b5e.png"
+                                     alt="无法加载图片" width="160" height="110">
+                                  </a>
+                                  <a href="https://www.mi.com/shop/buy/detail?product_id=16536&selected=16536&pClass=p" class="">Xiaomi Civi 2</a>
+                                  <p class="">2399元起</p>
+                            </li>
+                        </ul>
+                    </div>
+                </li>        
+                <li class="px-2 group">Redmi手机
+                    <div id="electronic-goods-list2" class="w-full left-0 top-full h-[230px] absolute hidden group-hover:block border-2">    
+                        <ul class="h-[230px] w-[1226px] mx-auto">
+                            <li class="">
+                                bbbbbbbbbbbb
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="px-2 group">电视</li>
+                <li class="px-2 group">笔记本</li>
+                <li class="px-2 group">平板</li>
+                <li class="px-2 group">家电</li>
+                <li class="px-2 group">路由器</li>
+                <li class="px-2">服务中心</li>
+                <li class="px-2">社区</li>
+            </ul>
+        </div>
+
+        <!-- <div id="search" class="" > </div> 多了这个盒子的话，整体的宽度就变窄了，ml-auto就拉不到右边-->
+                <form id="search" class="flex h-[50px] ml-auto group relative" action="https://www.mi.com/shop/search?keyword=" >         <!--group设置input和button的聚焦效果-->
+                    <input type="text" class="border-solid border-2 border-amber-400 border-r-0 w-[240px] peer group-hover:border-red-500 outline-none " >        <!--border-r-0去除右边框。 outline:none去除黑色轮廓。~似乎不能~hover:bg-orange-600可以弹出search-list因为focus用的时peer效果（peer似乎与group原理不一样？） -->
+
+                     <ul id="search-list" class="absolute top-full hidden peer-focus:block" > <!--不能相对于input定位，因为是兄弟元素。 top-full，高度全满就自动顶下来了。peer放到这里，因为用了兄弟元素 -->
+                        <li>
+                            手机换新
+                        </li>
+                        <li>
+                            空调
+                        </li>
+                    </ul>
+
+                    <button class="h-[50px] border-solid border-2 border-amber-400 group-hover:border-red-500 hover:bg-orange-600" type="submit">搜索
+                        <i class="fa fa-search" aria-hidden="true"></i></button> <!-- 将图标放在搜索里。-->
+    
+                </form>
+</div><!-- position-box-->
+</div>    
+</body>
+</html>
