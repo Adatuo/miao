@@ -164,13 +164,13 @@
   var L = parseFloat((Math.PI * r ** 2 * h) / 1000) //Math.PI=π
 
   var backt_Num = Math.ceil(20 / L) //向上取整，半桶也是桶
- //Math.max()Math.min()
- //Math.floor(x)对x进行下取整
- //Math.ceil(x)·对x进行上取整
- //Math.trunc(x)保留x的整数部分
- //x - x % - 1下取整
- //x - x % + 1上取整
-/ /·(×·+·0.5)·再下取整就是四舍五入
+//Math.max()Math.min()
+//Math.floor(x)对x进行下取整
+//Math.ceil(x)·对x进行上取整
+//Math.trunc(x)保留x的整数部分
+//x - x % - 1下取整
+//x - x % + 1上取整
+//(×·+·0.5)再下取整就是四舍五入
 
   
   console.log(backt_Num)	
@@ -307,7 +307,7 @@
   var m = n.charCodeAt(0) //charCodeAt(0)函数转换为ASCLL码
   if (m % 2 == 0) {
     console.log('No')
-  } else if (m % 2 == 1){
+  } else {
     console.log('yes')
   }
 </script>
@@ -359,17 +359,17 @@
   }
 </script>
 
-<script type="ok" id="ch0104/09">
+<script type="" id="ch0104/09">
   var n = parseInt(prompt('输入一个整数n'))
 
   if (n % 3 == 0 && n % 5 == 0 && n % 7 == 0) {
-    console.log(3,5,7)
+    console.log(3 5 7)
   } else if (n % 3 == 0 && n % 5 == 0) {
-    console.log(3,5)
+    console.log(3 5)
   } else if (n % 5 == 0 && n % 7 == 0) {
-    console.log(5,7)
+    console.log(5 7)
   } else if (n % 3 == 0 && n % 7 == 0) {
-    console.log(3,7)
+    console.log(3 7)
   } else if (n % 3 == 0) {
     console.log(3)
   } else if (n % 5 == 0) {
@@ -522,7 +522,7 @@
   }
 </script>
 
-<script type="" id="ch0104/20">
+<script type="ok" id="ch0104/20">
   var a = parseFloat(prompt('输入第一个浮点数'))
   var b = parseFloat(prompt('输入第二个浮点数'))
   var c = parseFloat(prompt('输入第三个浮点数'))
