@@ -29,6 +29,7 @@
 
   var result = parseInt((a + b) / c) //取整运算，所以为0
 
+  //x % 1,取得小数部分
   console.log(result)
 	
 </script>
@@ -151,7 +152,7 @@
 
   var d = a % 10
  
-  console.log(d+''+c+''+b+'')	
+  console.log(''+d+c+b)	
  </script>
 
 <script type="ok" id="ch0103/14">
@@ -163,7 +164,15 @@
   var L = parseFloat((Math.PI * r ** 2 * h) / 1000) //Math.PI=π
 
   var backt_Num = Math.ceil(20 / L) //向上取整，半桶也是桶
+ //Math.max()Math.min()
+ //Math.floor(x)对x进行下取整
+ //Math.ceil(x)·对x进行上取整
+ //Math.trunc(x)保留x的整数部分
+ //x - x % - 1下取整
+ //x - x % + 1上取整
+/ /·(×·+·0.5)·再下取整就是四舍五入
 
+  
   console.log(backt_Num)	
  </script>
 
@@ -191,12 +200,13 @@
   var Yb = Number(prompt('请输入(Xb,Yb)，的Yb(绝对值均不超过10000)'))
 
   var length = ((Xb - Xa) ** 2 + (Yb - Ya) ** 2) ** 0.5
+  //Math.sqrt(x)求x的平方根,square  root
 
   console.log(length.toFixed(3))	
  </script> 
 
  <script type="ok" id="ch0103/17">
-
+  debugger
   var X1 = Number(prompt('请输入(X1,Y1)，的X1'))
 
   var Y1 = Number(prompt('请输入(X1,Y1)，的Y1'))
@@ -254,6 +264,293 @@
   var a = 2 ** b
 
   console.log(a)
+</script>
+
+<script type="ok" id="ch0104/01">
+  debugger
+  var n = Number(prompt('n'))
+
+  if (n > 0) {
+    console.log('positive')
+  } else {
+    if (n == 0) {
+      console.log('zero')
+    } else {
+      console.log('negative')
+    }
+  }
+
+</script>
+
+<script type="ok" id="ch0104/02">
+  var n = Number(prompt('n'))
+
+  if (n >= 0) {
+    console.log(n)
+  } else {
+    console.log(-n)
+  }
+</script>
+
+<script type="ok" id="ch0104/03">
+  var n = Number(prompt('n'))
+
+  if (n % 2 == 0) {
+    console.log('even')
+  } else {
+    console.log('odd')
+  }
+</script>
+
+<script type="ok" id="ch0104/04">
+  var n = prompt('随机输入一个字符')
+  var m = n.charCodeAt(0) //charCodeAt(0)函数转换为ASCLL码
+  if (m % 2 == 0) {
+    console.log('No')
+  } else if (m % 2 == 1){
+    console.log('yes')
+  }
+</script>
+
+<script type="ok" id="ch0104/05">
+  var x = parseInt(prompt('随机输入一个整数（0<=x<2^32,-2^31<=y<2^31)'))
+  var y = parseInt(prompt('随机输入一个整数（0<=x<2^32,-2^31<=y<2^31)'))
+  if (x > y) {
+    console.log('>')
+  } else if (x < y){
+    console.log('<')
+  } else {
+    console.log("=")
+  }
+</script>
+
+<script type="ok" id="ch0104/06">
+  var x = parseInt(prompt('随机输入一个小于1000的正整数'))
+
+  if (x >= 100 || x <= 9) {
+    console.log('0')
+  } else if (x < 100){
+    console.log("1")
+  }
+</script>
+
+<script type="ok" id="ch0104/07">
+  var x = parseInt(prompt('输入一幸运瓶盖数'))
+  var y = parseInt(prompt('输入一鼓励瓶盖数'))
+
+  if (x / 10 > 0 || y / 20 > 0) {
+    console.log('1')
+  } 
+ 
+  if(x / 10 < 0 || y / 20 < 0){
+    console.log("0")
+  }
+</script>
+
+<script type="ok" id="ch0104/08">
+  var n = parseInt(prompt('输入一个整数n'))
+
+  if (n % 3 ==0 && n % 5 == 0) {
+    console.log('YES')
+  } else if (n > 1000000 || n < -1000000 ) {
+    console.log('n的范围是-1000000 < n < 1000000')
+  } else {
+    console.log("No")
+  }
+</script>
+
+<script type="ok" id="ch0104/09">
+  var n = parseInt(prompt('输入一个整数n'))
+
+  if (n % 3 == 0 && n % 5 == 0 && n % 7 == 0) {
+    console.log(3,5,7)
+  } else if (n % 3 == 0 && n % 5 == 0) {
+    console.log(3,5)
+  } else if (n % 5 == 0 && n % 7 == 0) {
+    console.log(5,7)
+  } else if (n % 3 == 0 && n % 7 == 0) {
+    console.log(3,7)
+  } else if (n % 3 == 0) {
+    console.log(3)
+  } else if (n % 5 == 0) {
+    console.log(5)
+  } else if (n % 7 == 0) {
+    console.log(7)
+  } else {
+    console.log(n)
+  }
+</script>
+
+<script type="ok" id="ch0104/10">
+  var n = parseInt(prompt('输入你的语文成绩'))
+  var m = parseInt(prompt('输入你的数学成绩'))
+
+  if ((n < 60 && m < 60) || (n >= 60 && m >= 60)) {
+    console.log('0')
+  } else if ((n < 60 && m >= 60) || (n >= 60 && m < 60)) {
+    console.log('1')
+  } 
+</script>
+
+<script type="ok" id="ch0104/11">
+  var n = parseInt(prompt('输入看展日期'))
+  
+  if (n == 1 || n == 3 || n == 5) {
+    console.log('NO')
+  } else if (n <= 0 || n > 7){
+    console.log('请输入1-7表示星期')
+  } else{
+    console.log("YES");
+  }
+</script>
+
+<script type="ok" id="ch0104/12">
+  var n = parseInt(prompt('输入距离'))
+  
+  var walk = n / 1.2
+
+  var bike = n / 3 + 23 +27
+
+  if (walk < bike) {
+    console.log('Walk')
+  } else if (walk > bike){
+    console.log('Bike')
+  } else {
+    console.log("ALL");
+  }
+</script>
+
+<script type="ok" id="ch0104/13">
+  var N = parseFloat((prompt('输入N')))
+
+  if (N >= 0 && N < 5) {
+    y = -N + 2.5
+    console.log(y.toFixed(3))
+  } else if (N >= 5 && N < 10){
+    y = 2 - 1.5 * (N - 3) * (N - 3)
+    console.log(y.toFixed(3))
+  } else if (N >= 10 && N < 20){
+    y = N / 2 - 1.5
+    console.log(y.toFixed(3));
+  }
+</script>
+
+<script type="ok" id="ch0104/14">
+  debugger
+  var N = parseInt((prompt('输入重量')))
+  var Y = (prompt('加急输入y,不加急输入n'))
+
+  if (N <= 1000) {
+    m = 8
+    console.log(m)
+  } else if (N <= 1000 && Y == 'y'){
+    m = 8 + 5
+    console.log(m)
+  } else if (N > 1000 && Y != 'y'){
+    m = 8 + Math.ceil(((N - 1000) / 500)) * 4 //超重部分向上取整
+    console.log(m)
+  } else if (N > 1000 && Y == 'y'){
+    m = 8 + Math.ceil(((N - 1000) / 500)) * 4 + 5
+    console.log(m)
+  }  
+</script>
+
+<script type="ok" id="ch0104/15">
+  var a = parseInt(prompt('输入第一个整数'))
+  var b = parseInt(prompt('输入第二个整数'))
+  var c = parseInt(prompt('输入第三个整数'))
+
+  console.log(Math.max(a,b,c));
+
+</script>
+
+<script type="ok" id="ch0104/16">
+  var a = parseInt(prompt('输入第一条边'))
+  var b = parseInt(prompt('输入第二条边'))
+  var c = parseInt(prompt('输入第三条边'))
+
+  if(a + b > c && a + c > b && c + b >a){
+    console.log('yes');
+  }else{
+    console.log('no');
+  }
+  
+
+</script>
+
+<script type="ok" id="ch0104/17">
+  var a = parseInt(prompt('输入年份'))
+
+  if ((a % 4 === 0 && a % 100 != 0 )|| a % 400 === 0){
+    console.log('Y')
+  }else if(a <= 0 && a >= 300){
+    console.log('范围是0<a<300') 
+  }else{
+    console.log('N')
+  }
+</script>
+
+<script type="ok" id="ch0104/18">
+  var x = parseInt(prompt('输入坐标x'))
+  var y = parseInt(prompt('输入坐标y'))
+
+  //C = 2
+
+  if (x <= 2 && y <= 2){
+    console.log('yes')
+  }else{
+    console.log('no')
+  }
+</script>
+
+<script type="ok" id="ch0104/19">
+  var x = parseInt(prompt('输入一个整数'))
+  var y = parseInt(prompt('输入另一个整数'))
+  var z = prompt('输入运算符号')
+
+
+  if (z == '/' && y == 0){
+    console.log('Divided by zero!')
+  }else if(z == '+'){
+    console.log(x + y)
+  }else if(z == '-'){
+    console.log(x - y)
+  }else if(z == '*'){
+    console.log(x * y)
+  }else if(z == '/'){
+    console.log(x / y)
+  }
+</script>
+
+<script type="" id="ch0104/20">
+  var a = parseFloat(prompt('输入第一个浮点数'))
+  var b = parseFloat(prompt('输入第二个浮点数'))
+  var c = parseFloat(prompt('输入第三个浮点数'))
+
+  var x1 = ((-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a)).toFixed(5)
+  var x2 = ((-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a)).toFixed(5)
+
+  var Real_Part = (-b/(2*a)).toFixed(5)
+  var Imaginary_Part = (Math.sqrt(4*a*c - b*b) / (2 * a)).toFixed(5)
+
+  if (b**2 == 4*a*c){
+    console.log('x1'+'='+'x2'+'='+x1)
+  }else if (b**2 > 4*a*c) {
+    console.log('x1'+'='+x1+';'+'x2'+'='+x2)
+  }else if (b**2 < 4*a*c) {
+    console.log('x1'+'='+Real_Part+'+'+Imaginary_Part+'i','x2'+'='+Real_Part+'-'+Imaginary_Part+'i')
+  }
+</script>
+
+<script type="ok" id="ch0104/21">
+  var n = parseInt(prompt('输入苹果数'))
+  var x = parseInt(prompt('输入虫子吃小时数'))
+  var y = parseInt(prompt('输入小时数'))
+
+  var a = Math.floor(n - y / x)
+
+  console.log(a)
+
 </script>
 </head>
 <body>
