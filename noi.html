@@ -362,34 +362,56 @@
 <script type="ok" id="ch0104/09">
   var n = parseInt(prompt('输入一个整数n'))
 
-  if (n % 3 == 0 && n % 5 == 0 && n % 7 == 0) {
-    console.log(3,5,7)
-  } else if (n % 3 == 0 && n % 5 == 0) {
-    console.log(3,5)
-  } else if (n % 5 == 0 && n % 7 == 0) {
-    console.log(5,7)
-  } else if (n % 3 == 0 && n % 7 == 0) {
-    console.log(3,7)
-  } else if (n % 3 == 0) {
-    console.log(3)
-  } else if (n % 5 == 0) {
-    console.log(5)
-  } else if (n % 7 == 0) {
-    console.log(7)
-  } else {
+  if (n % 3 != 0 && n % 5 != 0 && n % 7 != 0) {
     console.log('n')
-  }
+  }else{
+        if (n % 3 == 0) {
+          console.log(3)
+        } 
+        if (n % 5 == 0) {
+          console.log(5)
+        } 
+        if (n % 7 == 0) {
+          console.log(7)
+        }
+      } 
+  // if (n % 3 == 0 && n % 5 == 0 && n % 7 == 0) {
+  //   console.log(3,5,7)
+  // } else if (n % 3 == 0 && n % 5 == 0) {
+  //   console.log(3,5)
+  // } else if (n % 5 == 0 && n % 7 == 0) {
+  //   console.log(5,7)
+  // } else if (n % 3 == 0 && n % 7 == 0) {
+  //   console.log(3,7)
+  // } else if (n % 3 == 0) {
+  //   console.log(3)
+  // } else if (n % 5 == 0) {
+  //   console.log(5)
+  // } else if (n % 7 == 0) {
+  //   console.log(7)
+  // } else {
+  //   console.log('n')
+  // }
+
+
 </script>
 
 <script type="ok" id="ch0104/10">
   var n = parseInt(prompt('输入你的语文成绩'))
   var m = parseInt(prompt('输入你的数学成绩'))
 
-  if ((n < 60 && m < 60) || (n >= 60 && m >= 60)) {
-    console.log('0')
-  } else if ((n < 60 && m >= 60) || (n >= 60 && m < 60)) {
+  // if ((n < 60 && m < 60) || (n >= 60 && m >= 60)) {
+  //   console.log('0')
+  // } else if ((n < 60 && m >= 60) || (n >= 60 && m < 60)) {
+  //   console.log('1')
+  // }
+  
+  if ((n >= 60 && m < 60) || (n < 60 && m >= 60)) {
     console.log('1')
-  } 
+  } else if {
+    console.log('0')
+  }
+
 </script>
 
 <script type="ok" id="ch0104/11">
@@ -421,15 +443,27 @@
 </script>
 
 <script type="ok" id="ch0104/13">
-  var N = parseFloat((prompt('输入N')))
+  var N = parseFloat((prompt('输入N（0<=N < 20）')))
 
-  if (N >= 0 && N < 5) {
+  // if (N >= 0 && N < 5) {
+  //   y = -N + 2.5
+  //   console.log(y.toFixed(3))
+  // } else if (N >= 5 && N < 10){
+  //   y = 2 - 1.5 * (N - 3) * (N - 3)
+  //   console.log(y.toFixed(3))
+  // } else if (N >= 10 && N < 20){
+  //   y = N / 2 - 1.5
+  //   console.log(y.toFixed(3));
+  // }
+
+  //简化版,题目给了条件就不用考虑。一般来说先判断更小的条件再判断更大的条件
+  if (N < 5) {
     y = -N + 2.5
     console.log(y.toFixed(3))
-  } else if (N >= 5 && N < 10){
+  } else if (N < 10){
     y = 2 - 1.5 * (N - 3) * (N - 3)
     console.log(y.toFixed(3))
-  } else if (N >= 10 && N < 20){
+  } else {
     y = N / 2 - 1.5
     console.log(y.toFixed(3));
   }
@@ -439,29 +473,50 @@
   debugger
   var N = parseInt((prompt('输入重量')))
   var Y = (prompt('加急输入y,不加急输入n'))
+  var much = 8
+  var add = 5
+  
+  if (N > 1000) {    
+    m = much + Math.ceil(((N - 1000) / 500)) * 4    
+  } 
 
-  if (N <= 1000) {
-    m = 8
-    console.log(m)
-  } else if (N <= 1000 && Y == 'y'){
-    m = 8 + 5
-    console.log(m)
-  } else if (N > 1000 && Y != 'y'){
-    m = 8 + Math.ceil(((N - 1000) / 500)) * 4 //超重部分向上取整
-    console.log(m)
-  } else if (N > 1000 && Y == 'y'){
-    m = 8 + Math.ceil(((N - 1000) / 500)) * 4 + 5
-    console.log(m)
-  }  
+ if (Y == 'y') { 
+  add = m + add
+  console.log(add)
+ }
+
+ console.log(much)
+ 
+  // if (N <= 1000) {
+  //   m = 8
+  //   console.log(m)
+  // } else if (N <= 1000 && Y == 'y'){
+  //   m = 8 + 5
+  //   console.log(m)
+  // } else if (N > 1000 && Y != 'y'){
+  //   m = 8 + Math.ceil(((N - 1000) / 500)) * 4 //超重部分向上取整
+  //   console.log(m)
+  // } else if (N > 1000 && Y == 'y'){
+  //   m = 8 + Math.ceil(((N - 1000) / 500)) * 4 + 5
+  //   console.log(m)
+  // }  
 </script>
 
 <script type="ok" id="ch0104/15">
   var a = parseInt(prompt('输入第一个整数'))
   var b = parseInt(prompt('输入第二个整数'))
   var c = parseInt(prompt('输入第三个整数'))
+  var max = a
 
-  console.log(Math.max(a,b,c));
+  if (max > b){
+    max = b
+  }
+  
+  if (max > c){
+    max = c
+  }
 
+  console.log(max);
 </script>
 
 <script type="ok" id="ch0104/16">
@@ -533,11 +588,11 @@
   var Real_Part = (-b/(2*a)).toFixed(5)
   var Imaginary_Part = (Math.sqrt(4*a*c - b*b) / (2 * a)).toFixed(5)
 
-  if (b**2 == 4*a*c){
-    console.log('x1'+'='+'x2'+'='+x1)
-  }else if (b**2 > 4*a*c) {
+  if (b**2 == 4*a*c){ //delta == 0
+    console.log('x1=x2='+x1)
+  }else if (b**2 > 4*a*c) { //delta > 0
     console.log('x1'+'='+x1+';'+'x2'+'='+x2)
-  }else if (b**2 < 4*a*c) {
+  }else if (b**2 < 4*a*c) { //delta < 0
     console.log('x1'+'='+Real_Part+'+'+Imaginary_Part+'i'+';'+'x2'+'='+Real_Part+'-'+Imaginary_Part+'i')
   }
 </script>
@@ -551,6 +606,313 @@
 
   console.log(a)
 
+</script>
+
+<script type="ok" id="ch0105/01">
+  debugger
+  var n = Number(prompt('人数'))
+  var sum = 0 // 记录所有人的年龄之和
+  var age
+
+  var c = 0
+  while (c < n) {
+    age = Number(prompt('年龄'))
+    sum = sum + age
+    c = c + 1
+  }
+
+  console.log(  (sum / n).toFixed(2)  )
+
+</script>
+
+<script type="ok" id="ch0105/02">
+  var s = 0
+  var sum = 0
+
+  while(s < 12){
+    s = s + 1
+    var a = Number(prompt('输入'+s+'月的结余'))
+    sum = a + sum 
+  }
+
+  var averg = (sum  / 12).toFixed(2)
+
+  console.log('$'+averg)
+</script>
+
+<script type="ok" id="ch0105/03">
+
+  var s = Number(prompt('输入样本容量'))
+  var agent = 0
+  var sum = 0
+
+  while(s > agent){
+    test = Number(prompt('输入样本数据'))
+    sum = test + sum 
+    
+    agent = agent + 1
+  }
+
+  var averg = (sum / s).toFixed(4)
+  
+  console.log(averg)
+</script>
+
+<script type="ok" id="ch0105/04">
+
+  var s = Number(prompt('输入一个整数n'))
+  var agent = 0
+  var sum = 0
+
+  while(s > agent){
+    test = Number(prompt('输入整数'))
+   
+    sum = test + sum 
+    agent = agent + 1
+  }
+  var averg = (sum / s).toFixed(5)
+  console.log(sum,averg)
+</script>
+
+<script type="ok" id="ch0105/05">
+
+  var s = Number(prompt('输入参加考试的人数'))
+  var agent = 0
+  var max = 0
+  var agent2 = 0
+
+  while(s > agent){
+    test = Number(prompt('输入这个学生的成绩'))
+    agent2 = test 
+    if (max < test) {
+      max = agent2
+    }
+    agent = agent + 1
+  }
+  
+  console.log(max)
+</script>
+
+<script type="ok" id="ch0105/06">
+
+  var s = Number(prompt('输入序列个数'))
+  var agent = 0
+  var max = 0
+  var min = 0
+  var agent2 = 0
+
+  while(s > agent){
+    test = Number(prompt('输入整数'))
+    agent2 = test 
+    if (max < test) {
+      max = agent2
+    }
+    if (min > test) {
+      min = agent2
+    }
+    agent = agent + 1
+  }
+  
+  console.log(max - min)
+</script>
+
+<script type="ok" id="ch0105/07">
+
+  var s = parseInt((prompt('输入比赛天数')))
+  var agent = 0
+  var sum = 0
+
+  var goden = 0
+  var silver = 0
+  var copper = 0
+
+  while(s > agent){
+    test = parseInt((prompt('输入金牌数')))
+    test2 = parseInt((prompt('输入银牌数')))
+    test3 = parseInt((prompt('输入铜牌数')))
+
+    goden = goden + test
+    silver = silver + test2
+    copper = copper + test3
+
+    agent = agent + 1
+  }
+
+  sum = goden + silver + copper
+
+  console.log(goden,silver,copper,sum);
+</script>
+
+<script type="ok" id="ch0105/08">
+
+  var s = parseInt(prompt('输入n边形的边'))
+  var s1 = 1
+  var agent = 0
+  var sum = 0
+
+
+  while(s > agent){
+    deg = parseInt(prompt('输入' + s + '边形的第' + s1 + '内角度数'))
+    sum = deg + sum 
+    if (s1 < s){
+        s1 = s1 + 1
+    }
+    agent = agent + 2
+  }
+
+  var sumdeg = (s - 2) * 180 - sum
+  
+  console.log(sumdeg)
+</script>
+
+<script type="ok" id="ch0105/09">
+
+  // var m = parseInt(prompt('输入m'))
+  // var n = parseInt(prompt('输入n'))
+
+  // var agent = n
+  // var agent2 = 0
+
+  // var sum = 0
+
+  // while(n > agent){
+
+  //   agent = n + 1
+    
+
+  //   if(m % 2 != 0){
+  //     sum = sum + m
+  //   }
+    
+  //   m = m + 1
+  //   agent2 = agent2 + 1
+  // }
+  
+  // console.log(sum)
+  // var m = parseInt(prompt('输入m'))
+  // var n = parseInt(prompt('输入n'))
+
+  // var agent = m //n
+  // var sum = 0
+
+  // while (agent <= n){
+  //   if(m % 2 != 0){
+  //     sum = sum + agent
+  //   }
+  //   agent = agent + 1
+  // }
+
+  // console.log(sum);
+
+  var m = parseInt(prompt('输入m'))
+  var n = parseInt(prompt('输入n'))
+
+  var sum = 0
+  var current = m
+
+  while (current <= n) {
+    if (current % 2 != 0) {
+      sum += current
+    }
+    current++
+  }
+
+  console.log(sum)
+</script>
+
+<script type="ok" id="ch0105/10">
+  var m = parseInt(prompt('输入m'))
+  var n = parseInt(prompt('输入n'))
+
+  var sum = 0
+  var current = m
+
+  while (current <= n) {
+    if (current % 17 == 0) {
+      sum += current
+    }
+    current++
+  }
+
+  console.log(sum)
+</script>
+
+<script type="ok" id="ch0105/11">
+  var k = parseInt(prompt('输入k'))
+  var one = 0
+  var five = 0
+  var ten = 0
+  var current = 0
+
+  while(k > current){
+    a = parseInt(prompt('输入正整数'))
+
+    if (a == 1) {
+      one++
+    }
+
+    if (a == 5) {
+      five++
+    }
+
+    if (a == 10) {
+      ten++
+    }
+    current++
+  }
+
+  console.log(one,five,ten);
+</script>
+
+<script type="ok" id="ch0105/12">
+  var N = parseInt(prompt('输入N,N<=100'))
+  var m = parseInt(prompt('输入m'))
+
+  var current = 0
+  var sum = 0
+
+  while(N > current){
+    a = parseInt(prompt('输入正整数'))
+    if (m == a) {
+      sum++
+    }
+    current++
+  }
+
+  console.log(sum);
+</script>
+
+<script type="ok" id="ch0105/13">
+  var a = parseInt(prompt('输入a,-1000000<=a<=1000000'))
+  var n = parseInt(prompt('输入n,1<=n<=10000'))
+
+  var current = 0
+  var result = 1
+
+  while(n > current){
+  
+    //a = a*a,公式问题 
+    result = result * a
+    current++
+  }
+
+  console.log(result);
+</script>
+
+<script type="ok" id="ch0105/14">
+  var x = parseInt(prompt('输入x人口基数,1<=x<=100'))
+  var n = parseInt(prompt('输入n年份,1<=n<=10000'))
+
+  var current = 0
+  var sum = x
+
+  while(n > current){
+  
+    sum = sum * 1.1
+    current++
+  }
+
+  console.log(sum.toFixed(4));
 </script>
 </head>
 <body>
