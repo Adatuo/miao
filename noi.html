@@ -1107,7 +1107,7 @@ for (let index = 0; index < n; index++) {
 console.log(n - No);
 </script>
 
-<script type="" id="ch0105/24">
+<script type="ok" id="ch0105/24">
 var n = parseInt(prompt('n'))//小时量一次
 var ok = 0  //总次数
 var ook = 0 //连续
@@ -1130,6 +1130,134 @@ for (let index = 0; index < n; index++) {
 }
 console.log(ook);
 </script>
+
+<script type="ok" id="ch0105/25">
+
+</script>
+
+<script type="ok" id="ch0105/26">
+var n = parseInt(prompt('输入4位数的个数n<=100'))
+var current = 0 //计数
+for (let index = 0; index < n; index++) {
+  var m = parseInt(prompt('输入4位数'))
+  var a = m % 10 //个位
+  var b = (m % 100 - m % 10) / 10 //十位
+  var c = (m % 1000 - m % 100) / 100 //百位
+  var d = (m - m % 1000) / 1000 //千位
+  if ((a - d - c -b)>0) {
+    current++
+  }
+}
+console.log(current);
+</script>
+
+<script type="ok" id="ch0105/27">
+var K = parseInt(prompt('输入整数K（1<=k<=15）'))  
+var Sn = 0
+var n = 1
+var current = 0
+while (true) {
+  Sn = Sn + 1 / n
+  n++
+  if (Sn > K) {
+    break
+  }
+} 
+console.log(n-1);
+
+</script>
+
+<script type="ok" id="ch0105/28">
+var number = parseInt(prompt('输入整数1到100000000之间'))
+
+// 将数字转换为字符串
+var numberString = number.toString()
+
+// 存储结果字符串
+var result = ''
+
+// 从个位开始遍历字符串的每一个字符,反向遍历
+for (var i = numberString.length - 1; i >= 0; i--) {
+    result += numberString[i]
+}
+
+console.log(result);
+</script>
+
+<script type="ok" id="ch0105/29">
+  var number = parseInt(prompt('输入整数1<=n<=100000000'))
+
+  //判断±并添加负号
+  if (number < 0) {
+    var operator = '-'
+  }else{
+    var operator = ''
+  }
+  // 将数字转换为字符串
+  var numberString = number.toString()
+  
+  // 存储字符串
+  var result = ''
+  
+  // 从个位开始遍历字符串的每一个字符,反向遍历
+  for (var i = numberString.length - 1; i >= 0; i--) {
+      result += numberString[i]
+  }
+
+  //转换数字,去掉0
+  var x = parseInt(result)
+
+
+  console.log(operator + x);
+  
+
+  
+  </script>
+  <script type="ok" id="ch0105/30">
+    var m = parseInt(prompt('输入整数m,1<m<100000'))
+    var k = parseInt(prompt('输入整数k,1<k<5'))
+
+    //转换为字符串,toString(),函数调用“ . ”
+    var mString = m.toString()
+    //存储字3有几个
+    var tree = 0
+
+    for (let index = 0; index < mString.length; index++) {
+      
+      if (mString[index] == '3') {
+        parseInt(tree++)
+      }
+    }
+
+    if (m % 19 == 0 && tree == k) {
+      console.log('YES');
+    }else{
+      console.log('NO');
+    }
+  </script>
+
+  <script type="" id="ch0105/31">
+    var N = parseInt(prompt('N盏灯,N<5000'))
+    var M = parseInt(prompt('M人'))
+
+    //创建N长度的数组{array()}以存储{fill()}灯的状态true开、false关
+    var lights = new Array(N).fill(true)
+
+    //循环模拟第一个人的操作
+  for (let i = 0; i < Array.length; i++) {
+    lights[i] = false
+  }
+    //循环模拟从第二个人开始的操作
+  for (let person = 2; person <= M; person++) { //要关多少盏灯，少了1，所以<=M
+    for (let i = person - 1; i < N; i += person ) { //有多少人来关灯。想不到，真想不到
+
+      lights[i] = !lights[i]
+      
+    }
+    
+    
+  }  
+  </script>
 
 </head>
 
