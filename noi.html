@@ -876,7 +876,7 @@
 
   while(N > current){
     a = parseInt(prompt('输入正整数'))
-    if (m == a) {
+    if (m == a) { //类型不一样三个等号？
       sum++
     }
     current++
@@ -911,7 +911,7 @@
 
   while(n > current){
   
-    sum = sum * 1.001 //(1+1%)
+    sum = sum * 1.001 //(1+1%，百分比计数问题)
     current++
   }
 
@@ -932,15 +932,15 @@ for (let index = 0; index < Y; index++) {
   
 }
 
-  console.log(parseInt(sum));
+  console.log(Math.trunc(sum));//parseInt(sum)
 </script>
 
-    <script type="ok" id="ch0105/16">
-
+<script type="ok" id="ch0105/16">
+//可以简化
   var N = parseInt(prompt('年薪'))
   var K = parseInt(prompt('房价增长'))
   var NSumony = 0
-  var current = 1
+  var current = 1 //年份计数
   var sumHouse = 200
 
 for (let index = 0; index < 20; index++) {
@@ -953,7 +953,7 @@ for (let index = 0; index < 20; index++) {
     break
   }
 
-  sumHouse = sumHouse * (1 + K / 100) //问题所在,第一年房价不涨,不能放在循环体最前面
+  sumHouse = sumHouse * (1 + K / 100) //根据答案倒退第一年房价是不涨价的。问题所在,第一年房价不涨,不能放在循环体最前面
   current++  // 跳出后就不用再次增加 
 }
 
@@ -964,21 +964,25 @@ if (current > 20) { //不需要在循环体内
 
 </script>
 
-    <script type="ok" id="ch0105/17">
+<script type="ok" id="ch0105/17">
   var k = parseInt(prompt('输入k'))
  
   var current = 2 // 从第三位开始计算，为0自然结果不对
   var a = 1
   var b = 1
   var c = 0
-
+  //可以优化从a=1 b=0,or 非常了解数列本质
+  //忽视了！要是先算第一位和第二位的话，这个就不成立所以
+  if(k<3){
+    console.log(1);
+  }else{
   while(k > current){ 
   
     c = a + b 
     a = b //对逻辑不敏感，流程图已经画出来了的但是没发现，替换
     b = c 
     current++
-  }
+  }}
 
   console.log(c)
 </script>
@@ -1000,7 +1004,7 @@ for (let index = 1; index < n; index++) {
    
   if ((y - x) > 0.05) {
     console.log('better')
-  }else if ((x - y) > 0.05) { //看错条件了，干
+  }else if ((x - y) > 0.05) { //其实从题目的逻辑可以推导出来，在逻辑转换上要注意看错条件了，干
     console.log('worse');
   }else{
     console.log('same');
@@ -1009,7 +1013,7 @@ for (let index = 1; index < n; index++) {
 
 </script>
     <script type="ok" id="ch0105/19">
-
+      //可以简化，上船下船直接乘以即可
   var n = parseInt(prompt('输入屋顶数'))
   var SumTime = 0
   var MoveTime = 0
@@ -1030,8 +1034,9 @@ for (let index = 0; index < n; index++) {
   console.log(SumTime);
 </script>
 
-    <script type="ok" id="ch0105/20">
+<script type="ok" id="ch0105/20">
   var h = parseInt(prompt('输入球的初始高度'))
+  //这样写似乎有些问题，相当于球是从地上蹦起来的
   var SumH = 20 //本身高度也要算
 
 
@@ -1059,9 +1064,11 @@ console.log(parseFloat(h));
       console.log(b + N)
     }
   }
-  if(N == 1){
-    console.log('End');
-  }
+
+  if(N == 1){} //可以不要，while等于1会直接结束
+    
+  
+  console.log('End');
 
 </script>
 
@@ -1236,7 +1243,7 @@ console.log(result);
     }
   </script>
 
-  <script type="" id="ch0105/31">
+  <script type="ok" id="ch0105/31">
     var N = parseInt(prompt('N盏灯,N<5000'))
     var M = parseInt(prompt('M人'))
 
@@ -1251,14 +1258,152 @@ console.log(result);
   for (let person = 2; person <= M; person++) { //要关多少盏灯，少了1，所以<=M
     for (let i = person - 1; i < N; i += person ) { //有多少人来关灯。想不到，真想不到
 
-      lights[i] = !lights[i]
-      
-    }
-    
-    
+      lights[i] = !lights[i] 
+    } 
   }  
   </script>
 
+  <script type="ok" id="ch0105/32">   
+        var N = parseFloat(prompt('输入n,N<=30'))
+        //q1
+        var a = 2
+        //p1
+        var b = 1
+        //存储分数
+        var d = 0
+
+        for (let i = 1;i <= N;i++) {
+          d += a / b
+          var c = a + b 
+          b = a 
+          a = c  
+        }
+
+        console.log(d.toFixed(4));
+  </script>
+
+<script type="ok" id="ch0105/33">
+ 
+  var n = parseFloat(prompt('输入n,1<=N<=1000'))
+
+  //存储表达式的值
+  var x = 0
+
+  for (let i = 1; i <= n; i++) {
+  //计算n序列的值
+  var m = (-1) ** (i - 1) * (1 / i)
+  //存储表达式的值,要先在循环体外声明  
+  var x = m + x
+    
+  }
+  console.log(x.toFixed(4));
+</script>
+
+<script type="ok" id="ch0105/34">
+  
+  var n = parseInt(prompt('输入n,1<n<12'))
+  //存储阶乘的和
+  var SumN = 0
+  //存储阶乘的值
+  var c = 0
+  //0! == 1,1! == 1
+  var a = 1
+
+  for (let i = 1; i <= n; i++) {
+      c = a * i
+      a = c
+      SumN += a
+    }
+
+    console.log(SumN);
+
+    
+  
+</script>
+
+<script type="ok" id="ch0105/35">
+
+  var n = parseInt(prompt('输入n,2<=n<=15'))
+  //存储1/n!的和
+  var SumN = 0
+  //存储阶乘的值
+  var c = 0
+  //0! == 1,1! == 1
+  var a = 1
+
+  for (let i = 1; i <= n; i++) {
+      c = a * i
+      a = c
+      SumN += 1 / a
+    }
+
+  console.log((1 + SumN).toFixed(10));  
+</script>
+
+<script type="ok" id="ch0105/36">
+var x = parseFloat(prompt('输入x'))
+var n = parseInt(prompt('输入正整数n,<=1000000'))
+var sum = 0
+
+for (let i = 0; i <= n; i++) {
+
+  sum += parseFloat(x ** i)
+  
+}
+
+console.log(sum.toFixed(2));
+</script>
+
+<script type="ok" id="ch0105/37">
+  debugger0
+  var M= parseFloat(prompt('输入M体力值'))
+  var N= parseFloat(prompt('输入N战斗力'))
+  var X= parseFloat(prompt('输入X个能量元素'))
+
+  for (let i = X; i >= 1; i--) {
+   
+    N = M / N + N
+    
+  }
+console.log(N);
+</script>
+
+<script type="ok" id="ch0105/38">
+
+</script>
+
+<script type="" id="ch0105/39">
+ 
+  var n = parseInt(prompt('输入n'))
+
+  var sum = 0
+
+  for (let i = 1; i <= n; i++) { //i相当于n的值
+    var o = i.toString()
+      //是否有7,内层定义。在外层的话不会改变布尔值
+  var hasSeven = false
+   for (let p = 0; p < o.length; p++) {
+    //为7,hasSeven = true ，作为标记，然后跳出进行下一判断
+    if (o[p] == '7') {//===
+      hasSeven = true
+      break
+    }
+
+  }
+  //不为7，让hasSeven重新为false 且满足% 7 != 0的条件
+  if (!hasSeven && i % 7 != 0) {
+      
+      
+      //sum *= i sum = sum + i * i
+      sum += i * i
+    
+  }
+}
+ 
+
+  console.log(sum);
+
+</script>
 </head>
 
 <body>
