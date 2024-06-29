@@ -1117,7 +1117,7 @@ console.log(n - No);
 <script type="ok" id="ch0105/24">
 var n = parseInt(prompt('n'))//小时量一次
 var ok = 0  //总次数
-var ook = 0 //连续
+var ook = 0 //连续次数
 
 
 for (let index = 0; index < n; index++) {
@@ -1139,7 +1139,7 @@ console.log(ook);
 </script>
 
 <script type="ok" id="ch0105/25">
-
+//for i里面有数字可以用，%就是转换后的值 
 </script>
 
 <script type="ok" id="ch0105/26">
@@ -1159,11 +1159,13 @@ console.log(current);
 </script>
 
 <script type="ok" id="ch0105/27">
+  //死循环的时候要是知道
 var K = parseInt(prompt('输入整数K（1<=k<=15）'))  
 var Sn = 0
-var n = 1
+//首项n
+var n = 1 
 var current = 0
-while (true) {
+while (true) {    for (var i = 1; ;i++){}也可以
   Sn = Sn + 1 / n
   n++
   if (Sn > K) {
@@ -1175,7 +1177,16 @@ console.log(n-1);
 </script>
 
 <script type="ok" id="ch0105/28">
-var number = parseInt(prompt('输入整数1到100000000之间'))
+  var number = parseInt(prompt('输入整数1到100000000之间'))
+  //用do while来表示为0时的情况
+  do {
+    //分离出每一个数再相减
+    var digit = n % 10
+    console.log(digit);
+    number = (n - digit) / 10
+  } while (number > 0);
+//下面这样写太麻烦，没必要
+/*var number = parseInt(prompt('输入整数1到100000000之间'))
 
 // 将数字转换为字符串
 var numberString = number.toString()
@@ -1188,17 +1199,38 @@ for (var i = numberString.length - 1; i >= 0; i--) {
     result += numberString[i]
 }
 
-console.log(result);
+console.log(result);*/
 </script>
 
 <script type="ok" id="ch0105/29">
-  var number = parseInt(prompt('输入整数1<=n<=100000000'))
+  //28的思路做，但我想不出来
+  var n = +prompt()
+  //用于数字的重组,同时又兼顾了等于0时的情况
+  var result = 0
+  //取正数or负数
+  var sign = 1 
+  if (n<0) {
+    sign = -1
+    n = -n
+  }
+
+  while (n > 0) {
+    var digit = n % 10
+    n = (n - dighit) / 10
+    result = result * 10 +dighit
+  }
+
+  console.log(result * sign);
+
+
+
+  /*var number = parseInt(prompt('输入整数1<=n<=100000000'))
 
   //判断±并添加负号
   if (number < 0) {
-    var operator = '-'
+    var operator = -1
   }else{
-    var operator = ''
+    var operator = 1
   }
   // 将数字转换为字符串
   var numberString = number.toString()
@@ -1214,8 +1246,8 @@ console.log(result);
   //转换数字,去掉0
   var x = parseInt(result)
 
-
-  console.log(operator + x);
+  //题目要求是数字
+  console.log(operator * x); */
   
 
   
@@ -1372,7 +1404,7 @@ console.log(N);
 
 </script>
 
-<script type="" id="ch0105/39">
+<script type="ok" id="ch0105/39">
  
   var n = parseInt(prompt('输入n'))
 
@@ -1403,6 +1435,65 @@ console.log(N);
 
   console.log(sum);
 
+</script>
+
+<script type="ok" id="ch0105/40">
+  
+  var n = parseInt(prompt('输入n,1<=n<=10000'))
+  //存储是否有1
+  var one = 0
+  //遍历n
+  for (let i = 1; i <=n; i++) {
+    //转为字符串,i才是数字
+    var nString = i.toString()
+    //遍历字符串
+    for (let a = 0; a < nString.length; a++) {
+      //是否有1
+      if (nString[a] == '1') {
+        one++
+      }  
+    }
+  }
+  console.log(one);
+</script>
+
+<script type="ok" id="ch0105/41">
+  var L = parseInt(prompt('输入[L,R]的L'))
+  var R = parseInt(prompt('输入[L,R]的R'))
+  //存储是否有1
+  var two = 0
+  //遍历n
+  for (let i = L; i <=R; i++) {
+    //转为字符串,i才是数字
+    var nString = i.toString()
+    //遍历字符串
+    for (let a = 0; a < nString.length; a++) {
+      //是否有1
+      if (nString[a] == '2') {
+        two++
+      }  
+    }
+  }
+  console.log(two);
+</script>
+
+<script type="" id="ch0105/42">
+
+ b   var hight = parseInt(prompt('输入矩形的高（3<=hight<=10）'))
+  var wight = parseInt(prompt('输入矩形的宽（5<=wight<=10）'))
+  var operatorArt = prompt('输入画图的矩形符号')
+  var full = parseInt(prompt('0空心，1实心'))
+  //存储符号
+  var operatorTable = ''
+  
+  //有多宽就循环几次为宽
+  for (let i = 0; i < wight; i++) {
+    operatorTable += operatorArt
+    }
+  //有多高就循环几次为高
+  for (let i = 0; i < hight; i++) {
+    console.log(operatorTable);
+  }
 </script>
 </head>
 
