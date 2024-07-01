@@ -1035,18 +1035,33 @@ for (let index = 0; index < n; index++) {
 </script>
 
 <script type="ok" id="ch0105/20">
-  var h = parseInt(prompt('输入球的初始高度'))
-  //这样写似乎有些问题，相当于球是从地上蹦起来的
-  var SumH = 20 //本身高度也要算
+//   //这样算似乎有精度差
+//   var h = Number(prompt('输入球的初始高度'))
+//   //这样写似乎有些问题，相当于球是从地上蹦起来的
+//   var SumH = 20 //本身高度也要算
 
 
-for (let index = 0; index < 10; index++) {
-  h = h / 2
+// for (let index = 0; index < 10; index++) {
+//   h = h / 2
 
-  SumH = 2 * h + SumH //弹跳两次，计算两次
+//   SumH = 2 * h + SumH //弹跳两次，计算两次
+// }
+// console.log(SumH.toFixed(6)) //精度问题
+// console.log(h.toFixed(6))
+
+var h = +prompt()
+//总高度
+var totalRun = 0
+//存储每次跳一半的高度
+var halfH = h
+for (let i = 0; i < 10; i++) {
+  totalRun = totalRun + halfH * 2
+  halfH = halfH / 2 
 }
-console.log(sumH.toFixed(6)); //精度问题
-console.log(sumH.toFixed(6));
+
+//减去初始高度
+totalRun = totalRun - h
+console.log(totalRun.toFixed(4),halfH.toFixed(7));
 </script>
 
     <script type="ok" id="ch0105/21">
@@ -1138,7 +1153,7 @@ for (let index = 0; index < n; index++) {
 console.log(ook);
 </script>
 
-<script type="" id="ch0105/25">
+<script type="ok" id="ch0105/25">
 //明确了三位数,i就是所需的三位数
 for (let i = 100; i <=999; i++) {
 //7
