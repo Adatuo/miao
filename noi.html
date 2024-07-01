@@ -411,9 +411,9 @@
   
   if ((n >= 60 && m < 60) || (n < 60 && m >= 60)) {
     console.log('1')
-  } else if {
-    console.log('0')
-  }
+      } else {
+        console.log('0')
+      }
 
 </script>
 
@@ -488,7 +488,6 @@
   console.log(add)
  }
 
- console.log(much)
  
   // if (N <= 1000) {
   //   m = 8
@@ -506,16 +505,17 @@
 </script>
 
     <script type="ok" id="ch0104/15">
+      
   var a = parseInt(prompt('输入第一个整数'))
   var b = parseInt(prompt('输入第二个整数'))
   var c = parseInt(prompt('输入第三个整数'))
   var max = a
 
-  if (max > b){
+  if (max < b){
     max = b
   }
   
-  if (max > c){
+  if (max < c){
     max = c
   }
 
@@ -1245,7 +1245,7 @@ console.log(result);*/
 
 <script type="ok" id="ch0105/29">
   //28的思路做，但我想不出来
-  var n = +prompt()
+  var n = +prompt('-1,000,000,000 ≤ N≤ 1,000,000,000')
   //用于数字的重组,同时又兼顾了等于0时的情况
   var result = 0
   //取正数or负数
@@ -1256,7 +1256,7 @@ console.log(result);*/
   }
 
   while (n > 0) {
-    var digit = n % 10
+    var dighit = n % 10
     n = (n - dighit) / 10
     result = result * 10 +dighit
   }
