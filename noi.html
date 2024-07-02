@@ -1087,7 +1087,7 @@ console.log(totalRun.toFixed(4),halfH.toFixed(7));
 
 </script>
 
-    <script type="ok" id="ch0105/22">
+    <script type="NO" id="ch0105/22">
     var motherM = 0 //在mother那里的存款
     var MySUMouth = 0
     var MySUM = 0
@@ -1155,15 +1155,15 @@ console.log(ook);
 
 <script type="ok" id="ch0105/25">
 //明确了三位数,i就是所需的三位数
-for (let i = 100; i <=999; i++) {
+for (let i = 1; i <999; i++) {
 //7
       var a7 = i % 7 //7进制个位上的数，或者说取的是十进制的个位数
       var b7 = (i - a7) /7 % 7 //7进制十位上的数
-      var c7 = (i - b7) /7 /7 % 7 //7进制百位上的数
+      var c7 = (i - a7 - b7 * 7) /7 /7 % 7 //7进制百位上的数
 //7
 var a9 = i % 9 //9进制个位上的数，或者说取的是十进制的个位数
       var b9 = (i - a9) /9 % 9 //9进制十位上的数
-      var c9 = (i - b9) /9 /9 % 9 //9进制百位上的数   
+      var c9 = (i - b7 - b9 * 9) /9 /9 % 9 //9进制百位上的数   
 
 if (a7 == a9 && b7 == b9 && c7 == c9) {
   console.log(i);
@@ -1316,7 +1316,7 @@ console.log(result);*/
     }
   </script>
 
-  <script type="ok" id="ch0105/31">
+  <script type="NO" id="ch0105/31">
     var N = parseInt(prompt('N盏灯,N<5000'))
     var M = parseInt(prompt('M人'))
 
@@ -1427,7 +1427,7 @@ for (let i = 0; i <= n; i++) {
 console.log(sum.toFixed(2));
 </script>
 
-<script type="ok" id="ch0105/37">
+<script type="NO" id="ch0105/37">
   debugger0
   var M= parseFloat(prompt('输入M体力值'))
   var N= parseFloat(prompt('输入N战斗力'))
@@ -1441,7 +1441,7 @@ console.log(sum.toFixed(2));
 console.log(N);
 </script>
 
-<script type="ok" id="ch0105/38">
+<script type="NO" id="ch0105/38">
 
 </script>
 
@@ -1667,6 +1667,311 @@ console.log(素数(3));
 console.log(aboutSeven(-7));
   
 </script>
+
+<script type="ok" id="narcissistic">
+  //严格来说3位数的3次幂数才称为水仙花数,但是这里的水仙花是，每个数字的宽度次幂的和等于这个数
+ 
+    //计算宽度
+  //   var count = 0
+  //   while (x > 0) {
+  //     var ge = x % 10
+  //     x = (x - ge) / 10
+  //     count++
+  //   }
+  //   if (count < 3) {
+  //     return false
+  //   }else{
+  //     return true
+  //   }
+  function flowerWidth(x) {
+  var width = 0
+  do{
+    var ge = x % 10
+    x = (x - ge) / 10
+    width++ 
+  }while(x > 0)
+  return width
+  }
+
+  function Flower(x) {
+    var width = flowerWidth(x)
+    var sum = 0
+    var y = x
+    while (x > 0) {
+      var ge = x % 10
+      sum += ge ** width
+      x = (x - ge) / 10
+    }
+    //x一直在变运行到这里已经变成0了
+    if (sum === y) {
+      return true
+    }else{
+      return false
+    }
+  } 
+</script>
+
+<script type="ok" id="narcissistics">
+    function flowerWidth(x) {
+  var width = 0
+  do{
+    var ge = x % 10
+    x = (x - ge) / 10
+    width++ 
+  }while(x > 0)
+  return width
+  }
+
+  function Flower(x) {
+    var width = flowerWidth(x)
+    var sum = 0
+    var y = x
+    while (x > 0) {
+      var ge = x % 10
+      sum += ge ** width
+      x = (x - ge) / 10
+    }
+    //x一直在变运行到这里已经变成0了
+    if (sum === y) {
+      return true
+    }else{
+      return false
+    }
+  }
+
+  
+    for (let i = 0; i <= 1000; i++) {
+      if (Flower(i)) {
+          console.log(i);
+      }
+    }
+</script>
+<script type="ok" id="complete-number">
+  function iscompletenumber(x) {
+    //存储和,1是任何数的因子
+    var sum = 1
+    //从循环体拿出来，避免重复
+    var sqrt_x = Math.sqrt(x)
+    //1是任何数的因子。
+    //既然能整除，那么因子就不会只有一个Math.sqrt(x)
+    for (let i = 2; i < sqrt_x; i++) {
+      //是因数%才能等于0
+      if (x % i == 0) {
+        //i是因子，既然能除尽。那么一定有另一个因子x / i，所以一起加了
+        sum += i + x / i
+      } 
+    }
+    //如果能被整开平方根，就说明一定有因子，那就要加上
+    //Number.isInteger()检测是不是整数
+    if (Number.isInteger(sqrt_x)) {
+      sum += sqrt_x
+    }
+    //sum == x 本身就返回布尔值，不用写if
+    return sum == x  
+    }
+  
+</script>
+<script type="ok" id="complete-numbers">
+  function iscompletenumber(x) {
+    //存储和,1是任何数的因子
+    var sum = 1
+    //1是任何数的因子，且不包含自身
+    for (let i = 2; i < x; i++) {
+      //是因数%才能等于0
+      if (x % i == 0) {
+        sum += i
+      } 
+    }
+    //sum == x 本身就返回布尔值，不用写if
+    if (sum == x) {
+      return sum
+    } 
+    }
+
+    for (let i = 1; i < 1000; i++) {
+      console.log(iscompletenumber(i));
+    }
+  
+</script>
+<script type="ok" id="prime">
+  function isPrime(x) {
+    for (let i = 2; i < x / 2; i++) {
+      if (x % i == 0) {
+        return false
+      }else{
+        return true
+      }  
+    }
+  }
+</script>
+<script type="ok" id="primes">
+  function isPrime(x) {
+    for (let i = 2; i < x / 2; i++) {
+      if (x % i == 0) {
+        return false
+      }else{
+        return x
+      }  
+    }
+  }
+  for (let i = 0; i < 100; i++) {
+    console.log(isPrime(i)); 
+  }
+</script>
+
+<script type="ok" id="itob">
+  //先取出来再加上去，然后对比。对比的是数字不是字符串
+function isItob(x) {
+  var reverse = 0
+  var y = x
+  while (x > 0) {
+    var ge = x % 10
+    reverse = reverse * 10 + ge
+    x = (x - ge) / 10
+  }
+  //x会变化，需要用另一个值来存储
+    return reverse == y
+}
+</script>
+<script type="ok" id="weekday1">
+  //W= (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400) % 7 
+  //Kim larsen calculation formula Zeller
+  function weekday(y,m) {
+    //1、2月是13，14,年份也要-1
+    if (m < 3) {
+      m += 12
+      y--
+    }
+    //星期一
+    var d = 1
+    //Zeller公式需要整除运算，使用Math.floor()
+    //var W = (d+2*m+Math.floor(3*(m+1)/5)+y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400) )% 7
+    var W = (d+2*m+3*(m+1)/5+y+y/4-y/100+y/400)% 7
+    //星期一是 0
+    return parseInt(W)
+  }
+</script>
+
+<script type="ok" id="itob">
+  //先取出来
+  //是哪个数字就转换成ascll码,没想出来怎么做
+  function itob(x) {
+    //存储数字变化为字符串
+    var num = 0
+    //存储总字符
+    var y = 0
+    //判断是不是数字
+    if (!isNaN(x) && Number.isInteger(x)) {
+      while (x > 0) {
+      var ge = x % 10
+        switch (ge) {
+          case 0:
+            num = '0'  
+            break;
+          case 1: 
+            num = '1' 
+            break;
+          case 2:
+            num = '2'  
+            break; 
+          case 3: 
+            num = '3' 
+            break;
+          case 4:
+            num = '4'  
+            break; 
+          case 5:
+            num = '5'  
+            break; 
+          case 6:
+            num = '6'  
+            break;   
+          case 7:
+            num = '7'  
+            break;
+          case 8:
+            num = '8'  
+            break;
+          case 9:
+            num = '9'  
+            break;
+        }
+        y = num + y
+        x = (x - ge) / 10
+      }
+      var z = y / 10 
+       console.log(z);
+    }else{
+      console.log('输入整数');
+    }
+    
+    }  
+  // function itob(x) {
+  //   var num = 0
+  //   var y = 0
+  //   while (x > 0) {
+  //     var ge = x % 10
+  //       switch (ge) {
+  //         case 0:
+  //           num = '0'  
+  //           break;
+  //         case 1: 
+  //           num = '1' 
+  //           break;
+  //         case 2:
+  //           num = '2'  
+  //           break; 
+  //         case 3: 
+  //           num = '3' 
+  //           break;
+  //         case 4:
+  //           num = '4'  
+  //           break; 
+  //         case 5:
+  //           num = '5'  
+  //           break; 
+  //         case 6:
+  //           num = '6'  
+  //           break;   
+  //         case 7:
+  //           num = '7'  
+  //           break;
+  //         case 8:
+  //           num = '8'  
+  //           break;
+  //         case 9:
+  //           num = '9'  
+  //           break;
+  //         default:
+  //           console.log('不是数字');
+  //           break;
+  //       }
+  //       y = num + y
+  //       x = (x - ge) / 10
+  //     }
+  //     var z = y / 10
+  //      console.log(z);  
+  //   }
+</script>
+
+<script type="" id="itob">
+  debugger 
+function itob(x,y) {
+
+  if (z == 0) {
+      var z = x % y
+      x = y
+      y = z  
+  }
+ console.log(y);    
+}
+itob(1997,615)
+</script>
+
+<script type="" id="lcf&lcm">
+
+</script>
+
 </head>
 
 <body>
