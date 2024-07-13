@@ -1928,7 +1928,7 @@ debugger
     //存储数字变化为字符串
     var num = 0
     //存储总字符
-    var y = 0
+    var y = ''
     //判断是不是数字
     if (!isNaN(x) && Number.isInteger(x)) {
       while (x > 0) {
@@ -1968,8 +1968,8 @@ debugger
         y = num + y
         x = (x - ge) / 10
       }
-      var z = y / 10 
-       console.log(z);
+      
+       console.log(y);
     }else{
       console.log('输入整数');
     }
@@ -1977,7 +1977,7 @@ debugger
     }  
   // function itob(x) {
   //   var num = 0
-  //   var y = 0
+  //   var y = ''
   //   while (x > 0) {
   //     var ge = x % 10
   //       switch (ge) {
@@ -2018,8 +2018,8 @@ debugger
   //       y = num + y
   //       x = (x - ge) / 10
   //     }
-  //     var z = y / 10
-  //      console.log(z);  
+  //     
+  //      console.log(y);  
   //   }
 </script>
 
@@ -2028,7 +2028,7 @@ debugger
 
 </script>
 
-<script type="" id="lcf&lcm">
+<script type="ok" id="lcf&lcm">
   //最大公约数 
   function lcf(x,y) {
     //~除数不能为0，但是y >= 0会返回NaN错误~
@@ -2085,6 +2085,945 @@ function countBs(x) {
 }
 
 </script>
+<script type="ok" id="HappyNumber">
+//可以不转换成字符串做出来，用ge一个一个取出来不就行了？
+/*function isHappy(n) {
+  //转成字符串，i < m.length
+  let m = '' + n
+  //存储算完后的字符串
+  let z = 0
+  //存储平方和
+   y = 0
+
+   if (n < 10) {
+    return false
+   }
+
+while (true) {
+    for (let i = 0; i < m.length; i++) {
+    let x = parseInt(m[i])
+    y = y + x * x
+    z = y + ''
+  }
+  m = z
+  y = 0
+
+  if (m == 1) {
+      return true
+      break
+    }
+}
+
+    if (m == 1) {
+      console.log('true');
+    }
+  } */
+
+  //调试了半天，查资料才发现快乐书为false时一定会包含数字"4"
+ /*
+  debugger
+function isHappy(n) {
+  if (n < 10) {
+    return false
+   }else if(n == 1){
+    return true
+   }
+
+  let m = 0
+  //000
+  let x = 0
+  while (true) {
+      while (n > 0) {
+        let ge = n % 10 
+            m = ge ** 2 +  m
+            n = (n - ge) / 10
+            if (m == 1) {
+              return true
+            }else if (n < 0 && m != 1) {
+              return false
+            }
+      }
+
+      n = m  
+      m = x 
+  }
+
+}
+isHappy(20)*/
+
+function isHappy(n) {
+  let sum = 0
+  while (n > 0) {
+    let ge = n % 10 
+     sum = ge ** 2 + sum
+     n = (n - ge) / 10
+
+  }
+  if (sum == 1) {
+    return true
+  }
+  if (sum == 4) {
+    return false
+  }
+  //传递的是sum
+  return isHappy(sum)
+}
+
+</script>
+<script type="ok" id=" power of two">
+  debugger
+  //这个方式会造成过大的次幂运算
+  /*function isPowerOfTwo(n) {
+    //存储2的n次幂
+    let x = 0
+
+    for (let i = 0; i <=Infinity; i++) {
+      x = 2 ** i
+      if (n == x) {
+        return true
+      }   
+    }
+    return false
+  }*/
+ //传统方式，倒着来
+  function isPowerOfTwo(n) {
+    //存储2的n次幂
+    if (n <= 0) {
+      return false
+    }
+  // n % 2 == 0 , 为true时表明是2的次幂
+    while (n % 2 == 0) {
+      n = n / 2
+    }
+
+    return n == 1
+
+    //下面这一堆还不如直接返回return n == 1
+  /*
+  //这个if要放在外面，2 ** 0 =1
+    if (n == 1) {
+        return true
+      }
+      //再然后不对的就返回
+      return false*/
+  }
+</script>
+
+<script type="ok" id="Base 7">
+  
+   function isPowerOfTwo(num) {
+    //%7公式混淆，声明混淆
+   //满足一些负数,先转换成正数
+       // 处理0的特殊情况
+       if (num === 0) {
+        return "0";
+    }
+   let m = num
+    if (num < 0) {
+      m = -1 * num
+    }else{
+      m = num
+    } 
+  //转换为7进制
+  let result = ''
+    while (m > 0) {
+      result = (m % 7) + result//拼的顺序
+      //这里num不需要再次声明了
+      m = Math.floor(m / 7)
+    }
+ 
+
+    if (num > 0) {
+      return result
+    }else if (num < 0) {
+      return '-' + result
+    }else{
+      return 0
+    }
+    }
+  
+  isPowerOfTwo(0)
+
+</script>
+//, target
+<script type="" id="Two Sum">
+  
+  function twoSumfunction(nums,target) {
+    
+    //方法1
+      //记录原数组中每个数所在的位置（索引）
+      var record = []
+      for (let i = 0; i < nums.length; i++) {
+        var current = nums[i]
+        //对于target,我们需要多少才能加出target
+        var need = target - current
+        //如果我们知道need在哪里，就完事了
+        if (record[need] > -1) {
+          return[i,record[need]]
+        }
+        //记录当前数字在哪里
+        record[current] = i
+      }
+
+    //方法2
+    /*let x = 0
+    let y = 0
+
+   //nums.length - 1 ， 最后一个数不用比
+    for (let i = 0; i < nums.length - 1; i++) {
+      x = nums [i]  
+      //取[i]的下一个
+      for (let o = i + 1; o < nums.length; o++) {
+        y = nums [o]  
+        if (x+y == target) {
+        //gan,又没看清题目的返回值
+        return [i,o]
+       }
+      }
+    }
+  }
+  twoSumfunction([2,7,11,15],9)*/
+
+  }
+</script>
+
+<script type="ok" id="Perfect Number">
+  function checkPerfectNumber(n) {
+    //存储正因子的和
+    let totalN = 0
+    for (let i = 1; i < n; i++) {
+      if (n % i == 0) {
+        totalN = totalN + i
+      }
+    }
+    if (totalN == n) {
+      return true
+    }
+    return false
+  }
+</script>
+
+<script type="" id="Max Consecutive Ones">
+  debugger
+  /*方法1function findMaxConsecutiveOnes(n) {  
+   //记录1出现的次数
+    let oneCount = 0
+    //记录1连续出现的数组
+    let oneContinue = []
+    for (let i = 0; i < n.length; i++) {
+      if (n[i] == 1) {
+        oneCount++
+      }else if (n[i] == 0) {
+        oneCount = 0
+      }
+      oneContinue.push(oneCount)
+    }
+    //找最大值，要加...
+    return Math.max(...oneContinue)*/
+
+  /*方法2
+    //记录1出现的次数
+    let oneCount = 0
+    //记录1出现的最大次数
+    let max = 0
+    for (let i = 0; i < n.length; i++) {
+      if (n[i] == 1) {
+        oneCount++
+        if (max < oneCount) {
+          max = oneCount
+        }  
+      }else{
+        oneCount = 0
+      }
+      
+    }
+    return max
+  }*/
+
+  //方法3
+
+
+</script>
+
+<script type="other" id="Fizz Buzz">
+  function fizzBuzz(x) {
+    //存放值的数组
+    let list = []
+    for (let i = 1; i <= x; i++) {
+      if (i % 3 == 0 && i % 15 == 0) {
+        list.push('FizzBuzz')
+      }else if (i % 3 == 0) {
+        list.push('Fizz')
+      }else if (i % 5 == 0) {
+        list.push('Buzz')
+      }else{
+        list.push('' + i)
+      }
+    }
+    return list
+  }
+
+</script>
+
+<script type="ok" id="ugly-number">
+  // function isUgly-number(n) {
+  //   if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0  || n == 1) {
+  //     return true
+  //   }
+  //   return false
+  // }
+  function isUgly(n) {
+  if (n <= 0) {
+    return false;
+  }
+  
+  while (n % 2 === 0) {
+    n /= 2;
+  }
+  
+  while (n % 3 === 0) {
+    n /= 3;
+  }
+  
+  while (n % 5 === 0) {
+    n /= 5;
+  }
+  
+  return n === 1;
+}
+</script>
+
+<script type="other/low" id="Power of Three">
+  function isPowerOfThree(n) {
+    if (n <= 0) {
+      return false
+    }
+    while (n % 3 == 0 /*&& n !=0 在这里的话就不会返回false*/) {
+      n = n / 3
+      //在这里return true会while为true就返回
+    }
+
+    return n == 1
+  }
+</script>
+
+<script type="ok" id="addDigits">
+  debugger
+  function addDigits(n) {
+    let sum = 0
+    while (n > 0) {
+      let ge = n % 10
+      sum += ge
+      n = (n - ge) / 10
+    }
+    if (sum < 10) {
+      return sum
+    }
+      //n = sum //可以不要这句话，sum  = n,只是赋值而已
+      return addDigits(sum)
+    }
+    addDigits(14)
+  
+</script>
+
+<script type="low" id="singleNumber">
+function singleNumber(n) {
+  for (let i = 0; i < n.length; i++) {
+    let isSingleNumber = true
+    for (let o = 0; o < n.length; o++) {
+      if (i != o && n[i] == n[o]) {
+        isSingleNumber = false
+        break
+      }      
+    }
+    //?需要放在第一个for内部用以比较第二个for对比的n[i]时候是否需要输出,不过当有两个独立的数字时return会直接第一个结束?
+    if (isSingleNumber) {
+      return n[i]
+    }
+}
+}
+
+</script>
+
+<script type="other,最后一个解法的思路以及标准解法" id="countBits">
+  、/*function countBits(n) {
+    //存储转换为2进制的数
+    let x = ''
+    for (let i = 0; i < n.length; i++) {
+      
+        while (x > 0) {
+          let y = n[i] % 2 
+          //这种先准换成二进制数然后再统计是否有1,多此一举，不如直接统计n[i] % 2 为1的个数
+          x = y + x
+          y = n[i] / 2  
+        }
+      console.log(x);      
+      }
+      
+    }*/
+   debugger
+   function countBits(n) {
+    //存储有几个1的数组
+    let one = []
+
+    for (let i = 0; i <= n; i++) {      
+          //count计数=1,并且每次完成一个数的统计后重新计数
+          let count = 0
+          //避免修改 i 影响循环
+          let x = i
+      while (x > 0) {
+        //相当于短除法的余数
+        let y = x % 2 
+        //统计为1
+        if (y == 1) {
+          count++ 
+        } 
+        x = Math.floor(x / 2) 
+      }
+      one.push(count)
+   }
+      return one
+   }
+  countBits(2)
+</script>
+
+<script type="maybe" id="Count Primes">
+function isPrimes(n) {
+  //0,1不是质数
+  if (n <= 1) {
+    return false
+  }
+  for (let i = 2; i <= Math.sqrt(n) ; i++) {
+      if (n % i == 0) {
+        return false
+      } 
+    }
+       return true
+  } 
+
+function countPrimes(n) {
+  let count = 0
+//从i到n的数字
+  for (let i = 0; i <= n ; i++) {
+    if (isPrimes(i)) {
+      count++
+    }
+  }
+  return count
+}  
+
+countPrimes(10)
+</script>
+
+<script type="ok,other" id="isPalindrome">
+  function isPalindrome(x) {
+    //先转成字符串再遍历
+    let o = '' + x
+    //小于0的不是回文数
+    if (o < 0) {
+      return false
+    }
+
+    //提取出来，再一个一个比较。二分法,这里为奇数个时候会直接跳出最中间的那个数，返回true
+    for (let i = 0; i < o.length / 2; i++) {
+      //对应比较的数(变量名字有点不清晰)
+      let y = o.length - i - 1
+      if (o[i] !== o[y]) {
+        return false
+      }
+     
+    }
+    return true
+  }
+
+ 
+</script>
+
+<script type="" id="minMoves">
+  //每次操作都会增加两个元素的值，那么让其中一个值减1，就相当于另外两个值加1
+function minMoves(n) {
+  //先找出最小值
+  let min = Math.min(...n)
+  //计算要多久
+  let count = 0
+  for (let i = 0; i < n.length; i++) {
+    let x = n[i] - min
+    count += x
+  }
+  return count
+}
+</script>
+
+<script type="ok" id="moveZeroes">//似乎可以用二分法
+
+    //有写不出来的预感
+    /*for (let i = 0; i < n.length; i++) {
+      if (n[i] == 0) {
+        //取得为0的下标
+      let x = n.indexOf(n[i])
+        //删除0
+      x.splice(0, 1)
+      }  
+    }*/
+    
+    function moveZeroes(n) {
+      //记录等于0有多少个
+    let count = 0
+    //splice会改变原数组，导致正向遍历的时候length改变，所以反向遍历
+    for (let i = n.length - 1 ; i >= 0; i--) {
+        if (n[i] == 0) {
+          count++
+          n.splice(i,1)
+        }
+      }  
+      for (let i = 0; i < count; i++) {
+        n.push(0)  
+      } 
+      return n
+  }
+ 
+</script>
+
+<script type="ok" id="searchInsert">
+  function searchInsert(n,target) {
+    for (let i = 0; i < n.length; i++) {
+     if (n[i] == target) {
+      return i
+     }else if(n[i] != target){
+      for (let i = 0; i < n.length; i++) {
+        if (target < n[i]) {
+          n.splice(i,0,target)
+          return n.indexOf(target)
+          //数组下标应该是0~n.length - 1
+        }else if (target > n[n.length - 1]) {
+          n.push(target)
+          return n.indexOf(target)
+        }
+      }
+     }
+    }
+  }
+
+</script>
+<script type="ok" id="findDuplicates">
+  //找出相同的数字似乎不能用twoSum的那种方法
+  //时间复杂度太高了
+  function findDuplicates(n) {
+    //统计数组
+    let x = []
+    for (let i = 0; i < n.length; i++) {
+      for (let o = i + 1; o < n.length; o++) {
+       if (i != o && n[i] == n[o]) {
+        x.push(n[i])
+       }
+      }    
+    }
+    return x
+  }
+  findDuplicates([4,3,2,7,8,2,3,1])
+</script>
+
+<script type="time" id="climbStairs">
+  
+  //Time Limit Exceeded
+  function climbStairs(n) {
+    let count = 0
+    //从地板开始走
+    function tab(start = 0) {
+      if (start > n){
+        return
+      }else if (start == n) {
+       
+        //位置放错了
+        count++
+        return
+      }
+      tab(start + 1)
+      tab(start + 2)   
+    }
+      tab()
+      return count
+  }
+</script>
+<script type="ok" id="addStrings">
+   function addStrings(num1, num2) {
+    //接收一个一个加起来的和
+    var sum = 0
+    //存储字符串
+    var result = ''
+    //存储十进制的进‘1’
+    var one = 0
+
+    //从后面向前面加
+    var x = num1.length - 1
+    var y = num2.length - 1
+
+    //循环加
+    while(x >= 0 || y >= 0 || one != 0){
+      //one != 0,是为了处理x,y < 10 && x+y == 10的情况下，x,y在一次循环后'下标'就变成负数结束循环的情况。
+      //需要处理12，2。是1+2的情况。x,y < 0 undefined,那么小于0的时候直接让这一位等于0
+      var digit1 = x >= 0 ? Number(num1[x]) : 0
+      var digit2 = y >= 0 ? Number(num2[y]) : 0
+
+      //one,10进‘1’
+      sum = sum + digit1 + digit2 + one
+
+      //进‘1’,一定要放在这里，放在result后面会变成小数
+      //Math.floor取整数保证，只取到1
+      one = Math.floor(sum / 10)
+
+      //清空这两位数>=10 ，前的1。    
+      //sum必须在前，不然位置不对
+      result =  sum % 10 + result 
+      
+      //清空sum
+      sum = 0
+      x--
+      y--
+    }
+    return result   
+  }
+  /*//Number会损失精度
+   function toNumber(num1, num2) {
+    return Number(num1) + Number(num2)
+  }
+  function addStrings(num1,num2) {
+    //函数调用问题
+    let x = toNumber(num1, num2)
+    //存储数字变化为字符串
+    var num = 0
+    //存储总字符
+    var y = ''
+    //判断是不是数字
+    if (!isNaN(x)) {
+      do {
+      var ge = x % 10
+        switch (ge) {
+          case 0:
+            num = '0'  
+            break;
+          case 1: 
+            num = '1' 
+            break;
+          case 2:
+            num = '2'  
+            break; 
+          case 3: 
+            num = '3' 
+            break;
+          case 4:
+            num = '4'  
+            break; 
+          case 5:
+            num = '5'  
+            break; 
+          case 6:
+            num = '6'  
+            break;   
+          case 7:
+            num = '7'  
+            break;
+          case 8:
+            num = '8'  
+            break;
+          case 9:
+            num = '9'  
+            break;
+        }
+        y = num + y
+        x = (x - ge) / 10
+      }while (x > 0)   
+      return y
+      }
+    }*/
+
+ 
+
+</script>
+
+<script type="NO" id="distributeCandies">
+  function distributeCandies(candyType) {
+    //统计能吃多少糖
+    let sum = candyType.length / 2
+  }
+</script>
+
+<script type="ok,timeLow" id="mergeSortedArray">
+function mergeSortedArray(nums1,m,nums2,n) {
+
+  //先把nums2的加入nums1
+  for (let i = 0; i < nums2.length; i++) {
+    nums1.push(nums2[i])
+  
+  //排序
+  nums1.sort(
+    function(a,b){
+      return a - b
+      }
+    )  
+  }
+
+  //删除0,从前面删除会改变顺序，从后面开始删除
+  for (let p = nums1.length - 1; p >= 0 ; p--) {
+    if (nums1[p] == 0) {
+      nums1.splice(p,1) 
+    }
+      //nums1.length = m+n的长度
+  if (nums1.length <= m + n) {
+    break
+  }
+  }
+  return nums1
+}
+mergeSortedArray([-1,0,0,3,3,3,0,0,0],6,[1,2,2],3)
+</script>
+
+
+<script type="No" id="Pow(x, n)">
+
+</script>
+
+
+<script type="ok" id="convertToTitle">
+  function convertToTitle(columnNumber) {
+    let z = ''
+    while (columnNumber > 0) {
+
+      //先获得字母的unicode
+      //columnNumber - 1 是保障不错位
+      let x = (columnNumber - 1) % 26 
+
+
+
+      //'A'.charCodeAt(),获得首字母A的unicode,然后再String.fromCharCode转换成字符串
+      
+      z = String.fromCharCode(x  + 'A'.charCodeAt(0)) + z 
+
+      //取整以实现只取26以上的数，
+      //(columnNumber - 1)跳出循环和保障正常进位,不减去的话Math.floor会剩余自动向上取整从而多出‘1’
+      columnNumber = Math.floor((columnNumber - 1)  / 26)
+
+    }
+
+    return z
+  }
+
+  function convertToTitle(columnNumber) {
+
+      //先获得字母的unicode
+      let x = columnNumber % 26 
+      //'A'.charCodeAt(),获得首字母A的unicode,然后再String.fromCharCode转换成字符串
+      //x - 1 是因为保障不错位
+      let y = String.fromCharCode(x - 1 + 'A'.charCodeAt())
+
+      console.log(y);
+  }
+  convertToTitle(2)
+</script>
+
+<script type="ok" id="Sqrt(x)">
+  //传统方法
+  var mySqrt = function(x) {
+    let a = 0
+    for(var i = 0;i<=x;i++){
+        if(i*i<=x){
+            a = i
+        }else{
+          //用于跳出循环，还真想不到。。。。
+            i=x+1
+        }
+    }
+    return a
+};
+  //二分法,x一直除以2 = y，寻找y *y = x
+  function mySqrt(x) {
+    //0，1
+    if (x == 0 || x == 1) {
+      return x
+    }
+    let left = 0
+    let right = x
+    while (left<=right) {
+      //根据二分法原理要middleXX > x or middleXX < x middle +/- 1 ，但又不能取到中间值所以Math.floor
+      let middle = Math.floor((left + right) / 2)
+      let middleXX = middle * middle
+       if (middleXX == x) {
+        return middle
+       }
+       //更新边界值,middleXX > x,边界向左移动找到更小的值
+       else if (middleXX > x) {
+        right = middle - 1
+       } 
+       //更新边界值,middleXX < x,边界向右移动找到更大的值
+       else if (middleXX < x) {
+        left = middle + 1
+       } 
+    }
+    //就是在向最小的边界靠近 。想不清debugger一遍
+    return right
+  }
+</script>
+
+<script type="ok" id="singleNonDuplicate">
+  function singleNonDuplicate(nums) {
+    for (let i = 0; i < nums.length - 1; i += 2 ) {
+      //奇数偶数对比
+    
+        if (nums[i] != nums[i + 1]) {
+          return nums[i]
+        }  
+       
+    }
+    //前面都相同那就返回最后一个奇数，因为只有奇数不同
+    return nums[nums.length - 1]
+  }
+
+  //二分法 [1,1,2]，因为加入了循环反而慢了
+  function singleNonDuplicate(nums) {
+    if (nums.length == 1) {
+      return nums[0]
+    }
+    let left = 0
+    let right = nums.length
+    //找的不能是同一个数字，下标不能相等
+    while (left<right) {
+      let middle = Math.floor((left + right) / 2)
+      //这里要等于，否则无法对应下标
+      for (let i = 0; i <= middle - 1; i += 2) {
+        if (nums[i] != nums[i + 1]) {
+          return nums[i]
+        }else{
+          //向右找
+          left = middle + 1
+        }   
+      }
+  }
+  return right
+}
+
+//二分法 + 题目理解
+function singleNonDuplicate(nums) {
+    if (nums.length == 1) {
+      return nums[0]
+    }
+
+    let left = 0
+    let right = nums.length
+
+
+
+    while (left<right) {
+      let middle = Math.floor((left + right) / 2)
+      //确保从偶数开始找起
+      if (middle % 2 == 1) {
+        middle--
+    }
+
+    if (nums[middle] == nums[middle + 1]) {
+      //向右移
+      left = middle + 2
+    }else{
+      //不相等右闭区间就不变
+      right = middle
+    }
+    }
+    //变化的是奇数
+    return num[left]
+  }
+</script>
+
+
+<script type="OK" id="TowSum 2">
+  function twoSumfunction(nums,target) {
+      //记录原数组中每个数所在的位置（索引）
+      var record = []
+      for (let i = 0; i < nums.length; i++) {
+        var current = nums[i]
+        //对于target,我们需要多少才能加出target
+        var need = target - current
+        //如果我们知道need在哪里，就完事了
+        if (record[need] > -1) {
+          return[record[need] + 1,i + 1]
+        }
+        //记录当前数字在哪里。先记录i,再记录record
+        record[current] = i
+      }
+    }
+    twoSumfunction([2,7,11,15],9)
+</script>
+
+
+<script type="ok" id="递归1">
+  function x(n) {
+    if (n == 1) {
+      return 0
+    } else {//这里不用分开另一个函数
+      return 2 * x(n - 1) + n * n
+    }
+  }
+
+</script>
+
+<script type="ok" id="walkTab">
+  function walkTab(step) {
+    function tab(start = 1 , how = '始') {
+      if (start > step){
+        return
+      }else if (start == step) {
+        console.log(how);
+        return
+      }
+      tab(start + 1 , how + '+ 1 步')
+      tab(start + 2 , how + '+ 2 步')
+    }
+      tab()
+  }
+</script>
+
+<script type="maybe" id="walkUp">//x,y
+  //step是沿着边缘走的最短距离
+  function walkDirection(step) {
+    //统计有多少种走法，因为最后start > step的时候会return。所以初始值为1
+    let count = 1
+    function direction(start = 1 , how = '始') {
+      if (start > step) {
+        return
+      }else if (start == step) {
+        console.log(how);
+        return
+      }
+      
+      direction(start + 1 , how + ' + 向上走1步 ')
+      direction(start + 1 , how + ' + 向右走1步 ')
+      count++
+    }
+    direction()
+    console.log('总共'+count+'种走法');
+  }
+
+</script>
+
+<script>
+  function concat(){
+  //返回的新数组
+  var result = []
+  //arguments,不知道输入多少个就用这个
+    for (let i = 0; i < arguments.length; i++) {
+      //获得函数里面的每一个值
+      var arg = arguments[i];
+      //如果是数组那就遍历数字然后相加
+      if (Array.array(arg)) {
+        for (let j = 0; j < arg.length; j++) {
+          result.push(arg[p])  
+        }
+      }else{
+        result.push(arg)
+      }
+    }
+    return result
+}
+</script>
+
 </head>
 
 <body>
