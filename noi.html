@@ -2171,7 +2171,7 @@ function isHappy(n) {
 
 </script>
 <script type="ok" id=" power of two">
-  debugger
+  debugger 位运算
   //这个方式会造成过大的次幂运算
   /*function isPowerOfTwo(n) {
     //存储2的n次幂
@@ -3003,7 +3003,7 @@ function singleNonDuplicate(nums) {
 
 </script>
 
-<script>
+<script type="ok" id="concat">
   function concat(){
   //返回的新数组
   var result = []
@@ -3024,6 +3024,87 @@ function singleNonDuplicate(nums) {
 }
 </script>
 
+<script type="" id="Anagram">
+function Anagram(s,t) {
+  let x = {a:s}
+  let y = {b:t}
+  return x == y
+}
+Anagram("anagram","nagaram")
+</script>
+
+<script type="" id="isEqual">
+  // 判断a,b是否相同,如果是对象,看内容是否相同
+  // 即深对比
+
+function isEqual(Object1, Object2) {
+
+// 判断a,b是否相同,如果是对象,看内容是否相同
+  //是不是对象,typeof返回字符串
+  if (typeof Object1 !== 'Object' || typeof Object2 !== 'Object') {
+     return Object1 == Object2
+  }
+
+  //先获取key值的长度看是否一样
+  //Object.keys()，返回的是由key值组成的数组
+  let key1 = Object.keys(Object1)
+  let key2 = Object.keys(Object2)
+
+  //若长度不一样那就没必要比较
+  if (keys1.length != keys2.length) {
+    return false
+  }
+
+  //比较里面的每一个值
+  for (let i = 0; i < keys1.length; i++) {
+    //取出每一个键位对应的值
+    let x = Object1[keys1[i]]
+    let y = Object2[keys2[i]]
+    if (x !== y) {
+      return false
+    }
+  }
+  return true
+}
+</script>
+
+<script type="ok" id="reverseArrayInPlace">
+  function reverseArrayInPlace(array) {
+  var stop = Math.trunc(array.length / 2)
+for (let i = 0; i < stop; i++) {
+  var j = array.lrngth - i -1
+  var temp = array[i]
+  array[i] = array[j]
+  array[j] = temp
+}
+return array
+  }
+</script>
+
+<script type="" id="sum,range">
+function range(start,end,step = 1) {
+  //输入一个值，但希望生成从1到这个值
+  if (arguments.length == 1) {
+    end = start
+    start = 1
+  }
+  let result = []
+  //为了保证倒序的时候正确使用问号表达式
+  for (let i = start; step > 0 ? i <= end : i >= end ; i+=step) {
+    result.push(i)
+  }
+  return result
+}
+
+function sum(params) {
+  let result = 0
+  //不需要下标只需要取值用of比较好。params是数组
+  for (i of params) {
+    result += i
+  }
+  return result
+}
+</script>
 </head>
 
 <body>
