@@ -3024,47 +3024,247 @@ function singleNonDuplicate(nums) {
 }
 </script>
 
-<script type="" id="Anagram">
-function Anagram(s,t) {
-  let x = {a:s}
-  let y = {b:t}
+<script type="" id="valid-anagram">
+  
+ 
+  
+function iaAnagram(s,t) {
+  
+  if (s.length != t.length) {
+    return false
+  }
+
+  //字符串展开排序再合并
+  let x = [...s].sort().join('')
+  let y = [...t].sort().join('')
+
   return x == y
+
+
 }
 Anagram("anagram","nagaram")
 </script>
 
-<script type="" id="isEqual">
-  // 判断a,b是否相同,如果是对象,看内容是否相同
-  // 即深对比
 
-function isEqual(Object1, Object2) {
-
-// 判断a,b是否相同,如果是对象,看内容是否相同
-  //是不是对象,typeof返回字符串
-  if (typeof Object1 !== 'Object' || typeof Object2 !== 'Object') {
-     return Object1 == Object2
+<script type="" id="bulls-and-cows">
+function getHint(secret, guess) {
+  
+  //数字对位置对记为A
+  let countA = 0
+//先检测A的条件,字符串可以遍历
+  for (let i = 0; i < secret.length; i++) {
+    //if
+    if (secret[i] == guess [i]) {
+      countA ++
+    }
   }
 
-  //先获取key值的长度看是否一样
-  //Object.keys()，返回的是由key值组成的数组
-  let key1 = Object.keys(Object1)
-  let key2 = Object.keys(Object2)
+//这是在记录有多少个数字对但是位置不对
+  //存储secret每个数字有多少个
+  let map1 = {}
+  for (let num of secret) {
+    //如果secret的数字在map1中，就记录
+    if (num in map1) {
+      map1[num]++
+    }else{
+    //第一次寻找没有就赋值1，相当于记录了第一次
+      map1[num] = 1
+    } 
+  }
+  
+  //存储guess每个数字有多少个
+  let map2 = {}
+  for (let num of guess) {
+    //如果guess的数字在map1中，就记录
+    if (num in map2) {
+      map2[num]++
+    }else{
+    //第一次寻找没有就赋值1，相当于记录了第一次
+      map2[num] = 1
+    } 
+  }  
 
-  //若长度不一样那就没必要比较
-  if (keys1.length != keys2.length) {
+  //获得key值以对比元素值
+  let keys1 = Object.keys(map1)
+  let keys2 = Object.keys(map2)
+
+  //计数符合B，数字对但是位置不对
+  let countB = 0
+  for (let key of keys1) {
+    
+    //原数组secret中出现的次数map1[key] ，猜测guess数组中出现的次数map2[key]
+    //不只是相等map1[key]的数字出现次数大于map2[key]出现次数也要countB++ 
+    //key in map2 为 true , 为false说明猜错了   
+    if (key in map2) {
+      if (map1[key] >= map2[key]) {
+      //guess数组中出现的次数map2[key]，因为是要取guess多少为*B。
+      //key值一样那必定是相同的，就看数字出现了多少次
+      countB += map2[key]
+    }
+         
+    else{
+      //原数组secret中出现的次数map1[key]，因为是要取secret多少为*B。
+      //guess，map2[key]就算相同map1[key]且出现的次数多也不需要计算，相当于是猜错了
+      countB += map1[key]
+    }
+  }
+  }
+   //数字对但是位置不对（B）- 猜对了多少个数字（A）减去,去除位置已经对了的数字（A）
+   countB = countB - countA
+  return countA + 'A' + countB + 'B'
+}
+</script>
+
+
+<script type="" id="word-pattern">
+function wordPattern(pattern,s) {
+  //先对比二者的长度
+  //把s用split(" ")按空格分割为可以比较长度的数组
+  let word = s.split(" ")
+  //分割字符串pattern
+  pattern = [...pattern]
+  //长度对比
+  if (pattern.length != word.length) {
     return false
   }
 
-  //比较里面的每一个值
-  for (let i = 0; i < keys1.length; i++) {
-    //取出每一个键位对应的值
-    let x = Object1[keys1[i]]
-    let y = Object2[keys2[i]]
-    if (x !== y) {
-      return false
+  //建立用于对比的对象
+  //对象的接收
+  //word为key值
+  let wordPattern = Object.create(null)//创造没有原型的对象就没有默认值了，避免冲突
+  //pattern为key值
+  let patternWord = Object.create(null)//创造没有原型的对象就没有默认值了，避免冲突
+  //用循环写入key值
+  for (let i = 0; i < pattern.length; i++) {
+    //互为对方的key和value
+    let w = word[i]
+    let p = pattern[i]
+    //第一次获得循环的时候wordPattern[w]是空值undefined
+    if (wordPattern[w] != undefined) {
+    //如果wordPattern的key为[w]的值！= p(pattern下标表示的值)  
+    //因为pattern，是有相同规律排序的"abab"，这种。在后面的循环一定会再次出现wordPattern[a],就可以进行对比是不是一样了
+      if (wordPattern[w] != p) {
+        return false
+      }
+      }
+      //第一次获得key为[w]的值的时候wordPattern[w]是空值undefined，就先赋值p(pattern下标表示的值)
+      else{
+        wordPattern[w] = p
+      }
+
+      //反过来同理
+    if (patternWord[p] != undefined) {
+      if (patternWord[p] != w) {
+        return false
+      }
+    }else{
+        patternWord[p] = w
+      }
+  }
+  return true
+}
+</script>
+
+<script type="" id="isomorphic-strings">
+function isIsomorphic(s, t) {
+  //先分割字符串
+  s = [...s]
+  t = [...t]
+
+  //声明对象
+  let objectS = Object.create(null)//创造没有原型的对象就没有默认值了，避免冲突
+  let objectT = Object.create(null)//创造没有原型的对象就没有默认值了，避免冲突
+
+
+  for (let i = 0; i < s.length; i++) {
+  //每个都写上s[i]、t[i]容易引起混乱,虽然会慢一点（增加了时间复杂度）
+  let x = s[i]
+  let y = t[i]    
+  //互相作为键值对
+    if (objectS[x] != undefined) {
+      if (objectS[x] != y) {
+        return false
+      }  
+    }else{
+      objectS[x] = y
+    }
+    
+    if (objectT[y] != undefined) {
+      if (objectT[y] != x) {
+        return false
+      } 
+    }else{
+      //s[i]
+      objectT[y] = x
     }
   }
   return true
+}
+</script>
+
+<script type="" id="longest-substring-without-repeating-characters">
+function lengthOfLongestSubstring(s) {
+  //需要把元素放到对象里面去
+  let Object = {}
+  //滑动窗口
+  let start  = 0;
+
+  let maxLen = 0
+  //end指针
+  for (let end = 0; end < s.length; end++) {
+    let char = s[end] //当前end指针在哪里，以及是哪一个字符
+    //更新start的位置
+    //
+    //Object[char] >= start 就说明重复了，需要向前移动位置
+    if (char in Object && Object[char] >= start) {
+      //Object[char] + 1 ，向前移动一个位置
+      start = Object[char] + 1
+    }
+    //没有的话就加入元素统计字数
+   
+      //更新end的位置
+      Object[char] = end
+    
+        // 计算当前最长子串长度
+        maxLen = Math.max(maxLen, end - start + 1);
+  }
+  return maxLen
+} 
+
+</script>
+
+<script type="" id="deepEqual">
+  // 判断a,b是否相同,如果是对象,看内容是否相同
+  // 即深对比
+//以下是浅对比
+function deepEqual(Object1,Object2) {
+
+// 判断a,b是否相同,如果是对象,看内容是否相同。并且不能为空
+  //是不是对象,typeof返回的是'object'字符串
+  if (typeof Object1 === 'object' && typeof Object2 === 'object' && Object1 !== null && Object2 !== null) {
+      //先获取key值的长度看是否一样
+      //Object.keys()，返回的是由key值组成的数组
+      let keys1 = Object.keys(Object1)
+      let keys2 = Object.keys(Object2)
+
+      //若长度不一样那就没必要比较
+      if (keys1.length != keys2.length) {
+        return false
+      }
+
+      //取出key1里面的值作为let key
+      for (let key of keys1) {
+        /*key2在不在.includes(key),key里面 
+        !keys2.includes(key) 的作用是检查 keys2 数组中是否 不 包含 key 元素。如果 key 不在 keys2 中，则表达式返回 true；如果 key 在 keys2 中，则表达式返回 false。
+        || deepEqual递归对比Object1,Object2下每个元素的内容是否相同的 */
+        if (!keys2.includes(key) || !deepEqual(Object1[key],Object2[key])) {
+          return false
+        }  
+      }
+      return true
+      }else{
+        return Object1 === Object2    
+      }
 }
 </script>
 
