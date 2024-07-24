@@ -1,0 +1,90 @@
+<script id = 7-23>
+//A list
+不是连续存放的,其它对象都是指向另一个存储的地方
+不能逆向找回去(双向链表or循环链表可以)
+但是数组是连续的
+
+链表的优点
+/*可以很容易地从链表中删除或添加节点，而无需重组整个数据结构。这是它相对于数组的一个优势。*/
+
+链表的缺点
+/*链表的搜索操作很慢，与数组不同，不允许随机访问数据元素，必须从第一个节点开始按顺序访问节点。
+由于需要储存指针，相较于数组需要更多内存。*/
+
+//21:06链表的写法21：12 21：19递归写法 
+
+//第一种写法，数字转为链表
+function arrayToList(array) {
+  //空链表
+  if (array.length == 0) {
+    return null //null表示空链表
+  }
+  //先声明一个数组
+  let nodes = []
+  for (let item of array) {
+    //链表的格式
+    let node = {
+      //内容
+      val:item,
+      //指针
+      next:null,//null后面没有指向了，表示这是最后一个
+    }
+    //将生成的node添加到nodes中
+    nodes.push(node)
+  }
+    //一般来讲链表不止一个。链表也有长度。
+      //将指针next:指向下一个node在nodes里面的位置
+        //nodes.length - 1最后一个不用，因为是最后一个了
+    for (let i = 0; i < nodes.length - 1; i++) {
+      nodes[i].next = nodes[i + 1]  
+    }
+    //返回第一个，从第一个链开始
+    return nodes[0]
+  }
+  arrayToList([1,2,3,'asdawd',['121212'],]) //length = 5
+
+
+//第四种方式自己写试一试
+function listToArray(head) {
+  var array = []
+  链表头next指向下一个
+}
+//链表前加一个
+function prepend(val,head) {
+  //能够覆盖空
+  var node = {
+    val:val,
+    next:head
+  }
+  return node
+}
+//链表后加一个
+function append(val,head) {
+  //能够覆盖空
+  var node = {
+    val:val,
+    next:head
+  }
+  //最后一个是空，就说明加完了
+  if (head == null){
+    return node
+  }
+  //顺着next指针遍历到链表最后一个结点
+  var p = head
+  while (p,next) {
+    p = p.next
+  }
+  p.next = node
+  return node 
+}
+//递归链表
+function nth2(head,idx) {
+  if (head == null || idx < 0){
+    return undefined
+  }
+  if (idx = 0) {
+    return head.val//1hao
+  }
+  return nth2(head.next,idx - 1)//22:12图
+}
+</script>

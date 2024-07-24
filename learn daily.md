@@ -446,9 +446,11 @@ function add(a,b) {
 }
 ## 多参数返回
 function noisy(f) {
+    /*第一个 return 语句返回的不是传入的参数，而是一个新函数。
+  这个新函数会在调用时打印传入的参数并返回计算结果。*/
   return function (...args) {//搜集参数，都会返回数组
     console.log("call with",args);
-    var val = f(...args)//返回参数，都会返回数组
+    var val = f(...args)//返回参数，都会返回数组。等价于f.apply(null,args)
     console.log("call with",args,"- got",val);3,5 ,8
     return  val;
   }
@@ -468,7 +470,180 @@ forEach([1,2,3,4],function(it,idx){
   console.log(it,idx);
 })
 
+
+#求导(f)
+function 求导(f){
+  return function(x){
+var gap = 0.000000000001
+var xl = x - gap
+var x2= x + gap
+var y1 = f(x1)
+var y2= f(x2)
+return (y2 - y1)/(x2 - x1) ≈ y2 - y1 = k(x2 - x1)
+  }
+}
+
 # 闭包
 [text](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures)
 
 
+7-19
+# JOSN
+配置文件 ini
+yaml语法不一样
+反引号 ` `里面可以打回车 
+
+ 不能有Tab
+
+  json中不能有运算，但是js对象可以
+
+  json中对象的属性名必须加【双引号】
+  但js中的对象，属性有时可以不加引号，加也可以加单引号(不能用反引号)
+
+  js中对象或数组最后一项的后面可以为了美观/对称/一致而多加一个额外的空格json中不行
+
+  json中只有对象，数组，数值，字符串,，null没有NaN，没Infinity,
+  但是有科学记数法
+
+一个json文件的内容可以对应于一个类型的值以下均为合法的json文件
+---
+2
+---
+true
+---
+"owierjuowiefj"
+---
+[1,1,1,2,3,3, "oiwejf"]
+---
+{
+"a":·1,
+"b":·[2,3,{}]
+}
+---
+
+为什么有这样的限制?
+1.是为了让json格式更简单，则更容易解析
+2.是为了让json格式能够适应于更多的语言(json中支持的值的类型几乎所有语言都支持)
+
+## JSON.stringify JSON.parse
+JSON.stringify 将 JavaScript 对象转换为 JSON 字符串。JSON.stringify(value[, replacer[, space]])
+
+JSON.parse 将 JSON 字符串转换为 JavaScript 对象。JSON.parse(text[, reviver])
+
+
+## trim()
+对于josn特别有，用于去除一个字符串两端的空白字符和行终止符(中间的无法去除)。这个方法不会改变原始字符串，而是返回一个新的字符串。
+---
+去除的字符：
+空格 (' ')
+制表符 ('\t')
+行终止符（包括 '\n'， '\r' 等）
+---
+let str2 = "\t\tJavaScript\t\nttt";
+console.log(str2)
+let trimmedStr2 = str2.trim();
+console.log(trimmedStr2)//JavaScript
+
+# slice()
+用于从一个字符串或数组中提取一部分，并返回一个新的字符串或数组，而不改变原始字符串或数组。
+// 对于字符串
+let str = "Hello, World!";
+let newStr = str.slice(0, 5);
+console.log(newStr); // 输出 "Hello"
+
+// 对于数组
+let arr = [1, 2, 3, 4, 5];
+let newArr = arr.slice(1, 3);
+console.log(newArr); // 输出 [2, 3]
+
+# split()
+用于将一个字符串分割成子字符串数组，并返回该数组。该方法不会改变原始字符串。
+let str = "apple,banana,cherry";
+let fruits = str.split(",");
+console.log(fruits); // 输出 ["apple", "banana", "cherry"]
+
+let str2 = "a-b-c-d";
+let letters = str2.split("-", 3);
+console.log(letters); // 输出 ["a", "b", "c"]
+
+# filter
+filter() 是 JavaScript 数组对象的一个方法，用于创建一个新数组，包含所有通过所提供函数实现的测试的元素。filter() 不会改变原数组，只会返回一个新的数组。
+## 用法
+let newArray = array.filter(function(element[, index[, array]]){},thisArg)
+Array.filter(function(currentValue, indedx, arr), thisValue)
+## 参数
+function: 一个用来测试数组每个元素的函数。它接收三个参数：
+  element: 当前处理的元素。
+  index (可选): 当前处理元素的索引。
+  array (可选): 调用 filter 的数组。
+
+thisArg (可选): 执行回调时用作 this 的值。
+
+
+# map
+map 是 JavaScript 数组的一个内置方法，用于创建一个新数组，其结果是通过对数组中的每个元素调用提供的函数来实现的。map 不会改变原数组，而是返回一个新数组。
+## 用法
+const newArray = array.map(callback(element[, index[, array]])[, thisArg])
+Array.filter(function(currentValue, indedx, arr), thisValue)
+  callback：在数组每一项上执行的函数，接收三个参数：
+  element：正在处理的当前元素。
+  index（可选）：正在处理的当前元素的索引。
+  array（可选）：调用 map 方法的数组。
+  thisArg（可选）：执行回调函数时用作 this 的值。
+
+# map与filter的不同
+map 用于对数组的每个元素进行变换，返回一个新的数组，长度与原数组相同。
+filter 用于筛选数组中的元素，返回一个新的数组，长度可能小于或等于原数组。
+
+# reduce
+reduce 是 JavaScript 中的一个数组方法，它用于将数组中的所有元素通过一个累加器函数逐步合并为单一的输出值。
+## 用法
+array.reduce(callback(accumulator, currentValue, currentIndex, array), initialValue);
+  callback：一个函数，用于对数组中的每个元素执行。
+  accumulator：累加器，累积回调的返回值。
+  currentValue：数组中正在处理的当前元素。
+  currentIndex：数组中正在处理的当前元素的索引，从0开始。
+  array：调用 reduce 的数组。
+  initialValue：作为第一次调用 callback 函数时 accumulator 的初始值。如果未提供 initialValue，则使用数组中的第一个元素，并从第二个元素开始执行 callback 函数。
+## 例子
+[4,4,5,3,2,7,8,88,8].reduce((avg,it,i) => {
+  return (avg * i + it) / (i + 1)
+})
+[2,3,5,7,11].reduce((obj,it,i) => {
+  obj[it] = i
+  return obj
+},{})
+
+7-20
+# map、filter、filter结合
+## 会占用更多内存
+var avg = (avg,it,i) => (avg * i + it) / (i + 1)
+ancestry
+  .filter(it => it.sex == 'f')
+  .map(it => it.died - it.born)
+  .reduce(avg)
+# bind
+function add(a, b) {
+  return a + b;
+}
+
+const addFive = add.bind(null, 5);
+console.log(addFive(10)); // 输出: 15，因为 `a` 已经绑定为 5
+## 总结
+bind 方法在以下情况下特别有用：
+
+  需要确保函数在某个特定对象的上下文中执行时。
+  创建带有部分应用参数的函数（即柯里化函数）。
+  为回调函数绑定 this。
+
+优雅与效率二选一
+bind 可以套娃绑定
+21：32面试要问
+22:25面试
+时间复杂度 空间复杂度判断
+
+7-21
+21:10
+every2 some2 predicate
+Count Primes 22：04 22：06更快
+MoveZero 思路不一样 22：13

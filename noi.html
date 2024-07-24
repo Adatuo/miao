@@ -2487,7 +2487,7 @@ function singleNumber(n) {
   countBits(2)
 </script>
 
-<script type="maybe" id="Count Primes">
+<script type="" id="Count Primes">
 function isPrimes(n) {
   //0,1不是质数
   if (n <= 1) {
@@ -2512,7 +2512,8 @@ function countPrimes(n) {
   return count
 }  
 
-countPrimes(10)
+//埃斯托利筛选法
+
 </script>
 
 <script type="ok,other" id="isPalindrome">
@@ -2554,7 +2555,7 @@ function minMoves(n) {
 }
 </script>
 
-<script type="ok" id="moveZeroes">//似乎可以用二分法
+<script type="" id="moveZeroes">//似乎可以用二分法
 
     //有写不出来的预感
     /*for (let i = 0; i < n.length; i++) {
@@ -2581,10 +2582,25 @@ function minMoves(n) {
       } 
       return n
   }
+
+function moveZeroes(nums) {
+  var i = 0//下一个非0的位置
+  for (let j = 0; j < nums.length; j++) {
+    if (nums[j] !== 0) {
+      nums[i] = nums[j]
+      i++
+    }
+  }
+  //用最后得到的i，让其后面都是0
+      while (i < nums.length) {
+      //i后面就是0
+      nums[i++] = 0
+    }
+}
  
 </script>
 
-<script type="ok" id="searchInsert">
+<script type="ok二分法" id="searchInsert">
   function searchInsert(n,target) {
     for (let i = 0; i < n.length; i++) {
      if (n[i] == target) {
@@ -2623,7 +2639,7 @@ function minMoves(n) {
   findDuplicates([4,3,2,7,8,2,3,1])
 </script>
 
-<script type="time" id="climbStairs">
+<script type="time7-21" id="climbStairs">
   
   //Time Limit Exceeded
   function climbStairs(n) {
@@ -2743,25 +2759,26 @@ function minMoves(n) {
 
 <script type="NO" id="distributeCandies">
   function distributeCandies(candyType) {
-    //统计能吃多少糖
+    //统计能吃多少糖 种类做map
     let sum = candyType.length / 2
   }
 </script>
 
-<script type="ok,timeLow" id="mergeSortedArray">
+<script type="ok,timeOut,7-22,20:15" id="mergeSortedArray">
 function mergeSortedArray(nums1,m,nums2,n) {
 
   //先把nums2的加入nums1
   for (let i = 0; i < nums2.length; i++) {
     nums1.push(nums2[i])
   
-  //排序
+  //sort是JS数组的自带方法
   nums1.sort(
     function(a,b){
-      return a - b
+      return a - b//升序 、b - a降序
       }
     )  
   }
+ 
 
   //删除0,从前面删除会改变顺序，从后面开始删除
   for (let p = nums1.length - 1; p >= 0 ; p--) {
@@ -2779,12 +2796,23 @@ mergeSortedArray([-1,0,0,3,3,3,0,0,0],6,[1,2,2],3)
 </script>
 
 
-<script type="No" id="Pow(x, n)">
-
+<script type="2NO" id="Pow(x, n)">
+  function myPow(x,n) {
+    if (n < 0) {
+      return 1 / myPow(x,-n)
+    }
+    if (n%2 == 0) {
+      var t = myPow(x,n/2) //n >>>1,无符号位移
+      return t * t
+    }else{
+      var t = myPow(x,n/2) //n >>>1
+      return t * t * x
+    }
+  }
 </script>
 
 
-<script type="ok" id="convertToTitle">
+<script type="maybe,正反" id="excel">
   function convertToTitle(columnNumber) {
     let z = ''
     while (columnNumber > 0) {
@@ -3116,7 +3144,7 @@ function getHint(secret, guess) {
 </script>
 
 
-<script type="" id="word-pattern">
+<script type="ok,other" id="word-pattern">
 function wordPattern(pattern,s) {
   //先对比二者的长度
   //把s用split(" ")按空格分割为可以比较长度的数组
@@ -3165,11 +3193,11 @@ function wordPattern(pattern,s) {
 }
 </script>
 
-<script type="" id="isomorphic-strings">
+<script type="ok,other" id="isomorphic-strings">
 function isIsomorphic(s, t) {
-  //先分割字符串
-  s = [...s]
-  t = [...t]
+  //先分割字符串，字符串可以遍历，不需要分割
+  // s = [...s]
+  // t = [...t]
 
   //声明对象
   let objectS = Object.create(null)//创造没有原型的对象就没有默认值了，避免冲突
@@ -3202,7 +3230,7 @@ function isIsomorphic(s, t) {
 }
 </script>
 
-<script type="" id="longest-substring-without-repeating-characters">
+<script type="ok" id="longest-substring-without-repeating-characters">
 function lengthOfLongestSubstring(s) {
   //需要把元素放到对象里面去
   let Object = {}
@@ -3232,8 +3260,141 @@ function lengthOfLongestSubstring(s) {
 } 
 
 </script>
+<script type="ok" id="longest-substring-without-repeating-characters-two">
+function lengthOfLongestSubstring(s) {
+  let obj = {}
+  let start = 0
+  let maxLen = 0
 
-<script type="" id="deepEqual">
+  //遍历每一个字符
+  for (let end = 0; end < s.length; end++) {
+    //初始化
+    obj[s[end]]=(obj[s[end]] || 0) + 1
+    /*if (obj[s[end]]) {//非空
+      obj[s[end]]++
+    }else{
+      obj[s[end]] = 1
+    }*/
+    //左边界end调整
+    /*调整左边界，减少计数
+        obj[s[start]]--：obj[a]--
+        字符串："abcabcbb"
+        窗口：[b, c, a]
+        字典 obj：{a: 1, b: 1, c: 1}
+        start：1
+        end：3
+        maxLen：3*/
+    while (obj[s[end]] > 1) {
+      //删除最左边的值
+      obj[s[start]]-- //跟obj[s[end]] == obj[s[start]]没有关系，s='baabcbb'
+      //向右移动
+      start++
+    }
+    //5~1 , 5-1 = 4 , length = 4+1 =5
+  maxLen = Math.max(maxLen,end - start + 1)
+    
+  }
+  return maxLen
+}
+</script>
+
+<script type="ok" id="first-unique-character-in-a-string">
+function firstUniqChar(s) {
+  //存储的元素
+  let x = {}
+  //遍历s,作为x的key
+    for (let key1 of s) {
+      if (key1 in x ) {
+        x[key1]++
+    }else{
+        x[key1] = 1
+    }  
+    }
+
+  //拿到key值  
+  let y = Object.keys(x)
+  //解决forEach无法return的问题
+  let result = -1
+  //拿到value == 1
+  for (const key2 of y) {
+    if (x[key2] == 1) {
+              [...s].forEach((it,index) => {
+          if (it == key2) {
+            result = index
+          }
+        });
+        if (result != -1) {
+          break
+        }
+    }
+  }  
+  return result
+}
+</script>
+
+<script type="" id="sort-an-array-sortArray">
+    function swap(array,i,j) {
+    var t = array[i]
+    array[i] = array[j]
+    array[j] = t
+  }
+  //冒泡排序
+  //思路
+  /**/
+  function bubbleSort(nums) {
+    //end相当于比较的终点
+    for (let end = nums.length - 1; end > 0; end--) {
+      //优化
+      let swapped = false
+      //一个一个与i后面一个数字比较
+      for (let i = 0; i < nums.length; i++) {
+        if (nums[i] > nums[i+1] ) {
+          //交换他们的位置
+          swap(nums,i,i+1)
+          swapped = true     
+    }   
+     } 
+     if(swapped = false){
+      break
+     }
+    }
+    return nums
+  }
+  //选择排序
+  function selectSort(nums) {
+    //遍历未排序部分找出最小的,最后一个最大不用找
+    for (let i = 0; i < nums.length - 1; i++) {
+      //先选出最小的数字，假设第一个最小。取下标，取数字的话会改变。
+      let minIdex = i
+      //i后面的一个数j
+      for (let j = i + 1; j < nums.length; j++) {
+        if (nums[minIdex] > nums[j]) {
+          //把最小值放到最前面，然后剩下的排序
+          minIdex = j
+          //这里swap(nums,minIdex,j)，虽然结果一样，但是就变成了插入排序
+        }  
+      }
+      swap(nums,i,minIdex)
+    }
+    return nums
+  }
+  //插入排序
+  function insertSort(nums) {
+    //第一个元素已经被排序默认最大,最后一个最大不用比较了
+    for (let i = 0; i < nums.length - 1; i++) {
+      //将第一个元素与后面的逐个比较
+      for (let j = i+1; j < nums.length; j++) {//j不能是1，要跟着i动。because:nums.length - 1
+      //交换   
+      if (nums[i] > nums[j]) {
+        swap(nums,i,j)
+      }    
+      }  
+    }
+    return nums
+  }
+</script>
+
+<script type="ok" id="deepEqual">
   // 判断a,b是否相同,如果是对象,看内容是否相同
   // 即深对比
 //以下是浅对比
