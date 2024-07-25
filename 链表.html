@@ -1,20 +1,20 @@
 <script id = 7-23>
 //A list
-不是连续存放的,其它对象都是指向另一个存储的地方
-不能逆向找回去(双向链表or循环链表可以)
-但是数组是连续的
+// 不是连续存放的,其它对象都是指向另一个存储的地方
+// 不能逆向找回去(双向链表or循环链表可以)
+// 但是数组是连续的
 
-链表的优点
+//链表的优点
 /*可以很容易地从链表中删除或添加节点，而无需重组整个数据结构。这是它相对于数组的一个优势。*/
 
-链表的缺点
+//链表的缺点
 /*链表的搜索操作很慢，与数组不同，不允许随机访问数据元素，必须从第一个节点开始按顺序访问节点。
 由于需要储存指针，相较于数组需要更多内存。*/
 
 //21:06链表的写法21：12 21：19递归写法 
 
 //第一种写法，数字转为链表
-function arrayToList(array) {
+function arrayToList01(array) {
   //空链表
   if (array.length == 0) {
     return null //null表示空链表
@@ -41,50 +41,175 @@ function arrayToList(array) {
     //返回第一个，从第一个链开始
     return nodes[0]
   }
-  arrayToList([1,2,3,'asdawd',['121212'],]) //length = 5
+ // arrayToList01([1,2,3,'asdawd',['121212'],]) //length = 5
 
+//第二种不要数组的写法
+  function arrayToList02(array) {
+    //辅助节点helpNode
+    let helpNode = {
+      val:0,
+      next:null,
+    }
+    //要相等才行
+    let prevNode = helpNode
+    //直接把数组array放入node去
+    //array == null 就直接返回空了
+    for (let item of array) {
+      let node = {
+        val:item,
+        next:null,
+      }
+    //如果后面又加了一个节点怎么办？
+    //先将前一个节点指向后一个节点
+    prevNode.next = node 
+    //这时又要在添加的节点之后再添加，如此循环
+    prevNode = node 
+    }
+    //辅助节点helpNode在头节点前面，helpNode.next就指向头节点，相当于返回node的头节点
+    return helpNode.next
+  }
 
-//第四种方式自己写试一试
+//第三种递归写法
+  function arrayToList03(array) {
+    //null的情况
+    if (array.length == 0) {
+      return null
+    }
+    //array[0]的第一项加到首个node
+    let node = {
+      val:array[0],
+      next:null,
+    }
+    //剩下的。slice返回从start开始到末尾end的数组
+    let restArray = array.slice(1)
+    //递归
+    let restList = arrayToList03(restArray)
+
+    //将首个node指向下一个首项node
+    node.next = restList
+    return node
+  }
+
+//把链表里面的取出来放到数组里面
 function listToArray(head) {
   var array = []
-  链表头next指向下一个
+  //null
+  if (head == null) {
+    return array
+  }
+  //只要head不为空就可以
+  while (head) {
+  array.push(head.val)//val存储着值
+  //head指向下一个head.next。形成循环
+  head = head.next
+  }
+  return array
 }
-//链表前加一个
-function prepend(val,head) {
-  //能够覆盖空
+
+//递归写法，把链表里面的取出来放到数组里面
+//一般来讲用不上
+function listToArray2(head) {
+
+  //null
+  if (head == null) {
+    return array
+  }
+  return [head.val,...listToArray2(head.next)]
+}
+
+
+//将val放到节点中并将结点加到head之前
+//返回新的链表
+function prepend(val,head) {//val可以为null
+  //能够覆盖空,为空就直接返回
+  //新建一个node
   var node = {
     val:val,
-    next:head
+    next:null,//可以直接指向head
   }
+  //把这个新建的node节点指向head
+  node.next = head//不要这条语句也可以执行
   return node
 }
-//链表后加一个
+
+//把val增加到head末尾
+//直接向null加，node就是首个
 function append(val,head) {
-  //能够覆盖空
+  //
   var node = {
     val:val,
-    next:head
+    next:null,//指向null
   }
   //最后一个是空，就说明加完了
-  if (head == null){
+  if (head == null){//p = null会直接报错
     return node
   }
   //顺着next指针遍历到链表最后一个结点
+  //p指向头一个,跟随指针变动。head变动的话就无法返回整个链表
   var p = head
-  while (p,next) {
+  //指向p的下一个，直到指向null为止
+  while (p.next) {
     p = p.next
   }
+  //找到最后一个，把要加的最后一项p.next指向node
   p.next = node
-  return node 
+  //返回整个链表
+  return head
 }
-//递归链表
+
+//获取链表head中的第idx项
+function nth(head,idx) {
+  //小于0，为空直接查不到
+  if (idx < 0 || head == null) {
+    return undefined
+  }
+  
+  while (idx > 0 && head) {
+    //第一个指向下一个
+    head = head.next
+    //idx--次数正好是需要找到的idx位置
+    idx--
+  }
+
+  if (head) {
+    return head.val
+  }else{
+    return undefined
+  }
+}
+
+//递归获取链表head中的第idx项
 function nth2(head,idx) {
   if (head == null || idx < 0){
     return undefined
   }
-  if (idx = 0) {
-    return head.val//1hao
+  if (idx == 0) {
+    return head.val//
   }
+  //获得head中的第idx项，相当于获得head中的第idx - 1项
+  //当idx - 1 = 0 head.next还没有空就可以返回head.val
   return nth2(head.next,idx - 1)//22:12图
+}
+
+//删除链表中顺序为idx的结点
+//原理是将该节点的前一个指向下下一个节点
+function remove(head,idx) {
+  //如果为空或者idx为负数,直接返回第一个
+  if (head == null || idx < 0) {
+    return head
+  }
+  if (idx == 0) {
+    //指向空
+    return head.next
+  }
+  //head不能动。所以
+  var p = head
+  //把P移动到要删除的节点的前一个节点
+  while (idx > 1 && p.next && p.next.next) {//p.next && p.next.next都不指向空
+    p = p.next
+    idx--
+  }
+  //删除节点
+  p.next = p.next.next
 }
 </script>
