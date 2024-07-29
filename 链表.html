@@ -212,4 +212,156 @@ function remove(head,idx) {
   //删除节点
   p.next = p.next.next
 }
+
+function insect(head,idx) {
+
+}
+</script>
+
+<script id = 'addTwoNumbers'>
+function ListNode(val, next) {
+     this.val = (val===undefined ? 0 : val)
+     this.next = (next===undefined ? null : next)
+}
+
+function addTwoNumbers(l1,l2) {
+  //辅助返回节点,helper指向node
+  var helper = new ListNode(0);
+  var p = helper
+  //进位辅助
+  var carry = 0
+  
+  while (l1 || l2) {//有可能其中一个指向空
+    //val不为undefined就取值，else等于0
+    var s = (l1 ? l1.val : 0) + (l2 ? l2.val : 0) + carry//4 + 6 = 10 , 在下一次循环时会加上去
+    //去除进制的影响
+    carry = s >= 10 ? 1:0
+    var left = s % 10
+    //把得到的值放入node
+    var node = new ListNode(left)
+    p.next = node
+    p = node
+
+    //更新循环,都指向null就会停下
+    //不为undefined指向下一个节点，else null
+    l1 = (l1 ? l1.next : null)
+    l2 = (l2 ? l2.next : null)
+  }
+  //如果最后一位相加大于10
+  //carry = 1 true , carry = 0 false
+  if (carry) {
+    //把node + 1(p.next辅助节点 + 1)
+    p.next = new ListNode(1)
+  }
+  return helper.next
+}
+</script>
+<script id = 'merge-two-sorted-lists'>
+function mergeTwoLists(l1, l2) {
+//辅助返回节点,dummy指向node
+var dummy = new ListNode(0);
+  var p = dummy
+  while (l1 && l2) {
+    if (l1.val <= l2.val) {
+      //指针的指向
+      p.next = l1
+      //向后挪动
+      l1 = l1.next 
+    }else{
+      //指针的指向
+      p.next = l2
+      //向后挪动
+      l2 = l2.next 
+    }
+    //p也要向后挪动
+    p = p.next
+  }
+  //只要其中一个不指向null就继续排序
+  p.next = l1 || l2
+  return dummy.next
+}
+
+//递归写法
+function mergeTwoLists(l1, l2) {
+  //其中之一不为空就返回
+  if (!l1 || !l2) {
+    return l1 || l2
+  }
+  if (l1.val < l2.val) {
+    l1.next = mergeTwoLists(l1.next,l2)
+    return l1
+  }else{
+    l2.next = mergeTwoLists(l1.next,l2)
+    return l2
+  }
+}
+</script>
+
+<script id = 'reverse-linked-list'>
+
+function reverseList(head) {
+  //跳出的条件,为空或者最后一个节点
+  if (!head || !head.next) {
+    return head
+  }
+  //rest保存当前节点的下一个节点
+  var rest = head.next
+  //将当前节点的next指向null，这一步是为了断开当前节点与后续节点的链接
+  head.next = null
+  //递归反转从rest开始的链表，并将新的头节点保存到newHead中
+  /**递归过程示例
+   *  
+    假设链表为：1 -> 2 -> 3 -> null
+
+    初始调用：reverseList(1)
+
+    rest = 2
+    head.next = null
+    递归调用：newHead = reverseList(2)
+    第二次调用：reverseList(2)
+
+    rest = 3
+    head.next = null
+    递归调用：newHead = reverseList(3)
+    第三次调用：reverseList(3)
+
+    rest = null（到达链表末尾）
+    return head（返回3）
+    回溯到第二次调用：newHead = 3
+
+    rest.next = 2（将3的next指向2）
+    return newHead（返回3）
+    回溯到第一次调用：newHead = 3
+
+    rest.next = 1（将2的next指向1）
+    return newHead（返回3）
+    最终，链表被反转为：3 -> 2 -> 1 -> null。
+  */
+  var newHead = reverseList(rest)
+  //反转
+  rest.next = head
+
+  return newHead
+}
+
+//非递归写法
+//画带有链表属性的图
+function reverseList(head) {
+
+  let a = null
+  let b = head
+  let c = b
+  //只要b还存在
+  while (b) {//当 b （所有节点）不为 null 时，继续循环。当 b.next (b的下一个节点)不为 null 时，继续循环。
+    //存储b的下一个节点
+    c = b.next
+    //链反转
+    b.next = a
+    //平移
+    a = b
+    b = c //b.next
+  }
+  //返回反转的链
+  return a
+}
 </script>

@@ -1,0 +1,50 @@
+<script>
+array =  [
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" },
+  { id: 3, name: "Charlie" }
+]
+/**keyBy 函数
+ * 主要用于将包含对象的数组转换成对象，转换后的对象的键是通过 predicate 函数指定的对象的某一属性的值。
+    输入：一个包含对象的数组（例如用户对象数组）。
+    谓词函数（predicate）：用来指定对象的某一属性的值作为输出对象的键。
+    输出：一个对象，对象的键是通过谓词函数指定的属性值，对象的值是数组中的元素（对象）。
+*/
+//groupby是JS自带的 
+function keyBy(array,predicate) {predicate//拿到指定的key
+  var obj = {}
+  for (let i = 0; i < array.length; i++) {
+    var key = predicate(array[i],i,array)
+    obj[key] = array[i]
+  }
+  return obj
+}
+/*function(user)=predicate 谓词函数
+
+在 keyBy 函数的实现中， function(user) 是谓词函数，它的流程如下：
+
+函数调用：
+
+在遍历数组 users 的过程中，每个用户对象（user）都会传递给这个匿名函数。
+计算键：
+
+这个匿名函数接收一个参数 user，它表示当前遍历到的用户对象。
+函数体内只有一行代码：return user.id;，它的作用是从当前用户对象中提取 id 属性的值，并将这个值作为键返回。
+示例过程：
+
+当 keyBy 函数遍历到第一个用户对象 { id: 1, name: "Alice" } 时，function(user) 会被调用，传入的参数是 { id: 1, name: "Alice" }。函数执行 return user.id;，返回的键是 1。
+接下来，这个键 1 会被用来存储当前用户对象 { id: 1, name: "Alice" }，即 obj[1] = { id: 1, name: "Alice" }。
+同样的过程会发生在每个用户对象上，逐个提取它们的 id 作为键，并将用户对象存储在结果对象 obj 中。
+
+function(user)相当于predicate(array[i], i, array)中的predicate。在keyBy函数中，predicate是一个回调函数，
+它接受三个参数：
+  array[i]：数组中的当前元素，即user。
+  i：当前元素的索引。
+  array：原数组。
+因此，function(user)可以看作是predicate的具体实现，只不过这里仅使用了第一个参数（即数组中的当前元素）。
+*/
+let keyedUsers = keyBy(array, function(user) {//function(user)中的参数user只是一个变量名，可以随便取名字
+  return user.name;  // 返回用户的 name 作为键
+});
+let keyedUsers2 = keyBy(array, it => it.name)  // 返回用户的 id 作为键; //it => it.name是对象的key
+</script>

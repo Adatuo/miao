@@ -248,23 +248,142 @@ function insertionSort(array) {
 }
 
 //归并排序 递归的复杂度log有关
-0(N * logN)
-O(N)
+
+/**
+   * 归并排序：
+   *    将原数组一分为二，分别排序，之后合并为一个数组
+   * 时间复杂度：O(n*log(n))
+   * 空间复杂度：O(n+log(n)) 即 O(n) 因为相对于n来讲，log(n)是低阶项
+   * 
+   * 
+   * 
+ */
+function mergeSort(array) {
+  //长度小于2,说明无法排序了，同时结束递归
+  if (array.length < 2) return array
+
+  //取中间值
+  var midIdx = array.length >> 1 // >>1 相当于除以2取整
+  //取出中间值左右两边的数组，slice会返回一个新数组不改变原数组
+  var leftArray = array.slice(0,midIdx)
+  var rightArray = array.slice(midIdx)
+
+  /**递归，slice返回的是新数组，所以要有新的值来接住
+  *在递归中使用一个新的值来接住返回结果的原因是为了确保每一层递归调用的结果都被正确地保存和处理。
+   * 1.	递归返回值的传递：在递归调用中，每一层递归都会返回一个值，这个返回值通常需要被使用或进一步处理。如果不接住这个返回值，那么就会丢失每一层递归调用返回的结果。例如，在归并排序中，当左右两个子数组已经排序完毕并返回时，需要将它们合并，这时必须接住返回的两个已经排序的子数组，以便继续合并操作。
+   * 2.	确保每一层递归的独立性：在递归中，每一层调用都是独立的，它依赖于返回值来执行接下来的操作。如果不接住返回值，可能会导致递归函数在某一层中失去其计算结果，进而影响整个递归过程。例如，假设在归并排序中不接住递归调用的返回值，最后的合并操作就无法正确进行，因为无法获得排序好的左右子数组。
+   * 3.	维护递归链的完整性：递归调用本质上是一连串的函数调用，每一个调用都会有一个返回值，这些返回值构成了整个递归链。如果链条中的某个返回值未被正确接住，整个链条就会断裂，导致递归计算无法正确进行。例如，在二分查找中，每次递归调用都会返回查找结果，如果不接住这个结果，最后就无法得到正确的查找结果。
+   * 4.	结果的组合和处理：很多递归算法的核心在于将子问题的结果组合成最终的结果。为了组合这些结果，必须在每一层递归中接住返回的子问题结果。例如，快速排序中，每次递归都会返回排序好的左右子数组，需要将它们组合成一个完整的排序结果，这就需要在递归调用中接住这些返回值。
+  */
+ 
+  leftArray = mergeSort(leftArray)
+  rightArray = mergeSort(rightArray)
+
+  //左、右、k排序后的数组
+  //array k相当于对array重新排序
+  var i = 0 , j = 0 , k = 0
+  //大于左右两边数组长度就停止
+  while (i < leftArray.length && j < rightArray.length) {
+    //从小到大排序
+    if (leftArray[i] < rightArray[j]) {
+      array[k++] = leftArray[i++]
+    }else{
+      array[k++] = leftArray[j++]
+    }
+  }
+
+  //有些数组可能是奇数分割，所以要处理剩余一个数的情况
+  while (i < leftArray.length) {
+    array[k++] = leftArray[i++]
+  }
+  while (j < rightArray.length) {
+    array[k++] = leftArray[j++]
+  }
+  //返回排序后的数组
+  return array
+}
+
+  /**
+   * 快速排序：
+   *    从原数组中随机选择一个数p
+   *  然后将原数组分成两组：
+   *    小于等于p的在一组
+   *    大于p的在一组
+   * 然后分别对两组数进行排序，之后直接拼接（不是归并）
+   * 另一种做法是将数们分成三组
+   * 小于p的，等于p的，大于p的
+   * 对小于和大于的排序
+   * 之后拼接
+   * 
+   * 下面这个写法的时间与空间复杂度跟归并排序一样
+   * 
+   */
+
+//快速排序1
+function quickSort01(array) {
+  //结束递归
+  if (array.length < 2) {
+    return array.slice()// slice的目的是为了保持跟后面一样返回新的数组
+  }
+  //首先随机选出一个哨兵值的下标
+  var pivotIdx = Math.random() * array.length | 0 // | 0 取整数
+  //哨兵值
+  var pivot = array[pivotIdx]
+  //根据哨兵值分割左右、相等
+  var left = []
+  var middle = []
+  var right = []
+  for (let i = 0; i < array.length; i++) {
+    //一个一个取出整个数组中的值item
+    var item = array[i]
+    //item与哨兵值进行比较
+    if (item < pivot) {//小于加入左边
+      left.push(item)
+    } else if(item === pivot){//等于加入中间
+      middle.push(item)
+    }else{//大于加入左边
+      right.push(item)
+    }
+  }
+  //递归
+  left = quickSort01(left)
+  right = quickSort01(right)
+  //排序完后组合起来
+  return left.concat(middle,right)
+}
+
+
 
 //快速排序,2面试
-function quickSort(array,p) {
-  let z = []
-  for (let i = 0; i < array.length; i++) {
-   if (array[i]<p) {
-    for (let j = 0; j <array[i].length; j++) {
-      
-      
-    }
-   }
-   if (array[i]>p) {
-    
-  }  
+function quickSort02(array,left = 0,right = array.length) {
+  //结束递归
+  if (right - left < 2) {
+    return array
   }
+  //随机找出哨兵元素，这个范围是活动的，所以不能array.length
+  var pivotIdx = Math.floor((right - left) * Math.random() + left)
+  var pivot = array[pivotIdx]
+
+  //先把哨兵元素放到最后一个位置上
+  swap(array,pivotIdx,right - 1)//right - 1不能包含是因为会超出下标限制？
+
+  //对元素分组
+  var i = left
+  for (let j = 0; j < right - 1; j++) {
+    if (array[j] < pivot) {
+      swap(array,i,j)
+      i++
+    } 
+  }
+  swap(array,i,right - 1)
+      // 到此时为止，i位置放的就是哨兵元素
+    // 其左边都小于它，右边都大于等于它
+    // 后续的排序i位置的数肯定不再需要变化位置了
+    // 接下来对其左边和右边分别递归即可
+    quickSortInPlace(array, left, i)
+    quickSortInPlace(array, i + 1, right)
+
+    return array
 }
 
 </script>
