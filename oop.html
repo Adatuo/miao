@@ -395,7 +395,7 @@ peek() {//out--- this._head(队头) ---- this._tail(队尾) ---in
 }
 }
 // 以及queue.size获取队列的长度
-Object.defineProperty(Stack.prototype,'size',{
+Object.defineProperty(Queue.prototype,'size',{
   get() {
     return this._length
   }
@@ -459,7 +459,7 @@ Object.defineProperty(Stack.prototype,'size',{
   }
   // 向集合中添加元素
   MySet.prototype.add = function(item) {
-    
+
   }
   // 从集合中删除item元素
   MySet.prototype.delete = function(item) {
