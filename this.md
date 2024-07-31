@@ -120,3 +120,8 @@ Function.__proto__       === Function.prototype
 不同的对象一个功能
 Object.prototype.tostring.call(Symbol())
 '[object Symbol]'
+
+一般不把非方法的属性放入接口,最好不读属性,不访问属性
+
+get set
+defineProperty

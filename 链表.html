@@ -125,11 +125,16 @@ function prepend(val,head) {//val可以为null
   //新建一个node
   var node = {
     val:val,
-    next:null,//可以直接指向head
+    next:head,//可以直接指向head
   }
-  //把这个新建的node节点指向head
-  node.next = head//不要这条语句也可以执行
   return node
+
+  // var node = {
+  //       val: val,
+  //       next: head
+  //     }
+  // return node
+
 }
 
 //把val增加到head末尾
