@@ -1,5 +1,4 @@
-
-
+<script>
   //接口
   function plus(x,y) {
     return x + y
@@ -28,11 +27,15 @@
     return new Vector(this.x - otherVector.x , this.y - otherVector.y)
   }
 
-  Vector.prototype.length = function(){
+  /*Vector.prototype.length = function(){
     //这里要返回数值
     return Math.sqrt(this.x ** 2 + this.y ** 2)
-  }
-
+  }*/
+  Object.defineProperty(Vector.prototype, 'length', {
+    get: function() {
+      return Math.sqrt(this.x * this.x + this.y * this.y)
+    }
+  })
 
   var v1 = new Vector(4,5);
   var v2 = new Vector(3,-4);
@@ -324,7 +327,8 @@ Stack.prototype =  {
   },
   // 从栈中取出元素并删除栈顶元素  
   pop() {
-    this._LIFO.pop()
+    //没有return的话就拿不到pop的返回值进而无法比较
+    return this._LIFO.pop()
   },
   // 查看但不删除栈顶元素
   peek() {
@@ -534,3 +538,4 @@ forEach(iterator) {},
 
 
 
+</script>
