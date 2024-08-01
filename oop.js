@@ -1,4 +1,4 @@
-<script>
+
 
   function plus(x, y) {
     return x + y
@@ -438,4 +438,3 @@
 
 
 
-</script>
