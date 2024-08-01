@@ -473,12 +473,12 @@ Object.defineProperty(Queue.prototype,'size',{
     return this*/
   //includes() 方法用来判断一个数组是否包含一个指定的值，如果包含则返回 true，否则返回 false
   if (!this._set.includes(value)) {//不存在返回false,! 变 true
-    this._set.push(item)
+    this._set.push(value)
   }
     return this
   },
     // 从集合中删除item元素
-  delete(item) {//[]
+  delete(value) {//[]
     if (this._set.includes(value)) {
     return this._set.splice(this._set.indexOf(item),1)
   }   
