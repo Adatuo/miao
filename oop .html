@@ -184,6 +184,8 @@ set : function(idx,val) {
 },
 // 在链表末尾新增一个结点，值为val
 append : function(val) {
+    //计算长度
+    this._length++ 
   //既然是增加节点,那就要拿到node
   var node = {
     val:val,
@@ -194,8 +196,6 @@ append : function(val) {
     this._head = node
     return this //返回整个新建实例的链表
   }
-  //计算长度
-  this._length++ 
   //辅助节点
   var p = this._head
   //遍历到末尾(有可能太大)
