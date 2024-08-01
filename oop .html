@@ -192,10 +192,10 @@ append : function(val) {
   //如果头节点是空
   if (this._head == null) {
     this._head = node
-    return this //返回整个链表
+    return this //返回整个新建实例的链表
   }
-    //计算长度
- this._length++ 
+  //计算长度
+  this._length++ 
   //辅助节点
   var p = this._head
   //遍历到末尾(有可能太大)
@@ -203,6 +203,7 @@ append : function(val) {
     p = p.next
   }
   p.next = node
+  return this
 },
 // 返回链表末尾结点的值，并删除末尾结点
 pop : function() {
@@ -473,12 +474,12 @@ Object.defineProperty(Queue.prototype,'size',{
     return this*/
   //includes() 方法用来判断一个数组是否包含一个指定的值，如果包含则返回 true，否则返回 false
   if (!this._set.includes(value)) {//不存在返回false,! 变 true
-    this._set.push(item)
+    this._set.push(value)
   }
     return this
   },
     // 从集合中删除item元素
-  delete(item) {//[]
+  delete(value) {//[]
     if (this._set.includes(value)) {
     return this._set.splice(this._set.indexOf(item),1)
   }   

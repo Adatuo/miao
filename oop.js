@@ -192,10 +192,10 @@ append : function(val) {
   //如果头节点是空
   if (this._head == null) {
     this._head = node
-    return this //返回整个链表
+    return this //返回整个新建实例的链表
   }
-    //计算长度
- this._length++ 
+  //计算长度
+  this._length++ 
   //辅助节点
   var p = this._head
   //遍历到末尾(有可能太大)
@@ -203,6 +203,7 @@ append : function(val) {
     p = p.next
   }
   p.next = node
+  return this
 },
 // 返回链表末尾结点的值，并删除末尾结点
 pop : function() {
