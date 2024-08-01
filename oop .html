@@ -147,21 +147,17 @@ function LinkedList() {
 LinkedList.prototype =  {
 // 返回链表第idx个结点的值
 at: function(idx){
-   //计算长度
- this._length++
   //辅助节点
   var p = this._head
  while (idx > 0 && p) { //p,表示链表还有next
   p = p.next
   idx--
  }
-
  if (p) {//p,表示链表还有next
   return p.val
  }else{
-  undefined
+  return undefined
  } 
-
 },
 // 设置链表第idx项的值为val
 set : function(idx,val) {
@@ -244,7 +240,7 @@ prepend : function(val) {
  this._length++
   //新建node
   var node = {
-    head:val,
+    val:val, //这里val:val要同样,不然在at调用的时候会出问题
     next:this._head
   }
   //更新头节点
