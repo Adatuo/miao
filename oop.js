@@ -1,4 +1,4 @@
-<script>
+
   //接口
   function plus(x,y) {
     return x + y
@@ -249,7 +249,7 @@ prepend : function(val) {
   }
   //更新头节点
   this._head = node
-  //返回整个链表
+  //返回整个实例
   return this
   /*这样写没有更新链表的 _head 属性，所以链表的头节点实际上并没有改变。
   返回的是新节点，而不是整个链表对象，可能会导致链表结构不一致
@@ -537,4 +537,3 @@ forEach(iterator) {},
 
 
 
-</script>
