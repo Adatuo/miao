@@ -1,4 +1,4 @@
-<script>
+
   //接口
   function plus(x,y) {
     return x + y
@@ -538,4 +538,3 @@ forEach(iterator) {},
 
 
 
-</script>
