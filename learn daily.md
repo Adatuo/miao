@@ -647,3 +647,8 @@ bind 可以套娃绑定
 every2 some2 predicate
 Count Primes 22：04 22：06更快
 MoveZero 思路不一样 22：13
+
+8-1
+21:15继承
+21:50super()
+22:20对象类型判断
