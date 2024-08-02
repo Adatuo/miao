@@ -117,18 +117,18 @@ if (this._head == null) {
   return undefined
 }
 
-if (this._head.next == null) {
+if (this._head.next == this._tail) {//只有一个节点，两个指针都一样
 
-  var prototyVal01 = this._head.val
+  var prototyVal = this._head.val
 
   this._head = this._tail = null
-  return prototyVal01
+  return prototyVal
 }
 
-var prototyVal02 = this._head.val
+var prototyVal = this._head.val
 
 this._head = this._head.next
-return prototyVal02
+return prototyVal
 }
 
 // 查看队头元素（没有查看队尾元素的功能）

@@ -100,7 +100,7 @@ return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i'
         next: null,
       }
       //要放到node后面，不然node就是空
-       if (this._head == null) {
+       if (this._head == this._tail) {//只有一个节点，两个指针都一样
         this._head = this._tail = node
         return this
       }
