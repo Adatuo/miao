@@ -393,7 +393,7 @@ Object.defineProperty(Queue.prototype,'size',{
     // 从集合中删除item元素
   delete(value) {//[]
     if (this._set.includes(value)) {
-    return this._set.splice(this._set.indexOf(item),1)
+    return this._set.splice(this._set.indexOf(value),1)
   }   
   //不存在应该会自动undefind
   },

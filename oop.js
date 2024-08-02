@@ -161,7 +161,7 @@ class MySet{
 
     delete(value) {
       if (this._set.includes(value)) {
-        return this._set.splice(this._set.indexOf(item), 1)
+        return this._set.splice(this._set.indexOf(value), 1)
       }
     }    
 
