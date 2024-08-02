@@ -332,7 +332,7 @@ Queue.prototype = {//out--- this._head(队头) ---- this._tail(队尾) ---in
     return this
   },
   // 从队头取出元素并删除队头元素
-  prototy() {//out--- this._head(队头) ---- this._tail(队尾) ---in
+  pop() {//out--- this._head(队头) ---- this._tail(队尾) ---in
     //计算长度
     this._length--   
     //null
@@ -340,18 +340,18 @@ Queue.prototype = {//out--- this._head(队头) ---- this._tail(队尾) ---in
       return undefined
     }
     //只有一个节点
-    if (this._head.next == null) {
+    if (this._head == this._tail) {
       //存储
-      var prototyVal01 = this._head.val
+      var result = this._head.val
       //删除
       this._head = this._tail = null
-      return prototyVal01
+      return result
     }
     //存储删除元素的val
-    var prototyVal02 = this._head.val
+    var result = this._head.val
     //后面挪一个(相当于删除)
     this._head = this._head.next
-    return prototyVal
+    return result
 },
 // 查看队头元素（没有查看队尾元素的功能）
 peek() {//out--- this._head(队头) ---- this._tail(队尾) ---in

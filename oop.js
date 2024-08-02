@@ -117,7 +117,7 @@ if (this._head == null) {
   return undefined
 }
 
-if (this._head.next == this._tail) {//只有一个节点，两个指针都一样
+if (this._head == this._tail) {//只有一个节点，两个指针都一样
 
   var result = this._head.val
 
