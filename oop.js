@@ -362,7 +362,7 @@ set(key,val) {
 
 // 获取这个映射中key所对应的val
 get(key) {
-  for (const i of this.pair) {
+  for (const i of this._pair) {
     if (i === key) {
       return this._pair[indexOf(i) + 1] 
     }
