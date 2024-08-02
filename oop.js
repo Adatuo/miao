@@ -349,50 +349,50 @@ class MyMap{
 // 设置映射中的key所对应的值为val
 set(key,val) {
   //修改实例的'key',value
-  for (let i = 0; i < this._pair.length; i++) {
+  for (let i = 0; i < this._pair.length; i += 2) {
     if (this._pair[i] === key) {
       this._pair[i + 1] = val
        return this
     }    
     }
    //添加'key',value
-  this._pairs.push(key,val)
+  this._pair.push(key,val)
   return this
   }
 
 // 获取这个映射中key所对应的val
 get(key) {
-  for (const i of this.pairs) {
+  for (const i of this.pair) {
     if (i === key) {
-      return this._pairs[indexOf(i) + 1] 
+      return this._pair[indexOf(i) + 1] 
     }
   }
 }
 // 判断这个映射中是否存在这个key的映射
 has(key) {
-  return this._pairs.includes(key)
+  return this._pair.includes(key)
     }
 // 删除这个映射中key及其映射的值的这一对儿
 delete(key) {
-  if (!this._pairs.includes(key)) {
-      this._pairs.splice(this._pairs.indexOf(key),2)
+  if (!this._pair.includes(key)) {
+      this._pair.splice(this._pair.indexOf(key),2)
       return true
   }
   return false
 }
 // 清空这个映射中所有的映射对儿
 clear() {
-  this._pairs = []
+  this._pair = []
   return this
 }
 // 获取这个映射中映射对儿的数量
 get size() {
-  return this._pairs.length / 2
+  return this._pair.length / 2
 }
 // 遍历这个映射中所有的映射对儿
 forEach(iterator) {
-      for (var i = 0; i < this._pairs.length; i += 2) {
-        iterator(this._pairs[i + 1], this._pairs[i])
+      for (var i = 0; i < this._pair.length; i += 2) {
+        iterator(this._pair[i + 1], this._pair[i])
       }
     }
 }

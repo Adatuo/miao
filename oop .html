@@ -422,8 +422,7 @@ Object.defineProperty(Queue.prototype,'size',{
     }
   })
   
-
-    // 表示一个映射
+  // 表示一个映射
   // 这个映射中，可以把任何值映射到任何值，映射的key不限于字符串
   function MyMap(init = []) {//参数 be like ['key',value,'key',value,'key',value]
   this._pair = []
@@ -439,7 +438,7 @@ MyMap.prototype = {
 // 设置映射中的key所对应的值为val
 set: function(key,val) {
   //修改实例的'key',value
-  for (let i = 0; i < this._pair.length; i++) {
+  for (let i = 0; i < this._pair.length; i += 2) {//获取key
     if (this._pair[i] === key) {
       this._pair[i + 1] = val
        return this
@@ -449,6 +448,7 @@ set: function(key,val) {
   this._pairs.push(key,val)
   return this
   },
+  
 
 // 获取这个映射中key所对应的val
 get: function(key) {
