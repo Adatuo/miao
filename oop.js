@@ -109,7 +109,7 @@ return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i'
     }
     
 // 从队头取出元素并删除队头元素
-pop() {
+pop() {//out--- this._head(队头) ---- this._tail(队尾) ---in
 
 this._length--
 
@@ -128,7 +128,7 @@ if (this._head.next == null) {
 var prototyVal02 = this._head.val
 
 this._head = this._head.next
-return prototyVal
+return prototyVal02
 }
 
 // 查看队头元素（没有查看队尾元素的功能）
