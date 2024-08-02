@@ -298,25 +298,21 @@
   //   }
   // })
 
+// 表示一个队列：即先进先出，后进后出
 
   function Queue() {
-
     this._head = null
     this._tail = null
     this._length = 0
   }
-
+// 向队列中增加元素
   Queue.prototype = {
     in(val) {
-
       this._length++
-
       if (this._head == null) {
         this._head = this._tail = null
-
         return this
       }
-
       var node = {
         val: val,
         next: null,
@@ -325,7 +321,7 @@
 
       this._tail = node
     },
-
+// 从队头取出元素并删除队头元素
     prototy() {
 
       this._length--
@@ -347,12 +343,12 @@
       this._head = this._head.next
       return prototyVal
     },
-
+// 查看队头元素（没有查看队尾元素的功能）
     peek() {
       return this._head.val
     }
   }
-
+// 以及queue.size获取队列的长度
   Object.defineProperty(Queue.prototype, 'size', {
     get() {
       return this._length
