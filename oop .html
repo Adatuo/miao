@@ -425,26 +425,74 @@ Object.defineProperty(Queue.prototype,'size',{
 
     // 表示一个映射
   // 这个映射中，可以把任何值映射到任何值，映射的key不限于字符串
-  function Map() {
-  
+  function MyMap(init = []) {//参数 be like ['key',value,'key',value,'key',value]
+  this._pair = []
+  //把新建实例的参数映射传到实例中
+  for (const pair of init) {
+    var key = pair[0]
+    var val = pair[1]
+    //全局才有set方法
+    this.set(key,val)
+  }
 }
-Map.prototype = {
+MyMap.prototype = {
 // 设置映射中的key所对应的值为val
-set: function(key, val) {
-  
-},
+set: function(key,val) {
+  //修改实例的'key',value
+  for (let i = 0; i < this._pair.length; i++) {
+    if (this._pair[i] === key) {
+      this._pair[i + 1] = val
+       return this
+    }    
+    }
+   //添加'key',value
+  this._pairs.push(key,val)
+  return this
+  },
+
 // 获取这个映射中key所对应的val
-get: function(key) {},
+get: function(key) {
+  for (const i of this.pairs) {
+    if (i === key) {
+      return this._pairs[indexOf(i) + 1] 
+    }
+  }
+},
 // 判断这个映射中是否存在这个key的映射
-has: function(key) {},
+has: function(key) {
+  return this._pairs.includes(key)
+/*  另一个版本
+for (var i = 0; i < this._pairs.length; i += 2) {
+        if (this._pairs[i] === key) {
+          return true
+        }
+      }
+      return false*/
+
+    },
 // 删除这个映射中key及其映射的值的这一对儿
-delete: function(key) {},
+delete: function(key) {
+  if (!this._pairs.includes(key)) {
+      this._pairs.splice(this._pairs.indexOf(key),2)
+      return true
+  }
+  return false
+},
 // 清空这个映射中所有的映射对儿
-clear: function() {},
+clear: function() {
+  this._pairs = []
+  return this
+},
 // 获取这个映射中映射对儿的数量
-get size() {},
+get size() {
+  return this._pairs.length / 2
+},
 // 遍历这个映射中所有的映射对儿
-forEach(iterator) {},
+forEach(iterator) {
+      for (var i = 0; i < this._pairs.length; i += 2) {
+        iterator(this._pairs[i + 1], this._pairs[i])
+      }
+    },
 }
 
 

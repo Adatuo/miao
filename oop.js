@@ -337,5 +337,63 @@ return this._length
 }
 }
 
- 
+class MyMap{
+  constructor(init = []){
+    this._pair = []
+    for (var pair of init) {
+      var key = pair[0]
+      var val = pair[1]
+      this.set(key,val)
+    }
+  }
+// 设置映射中的key所对应的值为val
+set(key,val) {
+  //修改实例的'key',value
+  for (let i = 0; i < this._pair.length; i++) {
+    if (this._pair[i] === key) {
+      this._pair[i + 1] = val
+       return this
+    }    
+    }
+   //添加'key',value
+  this._pairs.push(key,val)
+  return this
+  }
+
+// 获取这个映射中key所对应的val
+get(key) {
+  for (const i of this.pairs) {
+    if (i === key) {
+      return this._pairs[indexOf(i) + 1] 
+    }
+  }
+}
+// 判断这个映射中是否存在这个key的映射
+has(key) {
+  return this._pairs.includes(key)
+    }
+// 删除这个映射中key及其映射的值的这一对儿
+delete(key) {
+  if (!this._pairs.includes(key)) {
+      this._pairs.splice(this._pairs.indexOf(key),2)
+      return true
+  }
+  return false
+}
+// 清空这个映射中所有的映射对儿
+clear() {
+  this._pairs = []
+  return this
+}
+// 获取这个映射中映射对儿的数量
+get size() {
+  return this._pairs.length / 2
+}
+// 遍历这个映射中所有的映射对儿
+forEach(iterator) {
+      for (var i = 0; i < this._pairs.length; i += 2) {
+        iterator(this._pairs[i + 1], this._pairs[i])
+      }
+    }
+}
 
