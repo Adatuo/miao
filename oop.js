@@ -119,16 +119,16 @@ if (this._head == null) {
 
 if (this._head.next == this._tail) {//只有一个节点，两个指针都一样
 
-  var prototyVal = this._head.val
+  var result = this._head.val
 
   this._head = this._tail = null
-  return prototyVal
+  return result
 }
 
-var prototyVal = this._head.val
+var result = this._head.val
 
 this._head = this._head.next
-return prototyVal
+return result
 }
 
 // 查看队头元素（没有查看队尾元素的功能）
