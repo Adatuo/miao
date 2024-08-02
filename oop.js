@@ -1,6 +1,6 @@
  
 class Vector{
-  constructor(){
+  constructor(x,y){
     this.x = x
     this.y = y
   }
@@ -21,45 +21,45 @@ get length() {
 
 }
 
+class Complex{
+  constructor(real,imag){
+    this.real = real
+    this.imag = imag
+  }
+
+  plus(otherComplex){
+    //返回新的Vector实例(return只能返回一个值)
+    return new Complex(this.real + otherComplex.real , this.imag + otherComplex.imag)
+  }
+
+  minus (otherComplex){
+    //返回新的Vector实例(return只能返回一个值)
+    return new Complex(this.real - otherComplex.real , this.imag - otherComplex.imag)
+  }
+
+  multiple (otherComplex){
+    //返回新的Vector实例(return只能返回一个值)
+    return new Complex(
+      (this.real * otherComplex.real - this.imag * otherComplex.imag)
+    + (this.real * otherComplex.real + this.imag * otherComplex.imag)
+    )
+  }
+
+  div (otherComplex){
+    return new Complex(
+      (this.real * otherComplex.real + this.imag * otherComplex.imag) / (otherComplex.real ** 2 + otherComplex.imag ** 2)
+    , (this.imag * otherComplex.real - this.real * otherComplex.imag) / (otherComplex.real ** 2 + otherComplex.imag ** 2)
+  )
+  
+  }
+
+  toString (){
+    return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i' //imag可能是0
+  }
+}
+
 
   
-
-
-  class Complex{
-    constructor(v){
-      return new Complex(this.real + v.real, this.imag + v.imag)
-    }
-    plus (v) {
-
-return new Complex(this.real + v.real, this.imag + v.imag)
-}
-
-minus (v) {
-
-return new Complex(this.real - v.real, this.imag - v.imag)
-}
-
-multiple (v) {
-
-return new Complex(
-  (this.real * v.real - this.imag * v.imag)
-  + (this.real * v.real + this.imag * v.imag)
-)
-}
-
-div (v) {
-return new Complex(
-  (this.real * v.real + this.imag * v.imag) / (v.real ** 2 + v.imag ** 2)
-  , (this.imag * v.real - this.real * v.imag) / (v.real ** 2 + v.imag ** 2)
-)
-
-}
-
-toString () {
-return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i'
-}
-
-  }  
       
     
     
@@ -172,8 +172,8 @@ class MySet{
     return this
     }
 
-    has(item) {
-    return this._set.includes(item)
+    has(value) {
+    return this._set.includes(value)
     }
 
     forEach(func) {
