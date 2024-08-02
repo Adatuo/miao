@@ -317,7 +317,7 @@ Queue.prototype = {//out--- this._head(队头) ---- this._tail(队尾) ---in
     this._length++
     //null节点
     if (this._head == null) {
-      this._head = this._tail = null
+      this._head = this._tail = node//为空等于node值
       //返回整个链表
       return this 
     }
@@ -327,8 +327,9 @@ Queue.prototype = {//out--- this._head(队头) ---- this._tail(队尾) ---in
       next:null,
     }
     this._tail.next = node
-    //更新head节点
+    //更新_tail指针
     this._tail = node
+    return this
   },
   // 从队头取出元素并删除队头元素
   prototy() {//out--- this._head(队头) ---- this._tail(队尾) ---in

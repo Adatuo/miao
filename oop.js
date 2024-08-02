@@ -95,17 +95,17 @@ return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i'
 // 向队列中增加元素   
   add(val) {
       this._length++
-      if (this._head == null) {
-        this._head = this._tail = null
-        return this
-      }
       var node = {
         val: val,
         next: null,
       }
+      if (this._head == null) {
+        this._head = this._tail = node
+        return this
+      }
       this._tail.next = node
-
       this._tail = node
+      return this
     }
     
 // 从队头取出元素并删除队头元素

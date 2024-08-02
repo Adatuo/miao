@@ -86,17 +86,17 @@ return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i'
   }
 
  // 表示一个队列：即先进先出，后进后出
- class Queue{
+ class Queue{//out--- this._head(队头) ---- this._tail(队尾) ---in
   constructor(){
     this._head = null
     this._tail = null
     this._length = 0
     }
 // 向队列中增加元素   
-  add(val) {
+  add(val) {//out--- this._head(队头) ---- this._tail(队尾) ---in
       this._length++
       if (this._head == null) {
-        this._head = this._tail = null
+        this._head = this._tail = node
         return this
       }
       var node = {
@@ -104,7 +104,6 @@ return this.real + (this.imag > 0 ? '+' : "") + this.imag + 'i'
         next: null,
       }
       this._tail.next = node
-
       this._tail = node
     }
     
