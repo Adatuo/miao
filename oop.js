@@ -152,7 +152,7 @@ class MySet{
     }
   }
 
-  add(item) {
+  add(value) {
       if (!this._set.includes(value)) {
         this._set.push(value)
       }
