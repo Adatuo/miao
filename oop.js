@@ -374,7 +374,7 @@ has(key) {
     }
 // 删除这个映射中key及其映射的值的这一对儿
 delete(key) {
-  if (!this._pair.includes(key)) {
+  if (this._pair.includes(key)) {
       this._pair.splice(this._pair.indexOf(key),2)
       return true
   }
