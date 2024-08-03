@@ -364,7 +364,7 @@ set(key,val) {
 get(key) {
   for (const i of this._pair) {
     if (i === key) {
-      return this._pair[indexOf(i) + 1] 
+      return this._pair[this._pair.indexOf(i) + 1] 
     }
   }
 }
