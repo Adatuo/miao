@@ -32,6 +32,25 @@ var adatuo = function () {
     }
 
     function findIndex(users,values) {
+      for (let i = 0; i < users.length; i++) {
+        if (users(i) == values && values.constructor === Object) {
+          return i
+        }else if (Array.isArray(values)) {
+          
+        }
+      //   if (users(i) == values) {
+      //     return i
+      //   }else{
+      //   for (var x in users[i]) {
+      //     if (users[x] == values){
+      //       return i
+      //       }
+      //     }
+      //   }
+      // }
+      }
+    }
+    function findIndexLastIndex(users,values) {
       for (var key in users) {
         if (key == values) {
           
@@ -40,11 +59,38 @@ var adatuo = function () {
       }
     }
 
+    //var array = [1, [2, [3, [4]], 5]]
+    function flatten(array) {
+      return array.reduce((result,it) => {//记得返回值
+        //判断是不是数组,不是的话直接返回
+        if (Array.isArray(it)) {
+          return [...result,...it]
+        }else{
+          return [...result,it]
+        }     
+    },[])
+    }
+    //递归,一直... (没有问题的话,需要刷新控制台)
+    function flattenDeep(array) {
+      return array.reduce((result,it) => { 
+        //判断是不是数组,不是的话直接返回
+        if (Array.isArray(it)) {
+          return [...result,...flattenDeep(it)]//递归处理的是数组里的元素
+        }else{
+          return [...result,it]
+        } 
+      },[])
+    }
+
     return {
       compact: compact,
       chunk: chunk,
       fill: fill,
       drop: drop,
+      findIndex: findIndex,
+      findIndexLastIndex: findIndexLastIndex,
+      flatten: flatten,//此函数可以优化
+      flattenDeep: flattenDeep
     }
   }()
 

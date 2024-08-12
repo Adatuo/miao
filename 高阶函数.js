@@ -212,12 +212,14 @@ ancestry
   var x = [['a',['b']],[[['c'],'d'],2],[4,5]]
   var x = [['a',['b']],[4,5]]
   //这样的话，数组里面的数组无法展开需要递归
+  //有问题,当第一个是数字的时候直接添加
   function Rresult(x) {
     x.reduce((result , it) => {
-    return [...result,...x]
-  })
+    return [...result,...it]
+  },[])
   }
   //函数（函数）
+  //有些繁琐可以直接加进去,见adatuo-lodash
   var x = [['a',['b']],[[['c'],'d'],2],[4,5]]
   function Rresult(x) {//函数1
     //不是数组，变成数组
