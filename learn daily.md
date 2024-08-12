@@ -700,3 +700,14 @@ JAVA红黑树用来自动平衡排序二叉树的深度的链式存储,以解决
 8-11
 21:00 各种排序的稳定性
 21:25 排序的稳定性意义(excel排序)
+
+8-12
+20:58 ^
+22:08 dayjs momentjs 日期正则表达式
+22:22 各种断言 $ /b ^
+      positivelookahead（?=xxx）正预测先行断言 某个位置的右边要是xxx
+      negativelookahead（?!xxx）负预测先行断言 某个位置的右边不能以任何形式匹配xxx
+      positionlookbehind（?<=xxx）正回顾后发断言 某个位置的左边要是xxx
+      negativelookbehind（?<!xxx）负回顾后发断言 某个位置的左边不能以任何形式匹配xxx
+      零宽断言连续使用时断言的是同一个位置 
+https://regex101.com
