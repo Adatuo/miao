@@ -1,0 +1,51 @@
+<script>
+  //继承的异常类Error
+  class MultiplicatorUnitFailur extends Error{}
+  //这一段都是测试代码,只在测试的时候运行
+  function Multiply(a,b) {//没有参数的话return primitiveMultiply(a,b)就不会运行
+  for(;;)  {
+  try {
+    return primitiveMultiply(a,b)
+  }
+    catch (e) {//error接受的是throw的错误
+         if (e instanceof MultiplicatorUnitFailur) {//e是不是属于MultiplicatorUnitFailur的异常类
+          //属于就继续下一次循环
+          continue
+         }else{//不是的话就再把这个错误抛出去
+          throw e  
+         }
+    } 
+  }
+}  
+  function primitiveMultiply(a,b) { 
+    if (Math.random() > 0.5) {
+    return a * b
+   }else{
+    throw new MultiplicatorUnitFailur("Something is wrong");   
+   }    
+ }
+   
+ var box = {
+ locked: true,
+ unlock: function() { this.locked = false; },
+ lock: function() { this.locked = true; },
+ _content: [],
+ get content() {
+ if (this.locked) throw new Error("Locked!");
+ return this._content;
+ }
+ };
+
+ //测试函数
+ function withBoxUnlock(func) {
+  //拿到解锁的对象
+  box.unlock
+  try {
+    //检查这个函数
+    func()
+  } 
+  finally {
+    box.lock
+  }
+ }
+</script>

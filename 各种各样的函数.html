@@ -1,0 +1,75 @@
+<script>
+  //递归
+  function sum(start,end) {
+    if (start == end) {
+      return start
+    }
+    if (start < end) {
+      return start + sum(start + 1,end)
+    }else{
+      return start + sum(start - 1,end)
+    }
+  }
+
+  //回调
+  /*定义
+  参数是一个函数,可以在函数体内部调用
+  */
+  function fn1(f) {
+    var a = 1
+    f()
+  }
+  var a = 2 //注意作用域
+  function fn2() {
+    console.log(a);  
+  }
+  fn1(fn2) // a = 2 ,只是将代码带走没有带走作用域
+
+  //如何给回调函数传参
+  function fn1(f,b) {
+    f(b)
+  }
+  function fn2(a) { //a == b
+    console.log(a);  
+  }
+  fn1(fn2,1) //a = 1
+
+  //第二种方式,声明匿名函数
+  fn1(function(a){
+    return alert(a) //return可以省去
+    },2)
+  fn1(a =>alert(a),2) //alert = 2
+
+  //闭包调用,传参
+  function fn1(f) {
+    return function (b) {
+      f(b)
+    }
+  }
+
+  //高阶函数需要返回值
+  function fn1(f) {
+    return function (b) { 
+      f(b)//回调函数不需要返回值
+    }
+  }
+
+  function fn2(a) {
+    console.log(a);  
+  }  
+
+  fn1(fn2)(1) //(1)是传递给fn1的匿名函数
+
+//高阶函数不能break,通常用try catch来表示
+try {
+  arr.forEach(num => {
+    if (num === 3) {
+      throw new Error('Break'); // 抛出异常来中断循环
+    }
+    console.log(num);
+  });
+} catch (e) {
+  if (e.message !== 'Break') throw e; // 如果是其他异常，重新抛出
+}
+
+</script>

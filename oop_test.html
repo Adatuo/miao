@@ -393,7 +393,9 @@ get size() {
 // 遍历这个映射中所有的映射对儿
 forEach(iterator) {
       for (var i = 0; i < this._pair.length; i += 2) {
+        
         iterator(this._pair[i + 1], this._pair[i])
+        
       }
     }
 }

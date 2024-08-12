@@ -1,0 +1,792 @@
+<script>
+
+ // 二叉树
+  /**
+   * 树状结构在生活中和计算机科学中都非常常见
+   * 如：家谱，书籍的目录，文件夹的结构
+   * html，作用域之间的关系，编程语言的语法
+   * JSON的语法
+   * 
+   * 二叉树的定义：
+   *    空是一个合法的二叉树
+   *    一个结点，有一个左子树，有一个右子树
+   * 为什么学习二叉树而不是一/三/四叉树？
+   *    一叉树其实表达的是有序结构，典型情况下就是链表，但用任何形式存储这个有序结构其实都可以
+   *    （链表是一个限定了存储方式的概念）
+   *    （但二叉树/一叉树并没有限制存储方式，虽然最常见的存在方式就是链式存储）
+   * 
+   *   学了二叉树，其它多叉树也都差不多了
+   * 
+   * 二叉树的一些概念和数学关系：
+   *    最上层的结点叫根结点（root node）
+   *    没有子结点的结点叫叶子结点（leaf node）
+   *    完全二叉树：除最后一层以外，每一层的结点都是满的，最后一层从左往右不缺结点
+   *    当完全二叉树的最后一层也是满的时候，称为“满二叉树”
+   *    在一颗有n个结点的链式存储的二叉树中，一共有2n个箭头，由于其中的n-1个结点都被箭头指向，所以没有指向结点的箭头有2n-(n-1) = n+1个
+   *    如果对一个完全二叉树的结点从上到下从左到右从0开始编号，那么一个编号为n的结点的两个子结点的编号分别为2n+1和2n+2
+   * 
+   * 
+   * 二叉树的表示/存储：
+   *   1 链式结构，类似链表，但每个结点存储了其左右子树的位置/引用/地址/指向
+   *   2 将任何二叉树先写满为一个完全二叉树，然后从上到下从左往右将值存入数组
+   *        但是这个写法在二叉树缺失较多结点时会比较浪费空间
+   *   
+   */
+//先声明一个类,用链表(非链表)来表示二叉树
+class TreeNode {
+  constructor(val,left = null,right = null) {
+    // 头节点
+      this.val = (val === undefined ? 0 : val)
+    // 左子树  
+      this.left = (left === undefined ? null : left)
+    // 右子树  
+      this.right = (right === undefined ? null : right)
+  }
+}
+
+  // 将【按照固定位置存储固定结点的方式】存储的二叉树转换为链式存储
+  // pos是根结点的位置
+  // 此时函数的定义应该转换为从数组中将根结点在pos位置的二叉树转换成链式表达的二叉树
+  /*root = [4,2,7,1,3,6,9]
+  将数组 [4, 2, 7, 1, 3, 6, 9] 转换成链式存储的二叉树，可以按照以下步骤递归地构建每个节点：
+
+初始调用：arrayToTree([4, 2, 7, 1, 3, 6, 9], 0)
+
+pos = 0
+array[0] = 4
+创建根节点 root = new TreeNode(4)
+创建左子树：调用 arrayToTree(array, 2 * pos + 1)，即 arrayToTree(array, 1)
+
+pos = 1
+
+array[1] = 2
+
+创建左子树节点 root.left = new TreeNode(2)
+
+进一步创建其左子树：调用 arrayToTree(array, 2 * pos + 1)，即 arrayToTree(array, 3)
+
+pos = 3
+array[3] = 1
+创建左子树节点 root.left.left = new TreeNode(1)
+其左右子树为 null（递归调用 arrayToTree(array, 7) 和 arrayToTree(array, 8) 返回 null）
+进一步创建其右子树：调用 arrayToTree(array, 2 * pos + 2)，即 arrayToTree(array, 4)
+
+pos = 4
+array[4] = 3
+创建右子树节点 root.left.right = new TreeNode(3)
+其左右子树为 null（递归调用 arrayToTree(array, 9) 和 arrayToTree(array, 10) 返回 null）
+创建右子树：调用 arrayToTree(array, 2 * pos + 2)，即 arrayToTree(array, 2)
+
+pos = 2
+
+array[2] = 7
+
+创建右子树节点 root.right = new TreeNode(7)
+
+进一步创建其左子树：调用 arrayToTree(array, 2 * pos + 1)，即 arrayToTree(array, 5)
+
+pos = 5
+array[5] = 6
+创建左子树节点 root.right.left = new TreeNode(6)
+其左右子树为 null（递归调用 arrayToTree(array, 11) 和 arrayToTree(array, 12) 返回 null）
+进一步创建其右子树：调用 arrayToTree(array, 2 * pos + 2)，即 arrayToTree(array, 6)
+
+pos = 6
+array[6] = 9
+创建右子树节点 root.right.right = new TreeNode(9)
+其左右子树为 null（递归调用 arrayToTree(array, 13) 和 arrayToTree(array, 14) 返回 null）
+  */
+ //从上到下,从左往右
+  function arrayToTree(array, pos = 0) {
+    if (array[pos] == null) {
+      return null
+    }
+
+    var root = new TreeNode(array[pos])
+
+    root.left = arrayToTree(array, pos * 2 + 1)
+    root.right = arrayToTree(array, pos * 2 + 2)
+
+    return root
+  }
+  
+    //letcode左子树右子树交换root传入的是链对象
+    function arrayToTree02(root) {
+    if (!root) {
+      return null
+    }
+    //根节点不变不用写
+      var replace = root.left
+      root.left = root.right
+      root.right = replace
+
+    //二叉树都需要递归
+    arrayToTree02(root.left)
+    arrayToTree02(root.right)
+    return root
+  }
+
+
+//用表示二叉树
+  //root传的是一个链
+//先序遍历  面试
+function preorderTraversal(root) {
+  if (root) {//root还指着东西的话
+  // 类似根节点
+    var val = root.val
+  //左   
+    var orderLeft = preorderTraversal(root.left)
+  //右
+    var orderRight = preorderTraversal(root.right)
+    return [val,...orderLeft,...orderRight]
+  }
+  //有可能返回undefind或者是null
+  return []
+}
+//先序遍历迭代法
+function preorderTraversal02(root) {
+  var result = []
+  var stack = []
+  var p = root
+
+  while (true) {
+    if (p) {
+      stack.push(p)
+      result.push(p.val)
+      p = p.left//处理下一个左树
+    }else if(stack.length > 0){
+      p = stack.pop().right//pop后的右树
+    }else{
+      break
+    }
+  }
+  return result
+}
+//先序遍历迭代法
+function preorderTraversal03(root, res = []) {
+    if(!root) return res;
+    const stack = [root];
+    let cur = null;
+    while(stack.length) {
+        cur = stack.pop();
+        res.push(cur.val);
+        cur.right && stack.push(cur.right);
+        cur.left && stack.push(cur.left);
+    }
+    return res;
+};
+
+
+  // 中序遍历
+  function inOrderTraverse(root) {
+    if (root) {
+      //左
+      var orderLeft = inOrderTraverse(root.left)
+      //类似根节点
+      var val = root.val
+      //右
+      var orderRight = inOrderTraverse(root.right)
+      return [...orderLeft,val,...orderRight]
+    }
+    //有可能返回undefind或者是null
+    return []
+  }
+//中序遍历迭代法
+function preorderTraversal02(root) {
+  var result = []
+  var stack = []
+  var p = root
+
+  while (true) {
+    if (p) {
+      stack.push(p)     
+      p = p.left//处理下一个左树
+    }else if(stack.length > 0){
+      p = stack.pop()
+      result.push(p.val)
+      p = p.right
+    }else{
+      break
+    }
+  }
+  return result
+}
+
+    // 后序遍历
+    function postOrderTraverse(root) {
+    if (root) {
+      //左
+      var orderLeft = postOrderTraverse(root.left)
+      //右
+      var orderRight = postOrderTraverse(root.right)
+      //类似根节点
+      var val = root.val
+
+      return [...orderLeft,...orderRight,val]
+    }
+    //有可能返回undefind或者是null
+    return []
+  }
+
+
+  //Same Tree
+function isSameTree(p,q) {
+  //如果都为空
+  if (!p && !q ) {
+    return true
+  }
+  //其中之一为空
+  if (p == null || q == null) {
+    return false
+  }
+  
+ 
+  //既然只是true false那就直接return
+   //这才是对比每一个节点的值是否一样
+  return p.val == q.val &&
+   
+  isSameTree(p.left , q.left) && 
+  
+  isSameTree(p.right,q.right)
+  }
+  
+  //binary-tree-level-order-traversal
+  //递归写法见8-5 21:20
+  function levelOrder(root) {
+    var result = []   
+    if (!root){
+      return result
+    }
+  //放入链,可以取到第一个节点的val  
+    var nodes = [root]
+    
+    while (nodes.length > 0) {
+      var level=[]//用于存储当前层的节点值
+      var nextNodes=[]//用于存储下一层的节点
+    
+      for (const node of nodes) {
+        if (node) {
+          //根节点或者叶子节点的根节点
+          level.push(node.val)
+          if (node.left) {
+            //为null也可以直接添加
+            nextNodes.push(node.left)
+          }
+          if (node.right) {
+            //为null也可以直接添加
+            nextNodes.push(node.right)
+          }
+        }
+      }
+
+      if (level.length > 0) {
+        result.push(level)
+      }
+
+      //更新下一层
+      nodes = nextNodes
+    }
+
+    return result
+  }
+
+  //symmetric-tree
+  function isSymmetric(root) {
+    if (!root) {
+      return true
+    }
+    return isMirror(root.left, root.right);
+  }  
+
+  //需要再来一个函数判断所有的树是否是镜像的
+  //左右的根节点的左右子树的左右节点
+  function isMirror(left,right) {//下一层左右的根节点
+    if (!left && !right) {
+      return true
+     }
+     //其中一个为空另一个不为空
+    if (!left || !right) {
+      return false;
+      } 
+    //else{//都不为空会返回false,left || right也会这样
+    //   return false
+    // }
+
+  //比较左右的根节点的左右子树的左右节点
+    return (
+            left.val === right.val &&
+            isMirror(left.left,right.right) &&
+            isMirror(left.right,right.left)
+            )
+  }
+
+//maximum-depth-of-binary-tree
+//从下往上计算深度
+  function maxDepth(root) {
+   //什么都没有的二叉树
+    if (!root) {
+      return 0
+    }
+    const leftDepth = maxDepth(root.left);
+    const rightDepth = maxDepth(root.right);
+
+    //最后1层1+ Math.max(null, null) = 1
+    return Math.max(leftDepth, rightDepth) + 1;
+  }
+/*  递归过程如下：
+
+1. 对于节点1：
+   ⦁ maxDepth(root.left) 返回节点2的子树深度（3）
+   ⦁ maxDepth(root.right) 返回节点3的子树深度（1）
+   ⦁ 节点1的深度 = 1 + max(3, 1) = 4
+
+2. 对于节点2：
+   ⦁ maxDepth(root.left) 返回节点4的子树深度（1）
+   ⦁ maxDepth(root.right) 返回0（因为右子节点为null）
+   ⦁ 节点2的深度 = 1 + max(1, 0) = 2
+
+3. 对于节点3：
+   ⦁ maxDepth(root.left) 返回0（左子节点为null）
+   ⦁ maxDepth(root.right) 返回0（右子节点为null）
+   ⦁ 节点3的深度 = 1 + max(0, 0) = 1
+
+4. 对于节点4：
+   ⦁ 两个子节点都为null，返回1
+  */ 
+//     1
+//    / \
+//   2   3
+//  /
+// 4
+
+//minimum-depth-of-binary-tree
+var minDepth = function(root) {
+       //什么都没有的二叉树
+    if (!root) {
+      return 0
+    }
+    const leftDepth = minDepth(root.left);
+    const rightDepth = minDepth(root.right);
+
+    //最后1层1+ Math.min(null, null) = 1
+    if(!root.left || !root.right){
+        return Math.max(leftDepth, rightDepth) + 1; 
+    }else{
+        return Math.min(leftDepth, rightDepth) + 1; 
+    }
+   
+}
+
+//path-sum (Sometime ?thinking is better)
+function hasPathSum(root,targetSum) {
+  // var sum = 0 反而会更乱
+  if (!root) {
+      return false
+    }
+  
+    if (!root.left && !root.right) {
+      return  root.val == targetSum
+    }
+    //左右其中一个便可以
+    return (
+      hasPathSum(root.left,targetSum - root.val) ||
+      hasPathSum(root.right,targetSum - root.val) )
+}
+
+//binary-tree-paths
+//不一样 8 -5 -22:10
+function binaryTreePaths(root) {
+  if (!root) {
+    return []
+  }
+  if (!root.left && !root.right) {
+    return [root.val.toString()]
+  }
+  var resultLeft = binaryTreePaths(root.left)
+  var resultRight = binaryTreePaths(root.right) 
+
+  var paths = []
+  //forEach不能作为返回值
+ resultLeft.forEach(it => {
+    paths.push(root.val + '->' + it)
+  });
+ resultRight.forEach(it => {
+    paths.push(root.val + '->' + it)
+  });
+
+  return paths
+ //会有多个路径在一起,会有空
+ //return [root.val + " -> " + resultLeft.join("->"),root.val + " -> " + resultRight.join("->")]
+}
+//有问题
+function binaryTreePaths02(root,howDidIGetHere = '',result = []) {
+  //是不是空树
+  if (root) {
+    //叶子节点
+    if (root.left == null && root.right == null) {
+      result.push((howDidIGetHere + '->' + root.val).slice(2))
+      return result
+    }
+  binaryTreePaths02(root.left , howDidIGetHere + "->" + root.val , result)
+  binaryTreePaths02(root.right , howDidIGetHere + "->" + root.val , result)
+  }
+  return result
+}
+//sum-of-left-leaves
+function sumOfLeftLeaves(root) {
+  
+  if (!root) {
+    return 0
+  }
+  var sum = 0
+  //是否是叶子节点
+  //左子树有,右子树的左子树的右子树是否是叶子节点,左子树的左子树的左子树是否是叶子节点
+  if (root.left && !root.left.right&& !root.left.left) {
+    sum += root.left.val
+  }
+  //遍历左右子树
+  //此函数返回的是一个数,所以可以+
+  sum += sumOfLeftLeaves(root.left)
+  sum += sumOfLeftLeaves(root.right)//右子树
+
+  return sum
+}
+
+//invertTree
+var invertTree = function(root) {
+    if (!root) {
+      return null
+    }
+    //根节点不变不用写
+      var replace = root.left
+      root.left = root.right
+      root.right = replace
+      
+        invertTree(root.left)
+        invertTree(root.right)
+    return root
+}
+//merge-two-binary-trees
+function mergeTrees(root1, root2) {
+  if (!root1) {//为空返回对方子树
+    return root2
+  }
+  if (!root2) {
+    return root1
+  }
+  //既然要返回新的树,那就要新的对象
+  var root = new TreeNode(root1.val + root2.val)//+null相当于+0
+
+  root.left = mergeTrees(root1.left , root2.left)//相当于遍历
+  root.right = mergeTrees(root1.right , root2.right)
+
+  return root
+}
+
+//construct-string-from-binary-tree
+
+//print-binary-tree
+
+//将一个值插入排序二叉搜索树
+function insertIntoBST(root,val) {
+  //如果是空
+  if (!root) {
+    const node = new TreeNode(val);
+    return node
+  }else{
+  //排序
+  if (root.val > val) {
+    //·为什么要重新把返回值挂回到root.left上？
+    //·因为将这个值插入到左子树中之后，左子树的根结点可能发生变化
+    //·当左子树为空时，左子树就由空变了那个值所创建的结点
+    root.left = insertIntoBST(root.left,val)
+  }else{
+    root.right = insertIntoBST(root.right,val)
+  }
+}
+return root
+
+}
+
+//construct-binary-tree-from-preorder-and-inorder-traversal
+function buildTree(preorder, inorder) {//preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+  //如果是空
+  if (preorder.length == 0 || inorder.length == 0) {
+    return null
+  }
+ 
+  //创建二叉树的根节点
+  const root = new TreeNode(preorder[0]);
+  
+  //在中序找
+  let get = inorder.indexOf(preorder[0])
+
+  let inorderLeftLength = inorder.slice(0,get).length
+  // let inorderRightLength = inorder.slice(get + 1).length//不包含这个节点
+  //在先序中找,根据长度取出来
+  //先序
+  let preorderLeft = preorder.slice(1,inorderLeftLength+1) //
+  let preorderRight = preorder.slice(inorderLeftLength+1) //
+  //中序
+  let inorderLeft = inorder.slice(0,get) //
+  let inorderRight = inorder.slice(get + 1) //
+
+  root.left = buildTree(preorderLeft,inorderLeft)
+  root.right = buildTree(preorderRight,inorderRight)
+
+  return root
+}
+
+//construct-binary-tree-from-inorder-and-postorder-traversal
+function buildTree(inorder, postorder) { 
+    //如果是空
+  if (inorder.length == 0 && postorder.length == 0) {
+    return null
+  }
+
+  var val = postorder[postorder.length - 1]
+  //找出根节点,后续的最后一个节点
+  const root = new TreeNode(val);
+
+  //中序中节点的位置
+  var get = inorder.indexOf(val)
+  //根据中序取得左右子树数组
+  var inorderLeft = inorder.slice(0,get)
+  var inorderRight = inorder.slice(get + 1)
+
+  //后序;左右中;根据中序取得左右树数组
+  var postorderLeft = postorder.slice(0,inorderLeft.length)
+  var postorderRight = postorder.slice(inorderLeft.length,-1)
+
+  //构建二叉树
+  root.left =  buildTree(inorderLeft, postorderLeft)
+  root.right =  buildTree(inorderRight, postorderRight)
+
+  return root
+}
+
+//construct-binary-tree-from-preorder-and-postorder-traversal
+function constructFromPrePost(preorder, postorder) {
+  //如果是空
+  if (inorder.length == 0 || postorder.length == 0) {
+    return null
+  }
+}
+
+//convert-sorted-array-to-binary-search-tree
+function sortedArrayToBST(nums) {
+  if (nums.length == 0) {
+    return null
+  }
+  //分割索引
+  var val = Math.floor(nums.length / 2)
+
+  //种树
+  const root = new TreeNode(nums[val]);
+
+  root.left = sortedArrayToBST(nums.slice(0,val))
+  root.right = sortedArrayToBST(nums.slice(val+1))
+ 
+  return root
+}
+
+//convert-sorted-list-to-binary-search-tree
+//有问题
+function sortedListToBST(head) {
+
+}
+
+//balanced-binary-tree
+//它具有一个左子树和一个右子树，且对于任意一个子树而言，左子树和右子树高度只差不超过1。
+//如果树是平衡的，返回正数，值为它的深度.如果树是不平衡的，返回-1
+function isBalanced(root) {
+  if (!root) {
+    return true
+  } 
+ function depthTree(node) {//传入参数,与参数命名最好不一样
+  if (!node) {
+    //0 !== -1 true
+    return 0
+  } 
+  //左深度
+  var leftDepth = depthTree(node.left) 
+
+  //右深度
+  var rightDepth = depthTree(node.right) 
+
+  if (leftDepth === -1 || rightDepth === -1 || Math.abs(leftDepth - rightDepth) > 1) {
+    return -1 //表示不平衡
+  }
+
+  //计算深度,包括每个节点子树的深度
+  return Math.max(leftDepth,rightDepth) + 1
+}
+  //不是 -1 就是 平衡 true
+  return depthTree(root) !== -1
+}
+
+//validate-binary-search-tree
+
+
+function isValidBST(root) {
+  //要放在外面存储值来记录前一个节点的值,放里面每次都会新建一个pre进而无法存储值
+  var pre = null
+  function oeder(node) {//需要访问root就直接写在里面
+    //中序遍历
+    if (!node) {
+      return true 
+    }
+    //左,在二叉搜索树中左边的节点一定要比前一个节点小
+    var left = oeder(node.left)
+
+    /* 中
+      pre.val记录的是前一个节点的数值,如果当前节点比它大那么就交换他们
+      叶子节点的前一个节点是null,那么2就是前一个节点它的下一个节点就是null,以此对比
+              3
+            /
+          2
+        /
+      null */ 
+    if (pre && node.val <= pre.val) {//pre的初始状态是null,需要不是空
+      return false // pre = -Infinity
+    }
+      //不是的话就直接把前一个节点给pre(一棵树也行一个具体的值val也可以)
+      pre = node
+    
+    //右
+    var right = oeder(node.right)
+    //如果同时满足就是true
+    return left && right 
+  }
+  return oeder(root)
+}
+
+//flatten-binary-tree-to-linked-list
+//不一样?22:12
+function flatten(root) {
+  if (!root) {
+    return null
+  }
+  // const node = new TreeNode(null);不能在外面建立,会重置.而且应该是直接修改树的结构
+  //左
+ let left = flatten(root.left)
+  //右
+ let right = flatten(root.right)  
+
+ if (left) {//如果有左子树
+  //把遍历后给右子树接上
+  root.right = left
+  //同时左子树变null
+  root.left = null
+ 
+ //不用if(!root.right)找是因为找的是拼接后的树而不是原来的右子树,而是之前的root.left
+ //找到目前右子树的叶子节点
+ let p = root.right
+ //下一个为空就是最后一个节点
+ while (p.right) {
+  p = p.right
+ }
+ //接上
+ p.right = right
+}else{
+  //要是没有左子树那就直接把右子树加上
+  root.right = right
+}
+  return root
+}
+
+//serialize-and-deserialize-binary-tree
+function serialize(root) {
+  return JSON.stringify(root)
+} 
+function deserialize(data) {
+  return JSON.parse(data)
+}
+//search-in-a-binary-search-tree
+//注意是在二叉搜索树中搜索
+//递归尝试
+function searchBST(root, val) {
+  if (!root || root.val == val) {
+    return root
+  }
+
+  //搜索树左子树前一个结点比后一个大
+  if (root.val > val) {//左子树找,没有return递归的话值会丢失
+    return searchBST(root.left, val)//左子树
+  }
+
+//搜索树右子树前一个结点比后一个小
+  if (root.val < val) {//右子树找
+    return searchBST(root.right, val)//右子树
+  }
+}
+
+//insert-into-a-binary-search-tree
+//8-6-20:36
+function insertIntoBST(root, val) {
+  //返回新建的再套一个函数,调用的是同一个root也没有调用其它全局变量,没必要在里面再写一个函数
+  function order(root) {
+      //在叶子节点后面添加
+  if (!root) {
+    //既然要插入一个节点那么就要建立一个节点
+    const node = new TreeNode(val);
+    //最后一个调用(递归首次的返回值)
+    return node
+  }
+
+  //搜索树左子树前一个结点比后一个大
+  if (root.val > val) {
+    //树会发生变化,需要挂上去
+    root.left = insertIntoBST(root.left, val)
+  }
+  
+  if (root.val < val) {
+    root.right = insertIntoBST(root.right, val)
+  }
+  //递归退出必须有返回值
+  return root
+  }
+    return order(root)
+  }
+
+//lowest-common-ancestor-of-a-binary-tree
+function lowestCommonAncestor(root, p, q) {
+  if (!root) {
+    // ??
+    return null
+  }
+}
+
+</script>
+
+
+https://leetcode.cn/problems/binary-tree-inorder-traversal/
+https://leetcode.cn/problems/binary-tree-preorder-traversal/
+https://leetcode.cn/problems/binary-tree-postorder-traversal/
+https://leetcode.cn/problems/invert-binary-tree/
+https://leetcode.cn/problems/same-tree/
+https://leetcode.cn/problems/binary-tree-level-order-traversal/
+https://leetcode.cn/problems/symmetric-tree/
+https://leetcode.cn/problems/maximum-depth-of-binary-tree/
+https://leetcode.cn/problems/minimum-depth-of-binary-tree/
+https://leetcode.cn/problems/path-sum/
+https://leetcode.cn/problems/binary-tree-paths/
+https://leetcode.cn/problems/sum-of-left-leaves/
+https://leetcode.cn/problems/merge-two-binary-trees/
+https://leetcode.cn/problems/construct-string-from-binary-tree/
+//工作中很多都是这样
+https://leetcode.cn/problems/print-binary-tree/
+
+https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal
+https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal
+//https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal
+https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree
+https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree
+https://leetcode.cn/problems/balanced-binary-tree
+https://leetcode.cn/problems/validate-binary-search-tree
+https://leetcode.cn/problems/flatten-binary-tree-to-linked-list
+https://leetcode.cn/problems/serialize-and-deserialize-binary-tree
+https://leetcode.cn/problems/search-in-a-binary-search-tree
+https://leetcode.cn/problems/insert-into-a-binary-search-tree
+https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree
+https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree

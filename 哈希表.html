@@ -1,0 +1,196 @@
+
+<script>
+
+
+  /**
+   * 哈希表/散列表/映射表
+   * 哈希表不是讲了吗？对象不就是哈希表吗？
+   * 我们不是也自己实现了吗？MyMap
+   * 
+   * 学习对象的时候只是在学习哈希表的使用
+   * 自己实现的MyMap其实只考虑了封装，并没有考虑性能
+   *   我们自己实现的MyMap的几个主要方法的时间复杂度都为O(n)
+   * 
+   * obj.foo = 8
+   * console.log(obj.foo)
+   * 
+   * 真正的哈希表的get和set的性能都是O(1)而不是O(n)
+   *   它是如何做到的呢？
+   *     通过用映射的key直接计算出一个数值，它的映射的val就存在数组的这个下标上
+   *     这样一来就查找某个key对应的val就不用遍历整个数据结构了
+   *  O(1)表示的是固定时长，而不是一条原始的语句或计算就能完成。或者说与映射表存储的映射对数量无关。
+   * 
+   *   但是它会遇到一个不可避免的问题：
+   *     不同的key会计算得到相同的存储位置
+   *     这称做哈希冲突
+   *     要想按照上面的想法实现一个高性能的映射表，就必须要哈希冲突
+   *  解决哈希冲突的常用办法：
+   *    开放地址法
+   *    重新哈希
+   *    链式存储（Java源代码在使用）
+   *      当不同key计算出的存储位置相同时，把这些映射对儿存在那个位置的同一个链表上
+   *   
+   * 装载率：
+   *   映射表的映射对儿的数量与内部的数组长度的比值
+   *   可以想象，装载率越低，哈希冲突越小
+   *      当装载率大于100%时，一定会产生哈希冲突
+   */
+
+  class MyHashMap {
+    constructor(maxLoadFactor = 0.8) {
+      this._lists = new Array(16).fill(null)
+      this._size = 0
+      this._maxLoadFactor = maxLoadFactor //??maxLoadFactor
+    }
+    // 计算键为key的映射应该存在数组的哪个位置
+    _hash(key) {
+      var seed = 13131
+      var hash = 0
+      for (var i = 0; i < key.length; i++) {
+        hash = (hash * seed + key.charCodeAt(i)) >>> 0
+      }
+      return hash % this._lists.length
+    }
+    _changeCapacityTo(capacity) {
+      var oldLists = this._lists
+      var newLength = Math.max(capacity, 16)
+      if (newLength == oldLists.length) {
+        return
+      }
+      this._lists = new Array(capacity).fill(null)
+      this._size = 0
+      for (var i = 0; i < oldLists.length; i++) {
+        var p = oldLists[i]
+        while (p) {
+          this.set(p.key, p.val)
+          p = p.next
+        }
+      }
+    }
+    set(key, val) {
+      var idx = this._hash(key)
+      var p = this._lists[idx]
+      while (p) {
+        if (p.key === key) {
+          p.val = val
+          return this
+        }
+        p = p.next
+      }
+      var node = {
+        key: key,
+        val: val,
+        next: this._lists[idx]
+      }
+      this._lists[idx] = node
+      this._size++
+      if (this.size / this._lists.length > this._maxLoadFactor) {
+        this._changeCapacityTo(this._lists.length * 2)
+      }
+      return this
+    }
+    get(key) {
+      var idx = this._hash(key)
+      var p = this._lists[idx]
+      while (p) {
+        if (p.key === key) {
+          return p.val
+        }
+        p = p.next
+      }
+      return undefined
+    }
+    has(key) {
+      var idx = this._hash(key)
+      var p = this._lists[idx]
+      while (p) {
+        if (p.key === key) {
+          return true
+        }
+        p = p.next
+      }
+      return false
+    }
+    delete(key) {
+      var idx = this._hash(key)
+      var dummy = {next: this._lists[idx]}
+      var p = dummy
+      while (p.next) {
+        if (p.next.key === key) {
+          p.next = p.next.next
+          this._lists[idx] = dummy.next
+          this._size--
+          if (this._size / this._lists.length < this._maxLoadFactor / 4) {
+            this._changeCapacityTo(this._lists.length / 2)
+          }
+          return true
+        }
+      }
+      return false
+    }
+    get size() {
+      return this._size
+    }
+    report() {
+      var c = 0
+      for (var list of this._lists) {
+        var p = list
+        if (p) {
+          c++
+        }
+      }
+      return this.size / c
+    }
+    forEach(func) {
+      for (var list of this._lists) {
+        var p = list
+        while(p) {
+          func(p.val, p.key)
+          p = p.next
+        }
+      }
+    }
+  }
+
+  // 集合是特殊的映射：每个值都映射到它自身的映射
+  class MySet {
+    constructor() {
+      this._map = new MyHashMap()
+    }
+    add(val) {
+      this._map.set(val, val)
+    }
+    delete(val) {
+      this._map.delete(val)
+    }
+  }
+
+  /**
+   * 
+   * 为什么我们的实现比js语言自带的Map性能还要好一些？
+   * 1 自带的Map其key可以为任意数据类型，如对象，数组，数值，bool，NaN，而我们的实现只支持字符串做为key
+   *    而它区分不同类型的key可能要额外花费时间
+   * 2 自带的Map会记录映射对儿的插入顺序，在其forEach方法中，会按照插入顺序迭代，而记录和维护映射对的顺序应该也是需要时间消耗的
+   *    而我们的实现并没有记录和维护映射对儿的顺序
+   * 3 也有可能是我们的装载率更低
+   */
+
+  /**
+   * 我们实现中使用了js里“对象”
+   *   这算不算拿一个映射来实现另一个映射？
+   *     没有，我们虽然使用了对象，但我们是把对象当成类似其它语言的对象在使用，而不是当映射在使用
+   *       即我们的对象总是有固定数量的属性且始终不发生变化
+   *        （其它很多语言里的“对象”是不能做为映射的，它们只有固定的一组映射）
+   * 
+   * 我们能不能实现类似Map中的维护映射对儿的顺序？
+   *   实际上很多语言的映射都没有这个功能的。
+   * 
+   * 
+   * 由于哈希函数希望尽量为每个不同的字符串计算出不同的一个值
+   * 所以“哈希”这个词现在意义已经扩充了：即它可以表示从一份数据计算出一个确定但随机的值，且数据发生了变化，计算出的值就不一样。
+   *   我们可以对文件计算其哈希来验证其完整性
+   *     对此有很多不同的哈希函数
+   *      这时计算的哈希值我们一般会称为文件的指纹
+   *      最常见的是md5，sha1，sha256，sha384，sha1024
+   */
+</script>

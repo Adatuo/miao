@@ -1,0 +1,33 @@
+<script>
+  const assert = require('chai').assert;
+const add = (a, b) => a + b;
+
+describe('Addition Function', function() {
+  it('should return 5 when adding 2 and 3', function() {
+    let result = add(2, 3);
+    assert.equal(result, 5);
+  });
+
+  it('should return a number', function() {
+    let result = add(2, 3);
+    assert.typeOf(result, 'number');
+  });
+});
+
+var c = 0
+function describe(description, func) {
+    c++
+    console.log(' '.repeat(c*2) + description)
+    func()
+}
+<!-- 实现以上函数，已让下面的调用能够输出最后的效果 -->
+describe('foo', () => {
+  describe('bar', () => {})
+  describe('bar', () => {
+    describe('bar1', () => {})
+    describe('bar1', () => {})
+    describe('bar1', () => {})
+  })
+  describe('bar', () => {})
+})
+</script>
