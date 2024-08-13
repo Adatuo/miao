@@ -39,10 +39,10 @@ var adatuo = function () {
             //users每一个的key值
             var usersKey = Object.keys(x)
             for (let j = 0; j < usersKey.length; j++) {
-              //每个对象的属性值
-              if(values === x[usersKey[j]]){
-                return i              
-              }
+              //每个对象的属性值以及对象里面是否有这个值
+              if(values === usersKey[j] && x[usersKey[j]] === true){
+                 return i           
+              } 
             }
           }else if(typeof values == "function" && values(users[i])){//values为函数,users[i]参数o
             return i
