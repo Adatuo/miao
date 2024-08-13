@@ -33,23 +33,46 @@ var adatuo = function () {
 
     function findIndex(users,values) {
       for (let i = 0; i < users.length; i++) {
-        if (users(i) == values && values.constructor === Object) {
+        if (typeof values == "string") {
+          //users每一个的对象
+          var x = users[i]
+          //users每一个的key值
+          var usersKey = Object.keys(x)
+          for (let j = 0; j < usersKey.length; j++) {
+            //每个对象的属性值
+            if(values === x[usersKey[j]]){
+              return i              
+            }
+          }
+        }else if(typeof values == "function" && values(users[i])){//values为函数,users[i]参数o
           return i
         }else if (Array.isArray(values)) {
-          
+          //key value分开
+            //users每一个的对象
+            var x = users[i]
+            //users每一个的key值
+            var usersKey = Object.keys(x)
+            for (let j = 0; j < usersKey.length; j++) {
+              //每个对象的属性值
+              if(values[0] === usersKey[j] && values[1] === x[usersKey[j]]){
+                return i              
+              }
+            }
+        }else if (typeof values === Object && users[i] === values) {
+          return i
         }
-      //   if (users(i) == values) {
-      //     return i
-      //   }else{
-      //   for (var x in users[i]) {
-      //     if (users[x] == values){
-      //       return i
-      //       }
-      //     }
-      //   }
-      // }
       }
     }
+        //     var obj1 = users[i]
+        // if (values.constructor === Object) {//需要深对比
+        //   return i
+        // }else if (Array.isArray(values)) {
+          
+        // }else if(obj1.user === values){
+        //   return i  
+        // }  
+    }
+
     function findIndexLastIndex(users,values) {
       for (var key in users) {
         if (key == values) {
@@ -91,6 +114,5 @@ var adatuo = function () {
       findIndexLastIndex: findIndexLastIndex,
       flatten: flatten,//此函数可以优化
       flattenDeep: flattenDeep
-    }
-  }()
+    }()
 
