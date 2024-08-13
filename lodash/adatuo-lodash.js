@@ -58,12 +58,26 @@ var adatuo = function () {
                   return i              
                 }
               }
-          }else if (typeof values === Object && users[i] === values) {
-            return i
+          }else if (typeof values === 'object' && values !== null) {//对象每一个都要比比较
+              var x = users[i];//拿到对象
+              var allMatch = true;
+              for (var key in values) {//拿到key
+                if (values[key] !== x[key]) {//比较value
+                  allMatch = false;
+                  break;
+                }
+              }
+              if (allMatch) {
+                return i;
+              }
+            }
           }
+          //所有都不行 -1
+          return -1
         }
-      }
-    }
+        
+      
+    
 
     function findIndexLastIndex(users,values) {
       for (var key in users) {
@@ -106,5 +120,5 @@ var adatuo = function () {
       findIndexLastIndex: findIndexLastIndex,
       flatten: flatten,//此函数可以优化
       flattenDeep: flattenDeep
-    }()
+}}()
 
