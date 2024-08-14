@@ -187,7 +187,7 @@ var adatuo = function () {
     }
 
     function head(array) {
-      return array.length == 0 ? undefined : array.slice(0,1)
+      return array.length == 0 ? undefined : array[0]
     }
     return {
       compact: compact,
