@@ -189,6 +189,45 @@ var adatuo = function () {
     function head(array) {
       return array.length == 0 ? undefined : array[0]
     }
+
+    function indexOf(array,value,fromIndex = 0) {
+      for (let i = fromIndex; i < array.length; i++) {
+        if (array[i] == value) {
+          return i
+        }       
+      }
+      return -1
+    }
+
+    function lastIndexOf(array,value,fromIndex = 0) {
+      for (let i = fromIndex; i >=0; i--) {
+        if (array[i] == value) {
+          return i
+        }       
+      }
+      return -1
+    }
+
+    function initial(array) {
+      array.splice(-1,1)
+      return array
+    }
+
+    function join(array,separator) {
+      var S = ''
+      array.forEach((value,index) => {
+        S = S + value
+        if (index != array.length - 1) {
+          S = S + separator
+        }  
+      })
+      return S
+    }
+
+    function last(array) {     
+      return array.splice(-1,1)[0]
+    }
+
     return {
       compact: compact,
       chunk: chunk,
@@ -202,5 +241,10 @@ var adatuo = function () {
       fromPairs: fromPairs,
       toPairs: toPairs,
       head: head ,
+      indexOf: indexOf,
+      lastIndexOf: lastIndexOf,
+      initial: initial,
+      join: join,
+      last: last,
 }}()
 

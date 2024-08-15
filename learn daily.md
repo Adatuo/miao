@@ -720,3 +720,59 @@ https://regex101.com
 21:35 replace(/ /,function(mathch,amount,unit))
 22:05 正则表达式函数
 22:24 分组
+
+8-14
+20:49 可能的面试题
+21:13 动态正则多种语言转换的时候出现(差不多这个位置就飘走了)
+22:08 非捕获分组 防止/(?:)/非空
+22:12 10遍 
+
+/(.)\1+/ == '(.)\\1+' 
+\1 : \1 是正则表达式中的反向引用，它引用的是在当前正则表达式中第一个捕获组的内容。反向引用允许你在正则表达式中重新使用已经匹配的部分文本，从而实现更复杂的匹配逻辑。
+
+反向引用的工作方式：
+	1.	捕获组：
+	•	捕获组由括号 () 定义。正则表达式中的每一对括号会捕获匹配到的内容，并将其存储在一个临时的内存中，供后续使用。
+	•	例如，正则表达式 /(.)/ 会捕获任意一个字符。
+	2.	反向引用：
+	•	反向引用使用 \ 后跟一个数字来引用捕获组。\1 表示引用第一个捕获组，\2 表示引用第二个捕获组，以此类推。
+	•	反向引用在正则表达式中可以被用来匹配捕获组中已经匹配到的相同内容。
+
+示例：
+
+假设你有一个字符串 "abcabc"，你想匹配两个相同的连续子字符串，比如 "abcabc"。可以使用如下的正则表达式：
+
+const regex = /(abc)\1/;
+const str = "abcabc";
+const result = regex.test(str);
+console.log(result); // 输出: true
+
+$&：在 replace 方法的替换字符串中，$& 代表正则表达式匹配到的整个字符串，即整个匹配结果。
+
+使用示例：
+
+假设你有以下字符串，并想用 [] 包裹所有匹配到的单词。
+
+const str = "Hello World";
+const result = str.replace(/\b\w+\b/g, "[$&]");
+console.log(result); // 输出: "[Hello] [World]"
+
+math
+math.index
+math返回的是数组,但是match[0]访问的是所有个元素
+var input = "A string with 3 numbers in it... 42 and 88.";
+var number = /\b(\d+)\b/g;
+var match;
+
+while (match = number.exec(input)) {
+    console.log("Found", match[1], "at", match.index);
+}
+
+	•	这个正则表达式匹配的是字符串中的所有独立的数字（3, 42, 88）。
+	•	在每次匹配时，match[1] 包含匹配到的数字部分，而 match.index 则表示该数字在字符串中的起始位置。
+
+raw
+不自动处理转义字符串
+String.raw'\naa\2'
+'\\naa\\2'
+log -> \naa\2

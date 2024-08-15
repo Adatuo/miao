@@ -1,0 +1,37 @@
+<script>
+  /*各种零宽断言 $ \b ^ ([^a-c]不一样)
+      positivelookahead（?=xxx）正预测先行断言 某个位置的右边要是xxx
+      negativelookahead（?!xxx）负预测先行断言 某个位置的右边不能以任何形式匹配xxx
+      positionlookbehind（?<=xxx）正回顾后发断言 某个位置的左边要是xxx
+      negativelookbehind（?<!xxx）负回顾后发断言 某个位置的左边不能以任何形式匹配xxx
+      零宽断言连续使用时断言的是同一个位置 */
+
+  //regex-validate-pin-code
+  /^\d{4}$|^\d{6}$/
+  /^\d{4}(\d{2})?$/
+
+  //credit-card-mask
+  function maskify(s) {
+    
+  }
+  //exclamation-marks-series-number-5-remove-all-exclamation-marks-from-the-end-of-words
+  "hi! !Hi!!!".replace(/!+(?=\s|$)/g,'')
+</script>
+
+https://www.codewars.com/kata/regex-validate-pin-code
+https://www.codewars.com/kata/credit-card-mask
+https://www.codewars.com/kata/exclamation-marks-series-number-5-remove-all-exclamation-marks-from-the-end-of-words
+https://www.codewars.com/kata/cancer-cells
+https://www.codewars.com/kata/decipher-this
+https://www.codewars.com/kata/counting-duplicates
+https://www.codewars.com/kata/trim-method
+https://www.codewars.com/kata/kebabize
+https://www.codewars.com/kata/convert-string-to-camel-case
+https://www.codewars.com/kata/a-string-with-bugs
+https://www.codewars.com/kata/valid-phone-number
+https://www.codewars.com/kata/extract-file-name
+https://www.codewars.com/kata/string-incrementer
+https://www.codewars.com/kata/extract-the-domain-name-from-a-url-1
+https://www.codewars.com/kata/mod4-regex
+https://www.codewars.com/kata/calculating-with-functions
+https://www.codewars.com/kata/basic-markdown-to-html
