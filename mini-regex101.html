@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini-regex101</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <style class = "text/tailwind">
+    input,button{
+      outline: none;/* 去除元素轮廓样式 */
+    }
+
+     #result strong{
+      font-weight: normal;
+      &:nth-of-type(odd){/* ? */
+        background-color: #9fcfff;
+      }
+      &:nth-of-type(even){/* ? */
+        background-color: #d5ebff;
+      }
+    } 
+  </style>
+</head>
+<body>
+  <div>
+    
+    <div>REGULAR EXPRESSION</div>
+    <input class="border" name="正则表达式"  type="text" id="reInput" value="Will" onkeyup="run()"><!--onkeyup按键弹起来的时候用--> 
+    <button class="border" onclick="run()">RUN</button><!-- onclick点击的时候执行""里的 -->
+    <div id="tips"></div><!-- 一个提示 -->
+   <div>FLAGS</div> <!-- 模式选择 -->
+    <label><input type="checkbox" id="flag-g" checked>g</label>
+    <label><input type="checkbox" id="flag-m">m</label>
+    <label><input type="checkbox" id="flag-i">i</label>
+    <label><input type="checkbox" id="flag-y">y</label>
+    <label><input type="checkbox" id="flag-u">u</label>
+    <label><input type="checkbox" id="flag-s">s</label>
+    <label><input type="checkbox" id="flag-d" checked>d</label><!-- checked默认勾上-->
+    <label><input type="checkbox" id="flag-v">v</label>
+    
+    <div>TEST STRING</div>
+      <textarea class="border" id="testStringInput">
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        11 qw
+      </textarea>
+      <div class="" id="result"></div>   <!-- 因为textarea不能高亮,所以要再写一个套上 -->
+  </div>
+ 
+</body>
+<script>
+   // 元素的id为xxx时，页面的全局就会出现一个叫xxx的变量，指向一个表示那个标签的对象
+
+   function run() {
+    var reString = reInput.value //可以通过value属性读取到文本框的值
+    if (reString == '') {//正则表达式是空直接返回
+      return
+    }
+    var flags = getFlags()//拿到模式
+    try {
+       var re = new RegExp(reString,'g') //此为新建正则表达式
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        tips.innerHTML = error.message
+        return //语法错误停止执行
+      }else{//不是这个错误就抛出
+        throw error       
+      }
+    }
+   
+    var testString = testStringInput.value//第二个框里的
+
+    var html = ''//拼出符合正则表达式的字符串 
+
+    var match //取出匹配正则的值
+
+    var lastLastIndex = 0 //
+
+    while (match =re.exec(testString)) {
+      html += testString.slice(lastLastIndex,match.index)
+      html += `<strong>${match[0]}</strong>` //<strong>粗体,高优先将,重要. math返回的是所有匹配值的集合
+      lastLastIndex = re.lastIndex //更新lastLastIndex的位置到达下一个值的位置
+
+      if (match[0].length == 0) {//如果某一次match没有匹配到值,那么lastIndex就要强行移动到下一个
+        re.lastIndex++ //：匹配到一个空字符串。当匹配到空字符串时，正则表达式的 lastIndex 不会自动前进，因为空字符串的长度为 0，这会导致下一次匹配从同一位置开始，从而进入一个无限循环。
+      }  
+
+      if (re.global == false) {//g没有循环一次即可
+        break
+      }
+    }
+      html += testString.slice(lastLastIndex) //把剩下的字符拼到一起
+      result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值
+   }
+
+   function getFlags() {
+    var flags = ['g','m','i','y','u','s','d','v']
+    return flags.filter(it => {
+    var element = document.getElementById('flag-' + it)//获取一个 HTML 元素，其 id 是 'flag-' + it，这里的 it 是 flags 数组中的一个元素。
+    if (element.checked) {//对于chechbox来说,checked属性可以返回它是否有被打上勾
+      return true
+    }else{
+      return false
+    }
+   }).join('')
+  }
+</script>
+</html>

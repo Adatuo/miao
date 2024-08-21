@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://class.damiaoedu.com:44313/codes/js/replace-images.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, asperiores.</p>
+  aaa
+  fwoeifwo
+  bbb
+  <button onclick="replaceImages()">replace</button>
+  <script>
+    function replaceImages() {
+
+      var imgs = document.getElementsByTagName('img')
+      for (var i = imgs.length - 1; i >= 0; i--) {
+        var text = imgs[i].alt
+        var textNode = document.createTextNode(text)
+
+        imgs[i].parentNode.replaceChild(textNode, imgs[i])
+      }
+    }
+  </script>
+
+</body>

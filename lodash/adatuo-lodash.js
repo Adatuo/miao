@@ -228,6 +228,35 @@ var adatuo = function () {
       return array.splice(-1,1)[0]
     }
 
+    /**filter方法
+     * filter方法会遍历数组中的每个元素，并执行回调函数。在回调函数中，如果
+返回true，则保留该元素；如果返回false，则移除该元素。
+     * 不会改变原数组,会返回一个新的
+     */
+    function pull(array,x,y) {
+      var newArray = array.filter(it => it !== x &&  it !== y)//都不等于x y就返回false移除该元素
+
+      array.length = 0 //原数组清零
+
+      array.push(...newArray)//拍扁
+
+      return array
+    }
+
+    function reverse(array) {
+      var result = []
+      for (let i = array.length - 1; i >= 0; i--) {
+        var x = array[i]
+        result.push(x)
+      }
+      array.length = 0 //原数组清零
+      array.push(...result)
+      return array
+    }
+
+    function every(collection, predicate=_.identity) {
+      
+    }
     return {
       compact: compact,
       chunk: chunk,
@@ -246,5 +275,7 @@ var adatuo = function () {
       initial: initial,
       join: join,
       last: last,
+      pull: pull,
+      reverse:reverse,
 }}()
 

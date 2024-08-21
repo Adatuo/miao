@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sora</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div>
+    <img id="earth" class="w-1/12 m-auto mt-72 relative" src="F:\前端\gitPush\solar\earth.jpg" >
+    <img id="moon" class="w-12 m-auto mr-100 absolute" src="F:\前端\gitPush\solar\moon.jpg " >
+    <img id="sun" class="w-2/12 -mt-64 ml-[50%] absolute" src="F:\前端\gitPush\solar\sun.jpg"  >
+    
+  </div>
+</body>
+
+  <script>
+    var earth = document.getElementById("earth");
+    var moon = document.getElementById("moon");
+    var angleEarth = 0, angleMoon = 0 , lastTime = null;
+    function animate(time) {
+    if (lastTime != null)
+    angleEarth += (time- lastTime) * 0.001;
+    angleMoon += (time- lastTime) * 0.005;  
+    lastTime = time;
+
+    earth.style.top = (Math.sin(angleEarth) *  300) + "px";
+    earth.style.left = (Math.cos(angleEarth) * 650) + "px";
+    moon.style.top = (Math.sin(angleMoon) *  50) + "px";
+    moon.style.left = (Math.cos(angleMoon) * 50) + "px";  
+
+    requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+
+
+</html>

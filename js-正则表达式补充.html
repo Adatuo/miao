@@ -1,0 +1,95 @@
+
+<script>
+
+正则相关的函数
+
+  String.prototype.match
+    'woifjsldfjwoef'.match(/foo/g)
+    'woifjsldfjwoef'.match(/foo/)
+    match方法接收带g不带g标记的正则表达式,其行为不一样
+    不带g时,基本等价于exec方法,会找到匹配及分组捕获到的东西
+    带g时,与exec方法就完全不同了,它只会找到所有的完整匹配,
+
+  String.prototype.replace
+  String.prototype.split
+    可以通过正则将字符串split成多个部分
+    当split使用正则拆分字符串时,正则中分组捕获到的内容会出现在拆分位置上
+  String.prototype.search
+    类似字符串的indexOf方法,只能返回找到的匹配的下标
+
+
+  RegExp.prototype.test
+  RegExp.prototype.exec
+
+
+正则的标记位
+  d 会将分组捕获到的内容在原始字符串中的位置也告知我们,使用 d 标记可以获取匹配的字符在原始字符串中的索引范围。
+  g 全局,影响replace方法以及match方法
+  i 不区分大小写
+  m 多行匹配,影响^$的行为
+  s 点可以匹配所有符号,包括回车
+  y 每次匹配都要从"头"开始,可以认为相当于正则的前面被增加了一个^ 但它不表示字符串的开头位置,而是这一次匹配首次尝试开始的位置
+
+具名分组
+  /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/.exec('fowjeo 2024-08-13  fijwoeffoooooobar')
+let dateStr = "2024-08-17";
+let regex = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+let match = dateStr.match(regex);
+
+console.log(match.groups.year);  // "2024"
+console.log(match.groups.month); // "08"
+console.log(match.groups.day);   // "17"
+
+
+前向引用
+  在正则中可以使用\1 \2 等表示该正则中第一/二个分组捕获到的具体内容
+  '张三 李四 郭富城 王五 韩朵朵 李一一 高圆圆'.match(/.(.)\1/g)  
+
+
+零宽断言的括号是不记入分组的
+(?:)非捕获分组,任何括号的前面有?:则它成为一个非捕获分组
+它与普通括号的区别是它不记入分组编号,也不捕获
+它不捕获要括号干嘛？可以用来给括号整体加量词。
+
+
+回溯算法
+String.raw`aaaaa`
+其它函数如何通过exec函数实现的
+
+
+
+练习题
+https://www.codewars.com/kata/regex-validate-pin-code
+
+https://www.codewars.com/kata/credit-card-mask
+
+https://www.codewars.com/kata/exclamation-marks-series-number-5-remove-all-exclamation-marks-from-the-end-of-words
+
+https://www.codewars.com/kata/cancer-cells
+
+https://www.codewars.com/kata/decipher-this
+
+https://www.codewars.com/kata/counting-duplicates
+
+https://www.codewars.com/kata/trim-method
+
+https://www.codewars.com/kata/kebabize
+
+https://www.codewars.com/kata/convert-string-to-camel-case
+
+https://www.codewars.com/kata/a-string-with-bugs
+
+https://www.codewars.com/kata/valid-phone-number
+
+https://www.codewars.com/kata/extract-file-name
+
+https://www.codewars.com/kata/string-incrementer
+
+https://www.codewars.com/kata/extract-the-domain-name-from-a-url-1
+
+https://www.codewars.com/kata/mod4-regex
+
+https://www.codewars.com/kata/basic-markdown-to-html
+
+https://www.codewars.com/kata/calculating-with-functions
+</script>

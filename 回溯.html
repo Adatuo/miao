@@ -1,0 +1,67 @@
+<script>
+  //letter-combinations-of-a-phone-number
+
+  //需要一个map来确定电话号码的数字
+  var map = {
+    2:'abc',
+    3:'def',
+    4:'ghi',
+    5:'jkl',
+    6:'mno',
+    7:'pqrs',
+    8:"tuv",
+    9:"wxyz"
+  }
+
+  
+
+  function letterCombinations(digits) {
+    if(digits == '') return []//从外层结束
+    var result = []
+    bt(digits,0,'')//从第一个启动回溯的调用
+    return result
+
+    function bt(digits,i,history = '') {//history存储排序的字母
+      // if (!digits) {   //数字很大的话就很慢了
+      //   return 
+      // }
+
+     // if (i == digits.length) {//说明到了最后一个
+        //history.length > 0 && result.push(history)//短逻辑表达法.检查 history 数组是否非空，如果是，则将 history 推入 result 数组中。
+     //   return
+     // }
+      var num = digits[i]//按顺序获得电话号码获得
+      var chars = map[num]//电话代表的字母
+    
+      for (var char of chars) {//遍历字母
+        bt(digits,i + 1,history + char)
+      }
+      /*循环展开的话就是展开这三个(7号键位除外)
+      bt(digits,i + 1,history + chars[0]) 
+      bt(digits,i + 1,history + chars[1]) 
+      bt(digits,i + 1,history + chars[2]) 
+      bt(digits,i + 1,history + chars[3]) 
+      */
+    }
+  }
+
+  //generate-parentheses
+  function generateParenthesis(n) {
+    var result = []
+    bt(0,0,'')
+    return result
+
+    function bt(l,r,history = '') {//要明白要存储什么
+      if (r == n) {
+        result.push(history)
+        return
+      }
+      if (l < n) {
+        bt(l + 1 , r , history + '(')//左括号数量
+      }
+      if (r < l) {
+        bt(l  , r+ 1  , history + ')')//右括号数量
+      }
+    }
+  }
+</script>
