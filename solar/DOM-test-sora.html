@@ -6,49 +6,46 @@
   <title>Sora</title>
   <script src="https://cdn.tailwindcss.com/"></script>
   <style>
-    .container {
-      position: relative;
-      height: 100vh; /* 确保容器高度填满视口 */
-    }
-    .absolute-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+    /* Add styles if needed */
   </style>
 </head>
 <body>
-  <div class="container">
-    <img id="earth" class="w-1/12 absolute-center" src="F:\前端\gitPush\solar\earth.jpg" >
-    <img id="moon" class="w-12 absolute" src="F:\前端\gitPush\solar\moon.jpg" >
-    <img id="sun" class="w-2/12 absolute top-0 left-[45%] transform -translate-x-1/2" src="F:\前端\gitPush\solar\sun.jpg"  >    
+  <div class="relative max-h-screen">
+    <img id="earth" class="w-1/12 m-auto mt-72 absolute" src="F:\前端\gitPush\solar\earth.jpg" >
+    <img id="moon" class="w-12 absolute" src="F:\前端\gitPush\solar\moon.jpg " >
+    <img id="sun" class="w-2/12 -mt-64 ml-[45%] absolute" src="F:\前端\gitPush\solar\sun.jpg"  >    
   </div>
+</body>
 
-  <script>
-    var earth = document.getElementById("earth");
-    var moon = document.getElementById("moon");
+<script>
+  var earth = document.getElementById("earth");
+  var moon = document.getElementById("moon");
 
-    var angleEarth = 0, angleMoon = 0, lastTime = null;
-    function animate(time) {
-      if (lastTime != null) {
-        var deltaTime = time - lastTime;
-        angleEarth += deltaTime * 0.001; // Earth orbit speed
-        angleMoon += deltaTime * 0.005;  // Moon orbit speed
-      }
-      lastTime = time;
-
-      // Calculate earth's position
-      var earthX = Math.cos(angleEarth) * 650;
-      var earthY = Math.sin(angleEarth) * 300;
-      earth.style.transform = `translate(${earthX}px, ${earthY}px)`;
-
-      // Calculate moon's position relative to earth
-      var moonX = Math.cos(angleMoon) * 200; // Moon's orbit radius around Earth
-      var moonY = Math.sin(angleMoon) * 100; // Moon's orbit radius around Earth
-      moon.style.transform = `translate(${earthX + moonX}px, ${earthY + moonY}px)`;
-
-      requestAnimationFrame(animate);
+  var angleEarth = 0, angleMoon = 0, lastTime = null;
+  function animate(time) {
+    if (lastTime != null) {
+      var deltaTime = time - lastTime;
+      angleEarth += deltaTime * 0.001; // Earth orbit speed
+      angleMoon += deltaTime * 0.005;  // Moon orbit speed
     }
+    lastTime = time;
+
+    // Calculate earth's position
+    var earthX = Math.cos(angleEarth) * 650;
+    var earthY = Math.sin(angleEarth) * 300;
+    earth.style.transform = `translate(${earthX}px, ${earthY}px)`;
+
+    // Calculate moon's position relative to earth
+    var moonOrbitRadius = 200; // Orbit radius for moon
+    var moonX = Math.cos(angleMoon) * moonOrbitRadius;
+    var moonY = Math.sin(angleMoon) * moonOrbitRadius;
+
+    // Adjust moon's position to orbit around earth
+    moon.style.transform = `translate(${earthX + moonX}px, ${earthY + moonY}px)`;
+
     requestAnimationFrame(animate);
-  </script>
+  }
+  requestAnimationFrame(animate);
+</script>
+
+</html>

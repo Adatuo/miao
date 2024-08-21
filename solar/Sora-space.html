@@ -31,13 +31,13 @@
     lastTime = time;
 
 
-    var earthX = (Math.sin(angleEarth) *  650);
-    var earthY = (Math.cos(angleEarth) * 300);
+    var earthX = Math.sin(angleEarth) * 650;
+    var earthY = Math.cos(angleEarth) * 300;
     earth.style.transform = `translate(${earthX}px, ${earthY}px)`  //transform是css属性,有些调用方式不一样
 
     
     var moonX = earthX + Math.cos(angleMoon) * 200; //平移
-    var moonY = earthY + Math.sin(angleMoon) * 100; //平移
+    var moonY = earthY + Math.sin(angleMoon) * 200; //平移
     moon.style.transform = `translate(${moonX}px, ${moonY}px)`;
 
 
