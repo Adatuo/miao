@@ -10,29 +10,38 @@
   </style>
 </head>
 <body>
-  <div>
+  <div class="relative max-h-screen">
     <img id="earth" class="w-1/12 m-auto mt-72 relative" src="F:\前端\gitPush\solar\earth.jpg" >
-    <img id="moon" class="w-12 m-auto mr-100 absolute" src="F:\前端\gitPush\solar\moon.jpg " >
-    <img id="sun" class="w-2/12 -mt-64 ml-[50%] absolute" src="F:\前端\gitPush\solar\sun.jpg"  >
-    
+    <img id="moon" class="w-12 m-auto mr-100 relative" src="F:\前端\gitPush\solar\moon.jpg " ><!-- 要让moon定到最近的earth上 -->
+    <img id="sun" class="w-2/12 -mt-64 ml-[45%] absolute" src="F:\前端\gitPush\solar\sun.jpg"  >    
   </div>
 </body>
 
   <script>
+    //定位问题
+
     var earth = document.getElementById("earth");
     var moon = document.getElementById("moon");
+
     var angleEarth = 0, angleMoon = 0 , lastTime = null;
     function animate(time) {
     if (lastTime != null)
-    angleEarth += (time- lastTime) * 0.001;
-    angleMoon += (time- lastTime) * 0.005;  
+    angleEarth += (time- lastTime) * 0.001;//转速
+    angleMoon += (time- lastTime) * 0.005;  //转速
     lastTime = time;
 
-    earth.style.top = (Math.sin(angleEarth) *  300) + "px";
-    earth.style.left = (Math.cos(angleEarth) * 650) + "px";
-    moon.style.top = (Math.sin(angleMoon) *  50) + "px";
-    moon.style.left = (Math.cos(angleMoon) * 50) + "px";  
 
+    var earthX = (Math.sin(angleEarth) *  650);
+    var earthY = (Math.cos(angleEarth) * 300);
+    earth.style.transform = `translate(${earthX}px, ${earthY}px)`  //transform是css属性,有些调用方式不一样
+
+    
+    var moonX = earthX + Math.cos(angleMoon) * 200; //平移
+    var moonY = earthY + Math.sin(angleMoon) * 100; //平移
+    moon.style.transform = `translate(${moonX}px, ${moonY}px)`;
+
+
+ 
     requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
