@@ -664,8 +664,9 @@ MoveZero 思路不一样 22：13
 21:26 callee
 
 8-4
+class1  向上抛出异常
 22:00 断言
-
+简言之，断言就是如果ok，就什么也不做，如果不ok，就直接抛错
 8-5
 20:33 新购函数
 20:35 用JS写python的with
@@ -679,6 +680,8 @@ MoveZero 思路不一样 22：13
 
 
 21:00 稀疏数组,方便push
+不是连续存储，不用关心长度的数组，可以随意增加或者减少长度
+即使前面是空属性，push也会放在空属性的后面
 
 
 21:10 二叉函数排序.链表不能用二分法
@@ -813,7 +816,7 @@ the-super-tiny-compiler
 20:48 elt
 20:50 Pauseonuncaughtexceptions
 20:55 创建
-21:00 attribute property 的区别 , 其实也只有两个htmlFor classNmae
+21:00 其实也只有两个htmlFor classNmae 属性
 21:09 data- 就不会有冲突了
 21:12 dataset 直接访问带有data- 的标签
 21:48 结束标签
@@ -840,3 +843,19 @@ the-super-tiny-compiler
 22:18
 22:21 classList.remove 方便操作类名
 
+8-22
+21:06 'clik' 不要打空格 
+21:08 clik的几种绑定方式
+21:10 event
+21:23 onmousedown 不分左右键 which会记录左右键 type记录事件名称
+document.body.addEventListener('click'，function(e）{
+//如果一个函数是事件处理函数，那么此次运行它是在做为谁的事件处理函数运行，它里面的this就是谁
+21:27 一部分元素能收到其子元素的事件
+21:39 stopPropagation() ---
+      stopImmediatePropagation()阻止事件在当前元素上进一步执行（即后续的处理函数都不执行了）
+22:00 mathes 事件委托
+22:04 面试题
+22:13 混淆的括号
+22:17 循环体有几次就有几个i , 外面的i是为了保障运行 , 里面是保障click
+22:20 一般大量元素才这样做 let 与 var
+22:22 更好的办法 变成数组

@@ -3,49 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sora</title>
+  <title>Solar System</title>
   <script src="https://cdn.tailwindcss.com/"></script>
-  <style>
-
-  </style>
 </head>
-<body>
-  <div class="relative max-h-screen">
-    <img id="earth" class="w-1/12 m-auto mt-72 relative" src="F:\前端\gitPush\solar\earth.jpg" >
-    <img id="moon" class="w-12 m-auto mr-100 relative" src="F:\前端\gitPush\solar\moon.jpg " ><!-- 要让moon定到最近的earth上 -->
-    <img id="sun" class="w-2/12 -mt-64 ml-[45%] absolute" src="F:\前端\gitPush\solar\sun.jpg"  >    
-  </div>
-</body>
+<body class="relative h-screen w-screen">
+  <!-- 太阳 transform用于将太阳视觉上居中,否则元素的左上角会在父元素的中心-->
+  <img id="sun" class="w-2/12 fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-500" src="F:\前端\gitPush\solar\sun.jpg">
+  <!-- 地球 -->
+  <img id="earth" class="w-1/12 fixed rounded-full bg-blue-500" src="F:\前端\gitPush\solar\earth.jpg">
+  <!-- 月球 -->
+  <img id="moon" class="w-12 fixed rounded-full bg-gray-500" src="F:\前端\gitPush\solar\moon.jpg">
 
   <script>
-    //定位问题
-
     var earth = document.getElementById("earth");
     var moon = document.getElementById("moon");
 
-    var angleEarth = 0, angleMoon = 0 , lastTime = null;
+    var angleEarth = 0, angleMoon = 0, lastTime = null;
+
     function animate(time) {
-    if (lastTime != null)
-    angleEarth += (time- lastTime) * 0.001;//转速
-    angleMoon += (time- lastTime) * 0.005;  //转速
-    lastTime = time;
+      if (lastTime != null) {
+        angleEarth += (time - lastTime) * 0.001; // 地球绕太阳的转速
+        angleMoon += (time - lastTime) * 0.005;  // 月球绕地球的转速
+      }
+      lastTime = time;
 
+      // 太阳中心位置 (假设太阳在窗口的正中心)太阳的确切中心点
+      var sunCenterX = window.innerWidth / 2;
+      var sunCenterY = window.innerHeight / 2;
 
-    var earthX = Math.sin(angleEarth) * 650;
-    var earthY = Math.cos(angleEarth) * 300;
-    earth.style.transform = `translate(${earthX}px, ${earthY}px)`  //transform是css属性,有些调用方式不一样
+      // 地球的位置计算 (使用 300 作为轨道半径)
+      var earthX = sunCenterX + Math.cos(angleEarth) * 300 - earth.offsetWidth / 2;
+      var earthY = sunCenterY + Math.sin(angleEarth) * 300 - earth.offsetHeight / 2;
 
-    
-    var moonX = earthX + Math.cos(angleMoon) * 200; //平移
-    var moonY = earthY + Math.sin(angleMoon) * 200; //平移
-    moon.style.transform = `translate(${moonX}px, ${moonY}px)`;
+      earth.style.left = `${earthX}px`;
+      earth.style.top = `${earthY}px`;
 
+      // 月球的位置计算，相对于地球 (使用 100 作为轨道半径)
+      var moonX = earthX + earth.offsetWidth / 2 + Math.cos(angleMoon) * 100 - moon.offsetWidth / 2;
+      var moonY = earthY + earth.offsetHeight / 2 + Math.sin(angleMoon) * 100 - moon.offsetHeight / 2;
 
- 
-    requestAnimationFrame(animate);
+      moon.style.left = `${moonX}px`;
+      moon.style.top = `${moonY}px`;
+
+      requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
   </script>
-
-
+</body>
 </html>

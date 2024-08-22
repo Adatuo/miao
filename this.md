@@ -86,7 +86,7 @@ Math.max.apply(null,   [1,2,3,3,4,5])   7-27-20：27
 调用一个函数在英文中有很多种说法：run,call,apply,invoke,execute
 
 
-
+//7.27-20:30
 // 目前this的三种情况
 f()  // window
 obj.f() // obj
@@ -102,18 +102,28 @@ obj.f.call/apply(xxx) // xxx
 原型与原型链：
 
 
+
 “原型”与“原型属性”不一样
-“原型”才是所有对象都有的、用来做为属性fallback的，可以通过__proto__属性或通过Object.getPrototypeOf(obj)来读到
+“原型”才是所有对象都有的、用来做为属性fallback的，可以通过__proto__属性或通过Object.getPrototypeOf(obj)来读到,只能指向一个原型
 “原型属性”是一个名为prototype的属性，正常来说只有函数有，且只有构造函数的原型属性我们会关心，因为它会做为该构造函数构造出来的实现的“原型”，它一开始为一个仅包含一个名为constructor属性的对象，且该对象又以Object.prototype为“原型”
 我们当然可以给任何对象增加一个名为prototype的属性，但一般不会这么做来恶心自己和其它人。
 （曾经还有个库叫Prototype.js，把事情弄的更乱）
+
+# 原型链
+原型链:在js中一系列对象有着共同的属性或者方法,那么就可以把他们(共同的)放在一个对象上,让这个对象成为一系列对象共同的原型.不用重复写指向的原型  7-28 20:00
+
+原型链是指在 JavaScript 中，当试图访问一个对象的属性或方法时，JavaScript 引擎会首先查找该对象自身的属性或方法。如果找不到，它会继续在该对象的原型上查找，这个过程会沿着原型一直向上查找，直到 null（表示原型链的末端）。这种通过原型对象进行查找的机制，就是原型链。
+
+	•	原型链的结构：
+	•	每个对象都有一个内部属性 [[Prototype]]，指向其构造函数的原型对象。
+	•	当访问对象的属性时，如果该对象没有此属性，JavaScript 引擎会顺着 [[Prototype]] 属性查找，直到找到属性或到达 null 为止。
 
 构造函数的__proto__属性是构造函数自己的“原型”
 构造函数的“原型属性”即其prototype属性，是它构造出来的实例的“原型”
 构造函数的prototype属性不是构造函数自己的“原型”
 但有一个例外：
 Function.__proto__       === Function.prototype
-因为Function是函数，那么它当然也Function.prototype为“原型”，因为所有的函数都宋。
+因为Function是函数，那么它当然也Function.prototype为“原型”，因为所有的函数都这样。
 
 
 多态
@@ -123,5 +133,6 @@ Object.prototype.tostring.call(Symbol())
 
 一般不把非方法的属性放入接口,最好不读属性,不访问属性
 
+7-29 21:20
 get set
-defineProperty
+defineProperty 属性描述符https://juejin.cn/post/7104992299041423368

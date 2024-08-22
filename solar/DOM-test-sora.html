@@ -3,49 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sora</title>
+  <title>Solar System</title>
   <script src="https://cdn.tailwindcss.com/"></script>
-  <style>
-    /* Add styles if needed */
-  </style>
 </head>
 <body>
-  <div class="relative max-h-screen">
-    <img id="earth" class="w-1/12 m-auto mt-72 absolute" src="F:\前端\gitPush\solar\earth.jpg" >
-    <img id="moon" class="w-12 absolute" src="F:\前端\gitPush\solar\moon.jpg " >
-    <img id="sun" class="w-2/12 -mt-64 ml-[45%] absolute" src="F:\前端\gitPush\solar\sun.jpg"  >    
+  <div class="relative h-screen w-screen">
+    <!-- 太阳 transform用来移动中心点-->
+    <img id="sun" class="w-2/12 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 " src="F:\前端\gitPush\solar\sun.jpg">
+    <!-- 地球 -->
+    <img id="earth" class="w-1/12 absolute" src="F:\前端\gitPush\solar\earth.jpg">
+    <!-- 月球 -->
+    <img id="moon" class="w-12 absolute" src="F:\前端\gitPush\solar\moon.jpg">
   </div>
-</body>
 
-<script>
-  var earth = document.getElementById("earth");
-  var moon = document.getElementById("moon");
+  <script>
+    var earth = document.getElementById("earth");
+    var moon = document.getElementById("moon");
 
-  var angleEarth = 0, angleMoon = 0, lastTime = null;
-  function animate(time) {
-    if (lastTime != null) {
-      var deltaTime = time - lastTime;
-      angleEarth += deltaTime * 0.001; // Earth orbit speed
-      angleMoon += deltaTime * 0.005;  // Moon orbit speed
+    var angleEarth = 0, angleMoon = 0, lastTime = null;
+
+    function animate(time) {
+      if (lastTime != null) {
+        angleEarth += (time - lastTime) * 0.001; // 地球绕太阳的转速
+        angleMoon += (time - lastTime) * 0.005;  // 月球绕地球的转速
+      }
+      lastTime = time;
+
+      // 太阳中心位置 (假设太阳在窗口的正中心)
+      var sunCenterX = window.innerWidth / 2;
+      var sunCenterY = window.innerHeight / 2;
+
+      // 地球的位置计算 (使用 300 作为轨道半径)
+      var earthX = sunCenterX + Math.cos(angleEarth) * 300 - earth.offsetWidth / 2;
+      var earthY = sunCenterY + Math.sin(angleEarth) * 300 - earth.offsetHeight / 2;
+
+      earth.style.transform = `translate(${earthX}px, ${earthY}px)`;
+
+      // 月球的位置计算，相对于地球 (使用 100 作为轨道半径)
+      var moonX = earthX + earth.offsetWidth / 2 + Math.cos(angleMoon) * 100 - moon.offsetWidth / 2;
+      var moonY = earthY + earth.offsetHeight / 2 + Math.sin(angleMoon) * 100 - moon.offsetHeight / 2;
+
+      moon.style.transform = `translate(${moonX}px, ${moonY}px)`;
+
+      requestAnimationFrame(animate);
     }
-    lastTime = time;
-
-    // Calculate earth's position
-    var earthX = Math.cos(angleEarth) * 650;
-    var earthY = Math.sin(angleEarth) * 300;
-    earth.style.transform = `translate(${earthX}px, ${earthY}px)`;
-
-    // Calculate moon's position relative to earth
-    var moonOrbitRadius = 200; // Orbit radius for moon
-    var moonX = Math.cos(angleMoon) * moonOrbitRadius;
-    var moonY = Math.sin(angleMoon) * moonOrbitRadius;
-
-    // Adjust moon's position to orbit around earth
-    moon.style.transform = `translate(${earthX + moonX}px, ${earthY + moonY}px)`;
-
     requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
-</script>
-
+  </script>
+</body>
 </html>

@@ -12,7 +12,7 @@
     return Math.sqrt(x ** 2 - y ** 2)
   }
 
-  function Vector(x, y) {
+  function Vector(x, y) {//接口
     this.x = x
     this.y = y
   }

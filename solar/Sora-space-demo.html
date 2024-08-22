@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sora</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div class="max-h-screen">
+    <img id="earth" class="w-1/12  " src="F:\前端\gitPush\solar\earth.jpg" >
+    <img id="moon" class="w-12  " src="F:\前端\gitPush\solar\moon.jpg " ><!-- 要让moon定到最近的earth上 -->
+    <img id="sun" class="w-2/12 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 " src="F:\前端\gitPush\solar\sun.jpg"  >    
+  </div>
+</body>
+
+  <script>
+    //定位问题
+
+    var earth = document.getElementById("earth");
+    var moon = document.getElementById("moon");
+
+    var angleEarth = 0, angleMoon = 0 , lastTime = null;
+    function animate(time) {
+    if (lastTime != null)
+    angleEarth += (time- lastTime) * 0.001;//转速
+    angleMoon += (time- lastTime) * 0.005;  //转速
+    lastTime = time;
+
+
+    var earthX = Math.sin(angleEarth) * 400;
+    var earthY = Math.cos(angleEarth) * 400;
+    earth.style.transform = `translate(${earthX}px, ${earthY}px)`  //transform是css属性,有些调用方式不一样
+
+    
+    var moonX = earthX + 79.99 - 24+ Math.cos(angleMoon) * 100; //平移
+    var moonY = earthY + 79.99 - 24+ Math.sin(angleMoon) * 100; //平移
+    moon.style.transform = `translate(${moonX}px, ${moonY}px)`;
+
+
+ 
+    requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+
+
+</html>
