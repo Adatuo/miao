@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1#0">
+  <title>fire</title>
+  <style>
+    #moveAll{
+      position: absolute;
+      left: 100px;
+      top: 100px;
+    }
+    #fire_one,#fire_two,#fire_tree{/* 全部都添加才能定位 */
+      position: absolute;/*需要相对于容器div定位而不是视口*/
+      border-radius: 99999px;
+    }
+    #fire_one{
+      width: 200px;
+      height: 200px;
+      background-color: red;
+    }
+    #fire_two{
+      width: 200px;
+      height: 200px;
+      background-color: red;
+    }
+    #fire_tree{
+      width: 200px;
+      height: 200px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="moveAll">
+    <div id="fire_one"></div>
+    <div id="fire_two"></div>
+    <div id="fire_tree"></div>
+  </div>  
+
+
+
+  <script>
+window.onload = function(){//页面加载完成后的代码
+    var drag = document.getElementById("moveAll");
+    var diffX, diffY;
+
+    drag.addEventListener("mousedown", function (event) {
+        diffX = event.clientX - drag.offsetLeft;
+        diffY = event.clientY - drag.offsetTop;
+
+        document.onmousemove = function(event) {
+            var moveX = event.clientX - diffX;
+            var moveY = event.clientY - diffY;
+
+            // 限制移动范围
+            // if (moveX < 0) moveX = 0;
+            // if (moveY < 0) moveY = 0;
+            // if (moveX > window.innerWidth - drag.offsetWidth) moveX = window.innerWidth - drag.offsetWidth;
+            // if (moveY > window.innerHeight - drag.offsetHeight) moveY = window.innerHeight - drag.offsetHeight;
+
+            drag.style.left = moveX + 'px';
+            drag.style.top = moveY + 'px';
+        };
+
+        document.onmouseup = function() {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+
+        event.preventDefault(); // 防止默认行为，如文本选择
+    });
+};
+  
+
+
+
+    var fire_one = document.getElementById("fire_one")
+    var fire_two = document.getElementById("fire_two")
+    var fire_tree = document.getElementById("fire_tree")
+
+    requestAnimationFrame(function animate(time) {//time?
+      var fire1 = Date.now() / 1000//转速
+      var fire2 = Date.now() / 1000
+      var fire3 = Date.now() / 1000
+
+      fire_one.style.left = Math.sin(fire1) * 200 + 'px'
+      fire_one.style.top = Math.cos(fire1) * 200 + 'px'
+      //等边三角形,偏移2𝜋/3弧度
+      fire_two.style.left = Math.sin(fire2 + 2 * Math.PI / 3) * 200 + 'px'
+      fire_two.style.top = Math.cos(fire2 + 2 * Math.PI / 3) * 200 + 'px'
+
+      fire_tree.style.left = Math.sin(fire3 + 4 * Math.PI / 3) * 200 + 'px'
+      fire_tree.style.top = Math.cos(fire3 + 4 * Math.PI / 3) * 200 + 'px'
+
+      requestAnimationFrame(animate)
+    })
+  </script>
+</body>
+</html>

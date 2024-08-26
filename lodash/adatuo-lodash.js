@@ -1,4 +1,43 @@
 var adatuo = function () {   
+  //工具函数
+
+  //深度相等
+  function isEqual(a,b) {
+    //数组,obj,常量
+
+    //数组
+    if (Array.isArray(a) && Array.isArray(b)) {
+      //长度不相等直接false
+      if (a.length !== b.length) {
+        return false
+      }
+      //比较内容
+      for (let i = 0; i < a.length; i++) {
+        if (!isEqual(a[i],b[i])) { //beatiful a[i] !== b[i]
+          return false
+        } 
+      }
+      return true
+    }
+    //obj
+    if (typeof a == 'obj' && typeof b == 'obj' && !a && !b) {
+      if (Object.keys(a).length !== Object.keys(b).length) {
+        return false
+      }
+      //比较键值
+      for (var key of a) {
+        if (!(key in b)|| !isEqual(a[key],b[key])) { //key在b中
+          return false
+        }
+      }
+      return true
+    }
+    //常量
+    return a === b
+  }
+
+
+
     function compact(array) {
       for (let i = array.length - 1; i >= 0; i--) {
         var x = array[i];
@@ -199,7 +238,7 @@ var adatuo = function () {
       return -1
     }
 
-    function lastIndexOf(array,value,fromIndex = 0) {
+    function lastIndexOf(array,value,fromIndex = array.length - 1) {
       for (let i = fromIndex; i >=0; i--) {
         if (array[i] == value) {
           return i
@@ -255,6 +294,14 @@ var adatuo = function () {
     }
 
     function every(collection, predicate=_.identity) {
+      
+    }
+
+    function some(collection, predicate=_.identity) {
+      
+    }
+
+    function countBy(collection,) {
       
     }
     return {

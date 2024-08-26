@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini-regex101</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <style class = "text/tailwind">
+    input,button{
+      outline: none;/* 去除元素轮廓样式 */
+    }
+
+     #result strong{
+      font-weight: normal;
+    }
+    
+    #output{
+      width: 200px;
+      height: 100px;
+      position: relative;
+    }
+    #testStringInput, #result {
+      white-space: pre-wrap;
+      word-break: break-all;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div>REGULAR EXPRESSION</div>
+    <input class="border" name="正则表达式" type="text" id="reInput" value="Will" onkeyup="run()"> 
+    <button class="border" onclick="run()">RUN</button>
+    <div id="tips"></div>
+    <div>FLAGS</div>
+    <label><input type="checkbox" id="flag-g" checked>g</label>
+    <label><input type="checkbox" id="flag-m">m</label>
+    <label><input type="checkbox" id="flag-i">i</label>
+    <label><input type="checkbox" id="flag-y">y</label>
+    <label><input type="checkbox" id="flag-u">u</label>
+    <label><input type="checkbox" id="flag-s">s</label>
+    <label><input type="checkbox" id="flag-d" checked>d</label>
+    <label><input type="checkbox" id="flag-v">v</label>
+    
+    <div>TEST STRING</div>
+    <div id="output">
+      <div id="result"></div>
+      <textarea class="border" id="testStringInput" oninput="run()" onscroll="syncScroll()">
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+  
+      </textarea>
+    </div>
+  </div>
+</body>
+<script>
+  function run() {
+    var reString = reInput.value;
+    if (reString == '') {
+      return;
+    }
+    var flags = getFlags();
+    try {
+       var re = new RegExp(reString, flags);
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        tips.innerHTML = error.message;
+        return;
+      } else {
+        throw error;
+      }
+    }
+   
+    var testString = testStringInput.value;
+    var html = '';
+    var match;
+    var lastLastIndex = 0;
+
+    while (match = re.exec(testString)) {
+      html += testString.slice(lastLastIndex, match.index);
+      html += `<strong>${match[0]}</strong>`;
+      lastLastIndex = re.lastIndex;
+
+      if (match[0].length == 0) {
+        re.lastIndex++;
+      }
+
+      if (re.global == false) {
+        break;
+      }
+    }
+    html += testString.slice(lastLastIndex);
+    result.innerHTML = html;
+    syncScroll(); // 更新 result 的内容后立即同步滚动位置
+  }
+
+  function getFlags() {
+    var flags = ['g','m','i','y','u','s','d','v'];
+    return flags.filter(it => {
+      var element = document.getElementById('flag-' + it);
+      return element.checked;
+    }).join('');
+  }
+
+  function syncScroll() {
+    result.scrollTop = testStringInput.scrollTop;
+  }
+</script>
+</html>

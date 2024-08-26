@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- saved from url=(0120)https://class.damiaoedu.com:44313/codes/js/%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A%E4%BC%A0%E6%92%AD%E7%A4%BA%E4%BE%8B.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div {
+      border: 5px solid pink;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <fieldset>
+      <legend>owiejfow</legend>
+      <button>CLICK</button>
+    </fieldset>
+  </div>
+
+  <script>
+    var div = document.querySelector('div')
+    var button = document.querySelector('button')
+    var fieldset = document.querySelector('fieldset')
+
+    div.addEventListener('click', e => {
+      console.log('div clicked')
+    })
+    button.addEventListener('click', e => {
+      console.log('button clicked')
+    })
+    fieldset.addEventListener('click', e => {//谁先绑定谁触发
+      console.log('fieldset clicked 1')
+      e.stopPropagation() // 阻止事件传播到下一个元素，但当前元素上的后续的处理函数还会执行,不会传播
+      e.stopImmediatePropagation() // 阻止事件在当前元素上进一步执行（即后续的处理函数都不执行了）,不会传播
+    })
+
+    fieldset.addEventListener('click', e => {//谁先绑定谁触发
+      console.log('fieldset clicked 2')
+    })
+  </script>
+
+</body>

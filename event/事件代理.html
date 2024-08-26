@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- saved from url=(0084)https://class.damiaoedu.com:44313/codes/js/%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>event delegate</title>
+</head>
+<body>
+  <div>
+    <p>
+      <button>1</button>
+      <button class="more">2</button>
+    </p>
+    <button class="more">3</button>
+  </div>
+
+  <div>
+    <ul>
+      <li>wfefsewfw</li>
+      <li>wgsdfwefrw</li>
+      <li>erwe</li>
+    </ul>
+  </div>
+  <script>
+    var lis = [...document.querySelectorAll('li')]
+    // var i
+
+    // for (let i = 0; i < lis.length; i++) {
+    //   var li = lis[i]
+    //   li.addEventListener('click', e => {
+    //     console.log(i)
+    //   })
+    // }
+
+    // for (i = 0; i < lis.length; i++) {
+    //   (function(i) {
+    //     var li = lis[i]
+    //     li.addEventListener('click', e => {
+    //       console.log(i)
+    //     })
+    //   })(i)
+    // }
+
+    // lis.forEach((it, i) => {
+    //   it.addEventListener('click', e => {
+    //     console.log(i)
+    //   })
+    // })
+
+
+    var ul = document.querySelector('ul')
+
+    //这样就不用每一个按钮都绑定按钮了
+    ul.addEventListener('click', e => {
+      if (e.target.matches('li')) {//如果target里面有li标签,       target事件来源哪些元素
+        var li = e.target//虽然标签名字都一样,但是比较的都是内存地址
+        var index = [...ul.children].indexOf(e.target)//indexOf比较的是内存地址而不是内容
+        console.log(index)
+      }
+    })
+    // console.log(i)
+
+  </script>
+
+  <script>
+    var div = document.querySelector('div')
+
+    div.addEventListener('click', e => {
+      if (e.target.matches('button.more')) {
+        console.log(e.target.textContent)//innerHTML一样
+      }
+    })
+  </script>
+
+</body>
+</html>

@@ -817,7 +817,7 @@ the-super-tiny-compiler
 20:50 Pauseonuncaughtexceptions
 20:55 创建
 21:00 其实也只有两个htmlFor classNmae 属性
-21:09 data- 就不会有冲突了
+21:09 data- 避免与现有属性冲突
 21:12 dataset 直接访问带有data- 的标签
 21:48 结束标签
 21:54 浏览器布局
@@ -845,17 +845,93 @@ the-super-tiny-compiler
 
 8-22
 21:06 'clik' 不要打空格 
-21:08 clik的几种绑定方式
-21:10 event
-21:23 onmousedown 不分左右键 which会记录左右键 type记录事件名称
+21:08 clik的几种绑定方式 
+21:07 移除 注意:没有添加名字的话就是全局,要在全局解绑
+21:10  sun.onclick = function(){ console.log(11)} //只能绑定一个
+21:12 直接在标签里面添加onclick
+21:23 onmousedown 不分左右键event which会记录1左2滚轮3右键 type记录事件名称
 document.body.addEventListener('click'，function(e）{
 //如果一个函数是事件处理函数，那么此次运行它是在做为谁的事件处理函数运行，它里面的this就是谁
-21:27 一部分元素能收到其子元素的事件
-21:39 stopPropagation() ---
+21:27 一部分元素能收到其子元素的事件(除了long和change)
+21:39 事件的传播(冒泡)与阻止
+      stopPropagation() ---
       stopImmediatePropagation()阻止事件在当前元素上进一步执行（即后续的处理函数都不执行了）
-22:00 mathes 事件委托
+21:51 target指向了事件发生时最原始发生的元素
+22:00 mathes 事件委托(代理) target事件来源结点
 22:04 面试题
 22:13 混淆的括号
 22:17 循环体有几次就有几个i , 外面的i是为了保障运行 , 里面是保障click
 22:20 一般大量元素才这样做 let 与 var
 22:22 更好的办法 变成数组
+
+8-23
+事件代理??
+20:05 从外向内.叫做,事件捕获 captrue 
+20:18 从外向内,再从内向外 先捕获再冒泡 排序?
+20:22 默认行为
+20:26 事件的运行
+20:31 一些快捷键
+20:42 按键分左右
+21:00 key的各种事件属性
+21:09 焦点
+21:11 log
+21:14 鼠标事件
+21:16 鼠标特殊的触发机制
+21:25 span
+21:40 鼠标移动事件
+21:54 which button,二进制计算 1 11 111
+22:00 button & 1
+22:07 有可能会被冒泡影响
+22 14 contens
+22:17 现在一般都用 mouseenter mouseleave 这也是有些事件不冒泡
+22:21 被动事件{passive:false}
+
+8-24
+前10几分钟,滚动事件
+16:12 滚动事件与其他事件的不同
+16:18 mousewheel滚轮事件,可以阻止滚动与其他事件的运行一样
+16:20 聚集事件
+16:25 一些添加?
+16:29 fields[i] 重要
+window也有focus,在线考试
+16:33 加载事件
+16:38 因为页面要加载,最好把script写到最后,加载完后再运行
+15:39 src如果运行时间过长会先把页面画出来再加载,但是确实在一些情况下一边加载一边绘制页面
+16:54 几个事件的运行细节(面试)
+解析dom，运行js（可能修改DoM，如果js读取布局信息也可能触发浏览器forcedreflow），计算布局，绘制页面
+这几件事件，对于某一个页面来说，浏览器只干其中之一
+16:57 script 里 async 谁先加载完谁运行 defer按顺序运行(面试) 不会等到script加载完后运行
+17:00 啥来着?
+17:04 没加载完成也照样绑定事件
+17:06 DoMContentLoaded 这个事件在dom解析完毕的时候触发
+      readystatechange 它会在开始解析dom的时候触发一次，解析完成的时候触发一次
+      简称为dom ready事件
+17:17 滚动到哪里图片才加载 图片按需加载 再
+17:40 浏览器每个时间在干嘛
+17:46 事件的执行 event -> function -> event 滚轮event -> event -> function
+17:55 线程 这节课不太好理解
+18:10 woker可以设置多线程,可能现在不行了
+18:20 woker监听外部来的消息
+一般在正则表达式用woker
+
+8-25
+20:07 Threads 第一节
+20:18 postMessage 返回调用的人
+20:20 worker在mini-regex的调用
+ data-tabname ?? data?
+20:43 false
+21:06 定时器
+21:14 setTimeout = setInterval  0 没有即刻调用的用法,现有的代码执行完后才会运行
+21:18 一些细节
+21:20 Debouncing
+21:23 防抖(面试)
+21:25 防抖代码(面试)
+21:30 节流 降低操作频率
+21:33 节流的代码 书本 至少间隔一定的秒数(面试)
+21:38 什么时候防抖(存盘,保存用户输入),什么时候节流(获得鼠标位置,但是不要那么频繁,窗口的调整) (面试)
+21:55 防抖 手搓
+21:59 节流 手搓
+22:06 Summary 
+22:14 补充的事件
+22:19 补充事件2
+lodash  matches 与 matchesProperty 的区别 chuanxin做法

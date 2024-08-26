@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1#0">
+  <title>fire</title>
+  <style>
+    #moveAll{
+      position: absolute;   /* 绝对定位脱离文档流*/
+      left: 100px;/* 相对于视口的初始位置*/
+      top: 100px;
+    }
+    #fire_one,#fire_two,#fire_tree{/* 全部都添加才能定位 */
+      position: absolute;/*需要相对于容器div定位而不是视口*/
+      border-radius: 99999px;
+    }
+    #fire_one{
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+    #fire_two{
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+    #fire_tree{
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="moveAll">
+    <div id="fire_one"></div>
+    <div id="fire_two"></div>
+    <div id="fire_tree"></div>
+  </div>  
+
+
+
+  <script>
+window.onload = function(){//页面加载完成后的代码
+  var diff = document.getElementById("moveAll")
+  //偏移量
+  var diffX,diffY
+  //按下
+  diff.addEventListener('mousedown',event =>{
+
+    //event.page是相对于整个界面的X\Y位置
+    //offset是元素的左上角相对于其包含块(视口或者已定位的祖先元素的X\Y位置)
+    diffX = event.pageX - diff.offsetLeft //计算这个偏移量是为了让鼠标能落在元素的某个位置,而不是只在左上角
+    diffY = event.pageY - diff.offsetTop
+      
+      //拖拽
+      document.onmousemove = function(event) {//要是绑在diff就必须在div上才可以
+          //使得元素左上角跟随鼠标指针移动并保持偏移量
+          diff.style.left = event.pageX - diffX + 'px'
+          diff.style.top = event.pageY - diffY + 'px'
+        }
+    
+        //鼠标拿起,= null 的方式只有on才可以
+        document.onmouseup = function() {//要是绑在diff就必须在div上才可以
+          document.onmousemove = null;
+          document.onmouseup = null;
+        };  
+        event.preventDefault();//禁用事件
+
+  })
+
+};
+  
+
+
+
+    var fire_one = document.getElementById("fire_one")
+    var fire_two = document.getElementById("fire_two")
+    var fire_tree = document.getElementById("fire_tree")
+
+    requestAnimationFrame(function animate(time) {//time?
+      var fire1 = Date.now() / 1000//转速
+      var fire2 = Date.now() / 1000
+      var fire3 = Date.now() / 1000
+
+      fire_one.style.left = Math.sin(fire1) * 200 + 'px'
+      fire_one.style.top = Math.cos(fire1) * 200 + 'px'
+      //等边三角形,偏移2𝜋/3弧度
+      fire_two.style.left = Math.sin(fire2 + 2 * Math.PI / 3) * 200 + 'px'
+      fire_two.style.top = Math.cos(fire2 + 2 * Math.PI / 3) * 200 + 'px'
+
+      fire_tree.style.left = Math.sin(fire3 + 4 * Math.PI / 3) * 200 + 'px'
+      fire_tree.style.top = Math.cos(fire3 + 4 * Math.PI / 3) * 200 + 'px'
+
+      requestAnimationFrame(animate)
+    })
+  </script>
+</body>
+</html>

@@ -22,12 +22,15 @@
 
     var angleEarth = 0, angleMoon = 0, lastTime = null;
 
-    function animate(time) {
-      if (lastTime != null) {
-        angleEarth += (time - lastTime) * 0.001; // 地球绕太阳的转速
-        angleMoon += (time - lastTime) * 0.005;  // 月球绕地球的转速
-      }
-      lastTime = time;
+    requestAnimationFrame(function animate(time) {
+      // if (lastTime != null) {
+      //   angleEarth += (time - lastTime) * 0.001; // 地球绕太阳的转速
+      //   angleMoon += (time - lastTime) * 0.005;  // 月球绕地球的转速
+      // }
+      // lastTime = time;
+
+      var angleEarth=Date.now()/1000//地球的转动角度转速
+      var angleMoon=Date.now()/800 //月球的转动角度转速
 
       // 太阳中心位置 (假设太阳在窗口的正中心)
       var sunCenterX = window.innerWidth / 2;
@@ -46,8 +49,8 @@
       moon.style.transform = `translate(${moonX}px, ${moonY}px)`;
 
       requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
+    })
+   
   </script>
 </body>
 </html>

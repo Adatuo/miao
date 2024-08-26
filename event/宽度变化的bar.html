@@ -1,0 +1,34 @@
+
+<!-- saved from url=(0096)https://class.damiaoedu.com:44313/codes/js/%E5%AE%BD%E5%BA%A6%E5%8F%98%E5%8C%96%E7%9A%84bar.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><p> Drag the bar to change its width :</p>
+<div style="background: orange; width: 44px; height: 20px;">
+</div>
+<script>
+  var lastX; // Tracks the last observed mouse X position
+  var rect = document.querySelector(" div ");
+  rect.addEventListener("mousedown", function (event) {
+    if (event.which == 1) {
+      lastX = event.pageX;
+      rect.addEventListener("mousemove", moved);
+      event.preventDefault(); // Prevent selection
+    }
+  });
+  // 判断这个事件发生时，鼠标有元素键被按下，如果没有键按下去说明已经松开了
+  function buttonPressed(event) {
+    if (event.buttons == null)
+      return event.which != 0;
+    else
+      return event.buttons != 0;
+  }
+  function moved(event) {
+    // 在鼠标移动事件中，发现按钮已经松开了，就解绑
+    if (!buttonPressed(event)) {
+      rect.removeEventListener("mousemove", moved);
+    } else {
+      var dist = event.pageX - lastX;
+      var newWidth = Math.max(10, rect.offsetWidth + dist);
+      rect.style.width = newWidth + "px";
+      lastX = event.pageX;
+    }
+  }
+</script></html>
