@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1#0">
+  <title>fire</title>
+  <style>
+    .fire {
+      width: 20px;
+      height: 20px;
+      border-radius: 9999px;
+      position: fixed;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+
+    <span class="fire"></span>
+    <span class="fire"></span>
+    <span class="fire"></span>
+  
+
+  <script>
+        var fires = document.querySelectorAll('.fire');
+        var mouseX = window.innerWidth / 2;
+        var mouseY = window.innerHeight / 2;
+        
+    addEventListener('mousemove', e => {
+      //鼠标坐标跟随移动(一定要有初始值)
+      mouseX = e.clientX
+      mouseY = e.clientY
+    })
+//  window.onload = function(){//页面加载完成后的代码
+//   var diff = document.getElementById("moveAll")
+//   //偏移量
+//   diffX = window.innerWidth / 2 
+//   diffY = window.innerWidth / 2
+//   //按下
+//   diff.addEventListener('mousedown',event =>{   
+//       //拖拽
+//       document.onmousemove = function(event) {//要是绑在diff就必须在div上才可以
+//           //使得元素左上角跟随鼠标指针移动并保持偏移量
+//           mouseX = e.clientX
+//           mouseY = e.clientY
+//         }
+    
+//         //鼠标拿起,= null 的方式只有on才可以
+//         document.onmouseup = function() {//要是绑在diff就必须在div上才可以
+//           document.onmousemove = null;
+//           document.onmouseup = null;
+//         };  
+//         event.preventDefault();//禁用事件
+
+//   })
+
+// };
+  
+    requestAnimationFrame(function animate(time) {//time?
+      var fire1 = Date.now() / 1000//转速?不能叫转速?
+      var fire2 = Date.now() / 1000
+      var fire3 = Date.now() / 1000
+ 
+      fires[0].style.left = Math.sin(fire1) * 200 + mouseX + 'px'
+      fires[0].style.top = Math.cos(fire1) * 200 + mouseY + 'px'
+      //等边三角形,偏移2𝜋/3弧度
+      fires[1].style.left = Math.sin(fire2 + 2 * Math.PI / 3) * 200 + mouseX + 'px'
+      fires[1].style.top = Math.cos(fire2 + 2 * Math.PI / 3) * 200 + mouseY + 'px'
+
+      fires[2].style.left = Math.sin(fire3 + 4 * Math.PI / 3) * 200 + mouseX + 'px'
+      fires[2].style.top = Math.cos(fire3 + 4 * Math.PI / 3) * 200 + mouseY + 'px'
+
+      requestAnimationFrame(animate)
+    })
+  </script>
+</body>
+</html>

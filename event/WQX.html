@@ -11,13 +11,24 @@
 </body>
 
 <script>
-  document.querySelector('input').addEventListener('keydown',e =>{
-    if (e.key === 'q'||e.key === 'w'||e.key === 'x' || e.key === 'Q'||e.key === 'W'||e.key === 'X') { //注意||的逻辑
+  var test = document.querySelector('input')
+
+  test.addEventListener('keydown',e =>{
+    console.log(e);
+    if (e.key === 'Q'||e.key === 'W'||e.key === 'X') { //注意||的逻辑
         e.preventDefault(); // 阻止默认的“Enter”键行为
-    }else{
-      console.log(e);
-      
     }    
   })
+
+  test.onpaste = e => {
+    console.log(e);
+    var pastedText = e.clipboardData.getData('text/plain')
+    console.log(pastedText);
+    if (pastedText.match(/[QWX]/)) {
+      e.preventDefault()
+    }
+  } 
+
+  //拖拽,输入法的输入compositionend,控台.value
 </script>
 </html>

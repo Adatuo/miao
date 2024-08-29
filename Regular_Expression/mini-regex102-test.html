@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>mini-regex102</title>
+  <title>mini-regex101</title>
   <script src="https://cdn.tailwindcss.com/"></script>
   <style class = "text/tailwind">
     input,button{
@@ -20,76 +20,30 @@
         background-color: #d5ebff;
       }
     }
-    
+
     #output{
-      width: 300px;
-      height: 200px;
+      width: 200px;
+      height: 100px;
       position:relative;
       > textarea ,#result{
-        font-family: consolas;/*等宽字体*/
         white-space: pre-wrap;
         word-break: break-all;/* 折返 */
         width: 100%;
         height: 100%;
         overflow: auto;
-        border:1px solid;
+        border:1px solid;/*当没有设置边框时，textarea 和 div 元素的内容区域可能有微小的差异，尤其是在处理绝对定位和透明背景时，这可能导致它们的内容和滚动行为不完全同步。*/
         /*position:absolute;/* 相对于output绝对定位 */
         background-color: transparent;/* 白色背景变为透明色 */
       }
     }
-    #result > em:nth-of-type(odd){/*奇数元素*/
 
-    }
-    #result > em:nth-of-type(even){/*偶数元素*/
-      opacity: 0.6;
-    }
-    em{
-      font-style: normal;/*em本身不是斜体,但是会被浏览器渲染成斜体*/
-    }
-    /*一个元素的里面如果有hover的元素，自己就不要框了
-      如果一个元素里面没有被hover的元素，但其自身被hover，则显示框*/
-    em:not(:has(:hover)):hover{ 
-      outline: 2px solid gray;
-    }
-    /*实际上这个选择器：em:not(:has(:hover)):hover
-    就是只选中了直接被hover的元素，不选中这个元素的祖先元素
-    简单的：hover·选择器在选中一个元素的同时，也选中了其所有的祖先元素*/
-    em:not(:has(:hover)):hover em{
-      background-color:inherit/*元素获取其父元素的值.继承始终来自文档树中的父元素，即使父元素不是包含块*/
-    }
-    [data-group-index="0"]{
-      background-color: #9fcfff;
-    }
-    [data-group-index="1"]{
-      background-color: #9fcba1;
-    }
-    [data-group-index="2"]{
-      background-color: #e0bf8b;
-    }
-    [data-group-index="3"]{
-      background-color: #acadfc;
-    }
-    [data-group-index="4"]{
-      background-color: #e1abf5;
-    }
-    .zero-width-assert{
-      border-left: 2px dotted magenta; 
-      opacity: 1 !important;/*确保完全不透明,并且有最高优先级无法覆盖*/
-      margin-left: -1px;/*缩小一个像素*/
-      margin-right: -1px;
-      position: relative;
-      z-index: 8;/*较大的重叠元素会覆盖较小的元素*/
-      &:hover{
-        box-shadow: 0 0 2px red;
-      }
-    }
   </style>
 </head>
 <body>
   <div>
     
     <div>REGULAR EXPRESSION</div>
-    <input class="border" name="正则表达式"  type="text" id="reInput" value="(.(.)(.))(..) " onkeyup="run()"><!--onkeyup按键弹起来的时候用--> 
+    <input class="border" name="正则表达式"  type="text" id="reInput" value="Will" onkeyup="run()"><!--onkeyup按键弹起来的时候用--> 
     <button class="border" onclick="run()">RUN</button><!-- onclick点击的时候执行""里的 -->
     <div id="tips"></div><!-- 一个提示 -->
    <div>FLAGS</div> <!-- 模式选择 -->
@@ -104,7 +58,7 @@
     
     <div>TEST STRING</div>
      <div id="output"><!--将高亮与原文合并到一起 -->
-      <div class="" id="result" onscroll="syncScroll2()"></div>    <!-- 因为textarea不能高亮,所以要再写一个套上 -->
+      <div class="" id="result"></div>    <!-- 因为textarea不能高亮,所以要再写一个套上 -->
       <textarea class="border" id="testStringInput" oninput="run()" onscroll="syncScroll()">
         How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
         How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
@@ -124,6 +78,11 @@
 <script>
    // 元素的id为xxx时，页面的全局就会出现一个叫xxx的变量，指向一个表示那个标签的对象
   run()//一开始就run一次
+
+  /**
+   * 零宽断言要匹配
+   * 每个匹配的分组也要分别用不同的颜色显示出来
+  */
    function run() {
     var reString = reInput.value //可以通过value属性读取到文本框的值
     if (reString == '') {//正则表达式是空直接返回
@@ -131,7 +90,7 @@
     }
     var flags = getFlags()//拿到模式
     try {
-       var re = new RegExp(reString,flags) //此为新建正则表达式 //此处把所有模式都加上了
+       var re = new RegExp(reString,'g') //此为新建正则表达式
     } catch (error) {
       if (error instanceof SyntaxError) {
         tips.innerHTML = error.message
@@ -149,11 +108,11 @@
 
     var lastLastIndex = 0 //
 
-    var matchIndex = 0
+    var matchIndex = 0 //match下标
 
     while (match =re.exec(testString)) {
       html += testString.slice(lastLastIndex,match.index)
-      html +=  highlightMathch(match,matchIndex)  
+      html +=  highlightMathch(match,matchIndex)//返回的match分组高亮   //`<strong>${match[0]}</strong>` //<strong>粗体表示高优先级,重要. math返回的是所有匹配值的集合
       lastLastIndex = re.lastIndex //更新lastLastIndex的位置到达下一个值的位置
 
       if (match[0].length == 0) {//如果某一次match没有匹配到值,那么lastIndex就要强行移动到下一个
@@ -181,60 +140,37 @@
    }).join('')
   }
 
+  //分组的gaolian
   function highlightMathch(match,matchIndex) { //原理在8-15-20:27 括号拼凑20:33 测试用例 re=/(.(.)(.))(..)  /dg re.exec('Indiv  isibi  lities  SSS')
-  //计算分组,从外层到内层的分组
+  //计算数组
   var groupIndex = 0  
   //帮助数组 
     var helper = new Array(match[0].length + 1).fill('');//多一个的长度是为了拼凑最左右边的括号
-  //零宽断言  
-  if (match[0].length == 0 || !match) {//说明是零宽断言
-    var info = [
-        `Match: ${matchIndex}`,
-        `-----`,
-        `Group: [empty string]`,
-        `Pos :${match.index} -${match.index}`,
-      ].join('\n')
-      return `<u class="zero-width-assert" title="${info}"></u>`
-  }
-    for (var index of match.indices) {//获得indices的数组[ , ]length2 //match.indices有问题
+    for (var index of match.indices) {//获得indices的数组[ , ]length2
       var start = index[0] - match.index//获得此分组的(右边)
       var end = index[1] - match.index//获得此分组的(左边)
-      //用换行符 \n 分隔的字符串
-      var info = [
-        `Match: ${matchIndex + 1}`,
-        `-----`,
-        `Group: ${groupIndex}`,
-        `Pos :${index[0]} -${index[1]}`,
-      ].join('\n')
-      // var info = `
-      //   Match: ${matchIndex + 1}
-      //   -----
-      //   Group: ${groupIndex}
-      //   Pos :${index[0]} -${index[1]}
-      // `
-      helper[start] += `<em data-group-index="${groupIndex}" title = "${info}">`//右边右括号  用${groupIndex}分组来更改颜色
-        
-      helper[end] = `</em>` + helper[end]//左边左括号
+      var info = `
+        Match: ${matchIndex + 1}
+        -----
+        Group: ${groupIndex}
+        Pos :${index[0]} -${index[1]}//下标范围
+      `
+      helper[start] += '<em title="${info}">'//右边右括号
+      helper[end] = '</em>' + helper[end]//左边左括号
 
       groupIndex++
     }
     //拼接
     var result =''
-    for (var i = 0; i < match[0].length; i++) {//var与let
+    for (let i = 0; i < match[0].length; i++) {
       result += helper[i] + match[0][i]
     }
     result += helper[i]//正好移动到最后一个
     return result
   }
 
-
-//分开两个框后,使得滚动条同步
   function syncScroll() {
     result.scrollTop = testStringInput.scrollTop
-  }
-
-  function syncScroll2() {
-    testStringInput.scrollTop = result.scrollTop
   }
 
 </script>

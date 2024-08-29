@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)https://class.damiaoedu.com:44313/codes/js/mouse-trail-3-dot.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .fire {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      position: fixed;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <span class="fire"></span>
+  <span class="fire"></span>
+  <span class="fire"></span>
+
+  <script>
+    var fires = document.querySelectorAll('.fire')//会把每个都找出来,返回一个数组
+
+    //视口正中心
+    var mouseX = window.innerWidth / 2
+    var mouseY = window.innerHeight / 2
+    addEventListener('mousemove', e => {
+      //鼠标坐标跟随移动(一定要有初始值)
+      mouseX = e.clientX
+      mouseY = e.clientY
+    })
+    requestAnimationFrame(function ani(time) {
+      var angle1 = time / 100
+      var angle2 = angle1 + 2 * Math.PI / 3
+      var angle3 = angle2 + 2 * Math.PI / 3
+      
+      var r = 100 //同一半径
+
+      var x1 = Math.sin(angle1) * r + mouseX
+      var y1 = Math.cos(angle1) * r + mouseY
+      var x2 = Math.sin(angle2) * r + mouseX
+      var y2 = Math.cos(angle2) * r + mouseY
+      var x3 = Math.sin(angle3) * r + mouseX
+      var y3 = Math.cos(angle3) * r + mouseY
+
+      fires[0].style.left = x1 + 'px'
+      fires[0].style.top = y1 + 'px'
+      fires[1].style.left = x2 + 'px'
+      fires[1].style.top = y2 + 'px'
+      fires[2].style.left = x3 + 'px'
+      fires[2].style.top = y3 + 'px'
+
+      requestAnimationFrame(ani)
+    })
+  </script>
+
+</body></html>

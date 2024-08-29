@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>mini-regex102</title>
+  <title>mini-regex103</title>
   <script src="https://cdn.tailwindcss.com/"></script>
   <style class = "text/tailwind">
     input,button{
@@ -143,15 +143,13 @@
    
     var testString = testStringInput.value//第二个框里的
 
-    var html = ''//拼出符合正则表达式的字符串 
+    getMatchesFromWorker(re,testString,matches =>{
+      var html = ''//拼出符合正则表达式的字符串 
 
-    var match //取出匹配正则的值
+      var lastLastIndex = 0 //
 
-    var lastLastIndex = 0 //
-
-    var matchIndex = 0
-
-    while (match =re.exec(testString)) {
+      var matchIndex = 0 //记录每个match的编号
+    for (var match of matches) {
       html += testString.slice(lastLastIndex,match.index)
       html +=  highlightMathch(match,matchIndex)  
       lastLastIndex = re.lastIndex //更新lastLastIndex的位置到达下一个值的位置
@@ -160,13 +158,15 @@
         re.lastIndex++ //：匹配到一个空字符串。当匹配到空字符串时，正则表达式的 lastIndex 不会自动前进，因为空字符串的长度为 0，这会导致下一次匹配从同一位置开始，从而进入一个无限循环。
       }  
 
-      if (re.global == false) {//g没有循环一次即可
+      if (re.global == false) {//g没有循环一次即可 无g第一次找到就行 有g找到全部匹配的
         break
       }
       matchIndex++
-    }
       html += testString.slice(lastLastIndex) //把剩下的字符拼到一起
       result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值
+    }
+  })
+
    }
 
    function getFlags() {
@@ -237,5 +237,34 @@
     testStringInput.scrollTop = result.scrollTop
   }
 
+
+ 
+//将得到的正则表达式和String发送到worker  
+  function getMatchesFromWorker(re,string,f) {
+    var worker = new Worker('regexp-match-worker.js');
+      //将得到的正则表达式和String发送到worker 
+      worker.postMessage({
+        re: re,
+        string: string,
+      })
+      //接受worker发来的数据,在事件的data里面
+      worker.addEventListener('message',e => {
+          var matches = e.data 
+          worker.terminate()//结束这个worker
+          f(matches)//这个函数处理得到的数据
+        //  return matches 只是在这个函数里面return getMatchesFromWorkder无法拿到返回值
+        })
+
+}
+
+Number.prototype[Symbol.iterator] = function*(){
+  for (let i = 0; i < this; i++) {
+   yield i  
+  }
+}
+
+for (const x of 9) {
+  console.log(x); 
+}
 </script>
 </html>

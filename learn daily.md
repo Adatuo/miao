@@ -850,7 +850,7 @@ the-super-tiny-compiler
 21:10  sun.onclick = function(){ console.log(11)} //只能绑定一个
 21:12 直接在标签里面添加onclick
 21:23 onmousedown 不分左右键event which会记录1左2滚轮3右键 type记录事件名称
-document.body.addEventListener('click'，function(e）{
+document.body.addEventListener('click'，function(e)){}
 //如果一个函数是事件处理函数，那么此次运行它是在做为谁的事件处理函数运行，它里面的this就是谁
 21:27 一部分元素能收到其子元素的事件(除了long和change)
 21:39 事件的传播(冒泡)与阻止
@@ -859,7 +859,7 @@ document.body.addEventListener('click'，function(e）{
 21:51 target指向了事件发生时最原始发生的元素
 22:00 mathes 事件委托(代理) target事件来源结点
 22:04 面试题
-22:13 混淆的括号
+22:13 箭头函数混淆的括号
 22:17 循环体有几次就有几个i , 外面的i是为了保障运行 , 里面是保障click
 22:20 一般大量元素才这样做 let 与 var
 22:22 更好的办法 变成数组
@@ -935,3 +935,102 @@ window也有focus,在线考试
 22:14 补充的事件
 22:19 补充事件2
 lodash  matches 与 matchesProperty 的区别 chuanxin做法
+8-26
+20:14 clipboardData 事件完成后就消失了
+20:46 劫持  先经过我设置的属性,然后在给到浏览器
+20:52 如何拿到原型的value
+20;56 劫持流程
+21:01 所有在前端挡都是不靠谱的,在接收端(服务器上挡最靠谱)
+21:16 永远要检查用户的输入
+21:27 画鼠标
+21:32 节流减少鼠标图片
+21:39 浏览器与系统清除内存对象的异同
+21:40 对鼠标时快时慢进行分析 有可能是鼠标问题 也有可能是触发的问题
+
+8-27
+20:14 zindex
+20:27 user-select
+20:30 ??父元素?
+20:36 cursor  鼠标方向css元素
+20:45 拉完后要解绑
+21:03 children死循环怎么回事21:06解决
+21:36 jQuery
+21:45 jQuery的一般流程
+21:47
+
+8-28
+20:01 es6是什么
+20:09 TDZ Temper Dead Zone ??
+20;15 三种声明方式
+10:16 const 的变量是常量 但是常量指向对象,对象就可以修改
+20:18 想让对象也不能改动怎么办?(面试)Object.defineProperty
+20:20 
+Object. preventExtensions (obj)阻止对象新增属性
+Object.freeze（obj）完全冻结对象（但不是递归?冻结）
+Object.seal（obj）阻止对象的属性集合发生变化（即不能增删
+属性，但可以修改属性的值）
+
+is??
+
+20:28 Unicode `` 里面是表达式或者函数 foo``
+html`
+<div><div>
+` 一般用来包不是这个语言的代码
+20:32 Function
+set必须且只能生成一个参数
+20:34 get:function() set:function() value
+20:38 构造函数的奇怪使用
+20:40 展开运算符...
+20:41 name
+20:44 new 的 name 与 变量 = function() name的区别
+20:47 属性名 变量名也会被选座名字
+20:58 函数的4中情况(箭头)
+21:01 new.target
+21:02 箭头函数与普通函数的区别(面试)
+箭头函数后面不能立即跟括号,括起来再跟就可以
+21:04 super
+21:10 IIFE(面试) 这是?
+21:15 调用优化  尾调用优化 减少栈空间 单独一个函数调用才行
+21:33 对象扩展 
+21:33 对象的4种分类
+21:40 对象语法拓展 
+21:42 21:54对象声明的省略
+21:55 Object.is
+21:56 Object.assign
+21:59 Object.assign的使用场景
+Object.isExtensionable (obj)
+Object.isFrozen (obj)
+Object.isSeal (obj)
+22:03 对象里面写super,调用的是原型的
+22:05 Destructuring 解构赋值 数组,对象都可以一直套,...,变量声明
+22:22 Obje.entries
+22:23 Symbol  一种唯一性 或者作为属性名 要读到它必须对应的属性名才可以
+22:34 Object.getownPropertySymbols(obj)获取对象的Symbol集合
+22:38 Symbol.for(str)
+
+8-29
+20:00 迭代器与生成器
+20:02 生成器函数 生成出若干个值 function * () yield
+20:24 next何时传参 第一次不用
+20:27 yield还可以抛出错误
+20:37 [... ] 一直next
+20:39 生成器的for of
+20:53 不同的控制流
+20:59 生成器的一些方法
+21:04 生成器相互调用
+21:11 range
+21:18 for of 的运行逻辑
+21:22 对象与生成器
+21:15 Symbol.iterator 只有next方法
+21:28 多数函数是返回迭代器返回 迭代器
+21:42 面试题 for(var x of 9)
+21:48 面试题 对象可以for of 吗
+21:55 静态方法
+22:02 静态属性
+22:03 Proxy
+22:07 Proxy各种属性
+22:13 revoke
+22:15 apply
+22:18 Reflect
+22:25 ?? 双问号 可选链
+22:27 bigint  要传字符串,太大的数本身就会丢进度

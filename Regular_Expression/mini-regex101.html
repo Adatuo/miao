@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,30 +12,13 @@
 
      #result strong{
       font-weight: normal;
-      &:nth-of-type(odd){/* ? */
+      &:nth-of-type(odd){/* 样式连接 */
         background-color: #9fcfff;
       }
-      &:nth-of-type(even){/* ? */
+      &:nth-of-type(even){/* 样式连接 */
         background-color: #d5ebff;
       }
-    }
-
-    #output{
-      width: 200px;
-      height: 100px;
-      position:relative;
-      > textarea ,#result{
-        white-space: pre-wrap;
-        word-break: break-all;/* 折返 */
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        border:1px solid;/*当没有设置边框时，textarea 和 div 元素的内容区域可能有微小的差异，尤其是在处理绝对定位和透明背景时，这可能导致它们的内容和滚动行为不完全同步。*/
-        position:absolute;/* 相对于output绝对定位 */
-        background-color: transparent;/* 白色背景变为透明色 */
-      }
-    }
-
+    } 
   </style>
 </head>
 <body>
@@ -57,27 +39,18 @@
     <label><input type="checkbox" id="flag-v">v</label>
     
     <div>TEST STRING</div>
-     <div id="output"><!--将高亮与原文合并到一起 -->
-      <div class="" id="result"></div>    <!-- 因为textarea不能高亮,所以要再写一个套上 -->
-      <textarea class="border" id="testStringInput" oninput="run()" onscroll="syncScroll()">
+      <textarea class="border" id="testStringInput">
         How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
         How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-
         11 qw
-      </textarea><!--oninput输入时触发 可以编辑的文本 -->
-
-    </div>
-  
+      </textarea>
+      <div class="" id="result"></div>   <!-- 因为textarea不能高亮,所以要再写一个套上 -->
   </div>
  
 </body>
 <script>
    // 元素的id为xxx时，页面的全局就会出现一个叫xxx的变量，指向一个表示那个标签的对象
-  run()//一开始就run一次
+
    function run() {
     var reString = reInput.value //可以通过value属性读取到文本框的值
     if (reString == '') {//正则表达式是空直接返回
@@ -131,10 +104,5 @@
     }
    }).join('')
   }
-
-  function syncScroll() {
-    result.scrollTop = testStringInput.scrollTop
-  }
-
 </script>
 </html>

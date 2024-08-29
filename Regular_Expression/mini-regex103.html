@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>mini-regex102</title>
+  <title>mini-regex103</title>
   <script src="https://cdn.tailwindcss.com/"></script>
   <style class = "text/tailwind">
     input,button{
@@ -91,6 +91,7 @@
     <div>REGULAR EXPRESSION</div>
     <input class="border" name="正则表达式"  type="text" id="reInput" value="(.(.)(.))(..) " onkeyup="run()"><!--onkeyup按键弹起来的时候用--> 
     <button class="border" onclick="run()">RUN</button><!-- onclick点击的时候执行""里的 -->
+    <span id="matchState"></span><!-- 运行状态 -->
     <div id="tips"></div><!-- 一个提示 -->
    <div>FLAGS</div> <!-- 模式选择 -->
     <label><input type="checkbox" id="flag-g" checked>g</label>
@@ -143,15 +144,16 @@
    
     var testString = testStringInput.value//第二个框里的
 
-    var html = ''//拼出符合正则表达式的字符串 
+    matchState.textContent = 'processing...'
+    getMatchesFromWorker(re,testString,(matches) =>{
+      matchState.textContent = 'ok' //成功执行添加ok内容
+      var html = ''//拼出符合正则表达式的字符串 
 
-    var match //取出匹配正则的值
+      var lastLastIndex = 0 //
 
-    var lastLastIndex = 0 //
+      var matchIndex = 0 //记录每个match的编号
 
-    var matchIndex = 0
-
-    while (match =re.exec(testString)) {
+    for (var match of matches) {
       html += testString.slice(lastLastIndex,match.index)
       html +=  highlightMathch(match,matchIndex)  
       lastLastIndex = re.lastIndex //更新lastLastIndex的位置到达下一个值的位置
@@ -160,14 +162,18 @@
         re.lastIndex++ //：匹配到一个空字符串。当匹配到空字符串时，正则表达式的 lastIndex 不会自动前进，因为空字符串的长度为 0，这会导致下一次匹配从同一位置开始，从而进入一个无限循环。
       }  
 
-      if (re.global == false) {//g没有循环一次即可
+      if (re.global == false) {//g没有循环一次即可 无g第一次找到就行 有g找到全部匹配的
         break
       }
       matchIndex++
     }
-      html += testString.slice(lastLastIndex) //把剩下的字符拼到一起
-      result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值
-   }
+    html += testString.slice(lastLastIndex) //把剩下的字符拼到一起
+    result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值
+  },() => {
+    matchState.textContent = 'timeout' //给output的span添加内容,失败timeout
+  })
+
+}
 
    function getFlags() {
     var flags = ['g','m','i','y','u','s','d','v']
@@ -237,5 +243,32 @@
     testStringInput.scrollTop = result.scrollTop
   }
 
+
+ 
+//将得到的正则表达式和String发送到worker  
+  function getMatchesFromWorker(re,string,f,g) {
+    var success = false
+    var worker = new Worker('./regexp-match-worker.js');//在一个文件夹调用
+      //将得到的正则表达式和String发送到worker 
+      worker.postMessage({
+        re: re,
+        string: string,
+      })
+      setTimeout(()=>{
+        if (success == false) {
+          worker.terminate()//2s没有结束这个worker
+          g()//运行g
+        }
+      },2000)  
+      //接受worker发来的数据,在事件的data里面
+      worker.addEventListener('message',e => {
+          var matches = e.data  
+          success = true
+          worker.terminate()//结束这个worker
+          f(matches)//这个函数处理得到的数据
+        //  return matches 只是在这个函数里面return getMatchesFromWorkder无法拿到返回值
+        })
+
+}
 </script>
 </html>

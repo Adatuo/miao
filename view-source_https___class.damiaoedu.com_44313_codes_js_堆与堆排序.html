@@ -74,7 +74,7 @@
             // 目标元素不在堆顶，才有必要向上调整
             while (idx > 0) {
         var pIdx = (idx - 1) >> 1 // 相当于减1除2取整
-        if (this._items[idx] < this._items[pIdx] && ) {
+        if (this._items[idx] < this._items[pIdx]) {
           this.swap(idx, pIdx)
           idx = pIdx
         } else {

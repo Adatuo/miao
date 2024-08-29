@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)https://class.damiaoedu.com:44313/codes/js/mouse-trail-%E6%8B%96%E5%BD%B1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .mouse-shadow {
+      width: 16px;
+      height: 16px;
+      background-size: contain;
+      background-image: url(https://pic.616pic.com/ys_img/00/42/67/D7oGcPkqe3.jpg);
+      position: fixed;
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+
+    function throttle(f, time) {
+      var scheduled = false, lastArgs = []
+      return function(...args) {
+        lastArgs = args
+        if (scheduled == false) {
+          scheduled = true
+          setTimeout(() => {
+            scheduled = false
+            f(...lastArgs)
+          }, time)
+        }
+      }
+    }
+
+    var start = performance.now()
+
+    var x = performance.now()
+    addEventListener('mousemove', e => {
+      var now = performance.now()
+      console.log(now - x)
+      x = now
+    })
+
+    addEventListener('mousemove', throttle(e => {
+      var mouseX = e.clientX
+      var mouseY = e.clientY
+
+      var now = performance.now()
+      console.log('---', now - start)
+      start = now
+
+      var shadow = document.createElement('span')
+      shadow.className = 'mouse-shadow'
+      shadow.style.left = mouseX + 'px'
+      shadow.style.top = mouseY + 'px'
+
+      document.body.append(shadow)
+
+      setTimeout(() => {
+        document.body.removeChild(shadow)
+      }, 16 * 10);
+    }, 16))
+
+  </script>
+
+</body></html>

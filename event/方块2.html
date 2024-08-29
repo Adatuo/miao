@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>方块</title>
+  <style>
+    .square {
+      border: 4px solid;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+    }
+
+    /* 为了调试方便，可以给每个方块初始位置 */
+    .square:nth-child(1) { left: 50px; top: 50px; }
+    .square:nth-child(2) { left: 200px; top: 50px; }
+    .square:nth-child(3) { left: 50px; top: 200px; }
+    .square:nth-child(4) { left: 200px; top: 200px; }
+  </style>
+</head>
+<body>
+<div>
+  <div class='square'></div>
+  <div class='square'></div>
+  <div class='square'></div>
+  <div class='square'></div>
+</div>  
+</body>
+<script>
+    var squaresX, squaresY;
+
+    window.onload = function() {
+        var squares = document.querySelectorAll('.square');
+
+        // 获取其他方块的信息
+        function getRect(elem) {
+            return elem.getBoundingClientRect();
+        }
+
+        // 检测是否重叠
+        function isOverlapping(rect1, rect2) {
+            return !(rect1.right < rect2.left || 
+                     rect1.left > rect2.right || 
+                     rect1.bottom < rect2.top || 
+                     rect1.top > rect2.bottom);
+        }
+
+        // 给每一个方块添加拖动事件
+        squares.forEach(it => {
+            it.addEventListener('mousedown', event => {
+                squaresX = event.pageX - it.offsetLeft;
+                squaresY = event.pageY - it.offsetTop;
+                
+                // 拖拽
+                document.onmousemove = function(event) {
+                    var newLeft = event.pageX - squaresX;
+                    var newTop = event.pageY - squaresY;
+
+                    var currentRect = {
+                        left: newLeft,
+                        top: newTop,
+                        right: newLeft + it.offsetWidth,
+                        bottom: newTop + it.offsetHeight
+                    };
+
+                    var isValidMove = true;
+                    
+                    // 检查是否与其他方块重叠
+                    squares.forEach(otherSquare => {
+                        if (otherSquare !== it) {
+                            var otherRect = getRect(otherSquare);
+                            if (isOverlapping(currentRect, otherRect)) {
+                                isValidMove = false;
+                            }
+                        }
+                    });
+
+                    // 如果不重叠，允许移动
+                    if (isValidMove) {
+                        it.style.left = newLeft + 'px';
+                        it.style.top = newTop + 'px';
+                    }
+                }
+
+                // 鼠标拿起，停止拖动
+                document.onmouseup = function() {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+                
+                event.preventDefault(); // 禁用事件，防止默认行为
+            });
+        });
+    }
+</script>
+</html>
