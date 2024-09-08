@@ -59,8 +59,33 @@ querySelectorAll('')
 
 getBoundingClientRect()
   获得元素相对于视口的位置.返回值是一个 DOMRect 对象，是包含整个元素的最小矩形（包括 padding 和 border-width）
+  围住这个元素区域所有的最小矩形
+getclientRects()
+  获得元素的矩形区域,一般用于行内元素  
+
 
 parseFloat
 
 e.target.closest('')
   获取e.target元素祖先中离它最近的满足这个选择器的元素
+
+createElement('')
+  创建元素  
+
+getElementById()
+  根据ID找到元素  
+
+clearInterval()  //典中点操作见康威生命游戏
+消先前通过 setInterval() 设置的重复定时任务。
+  clearInterval(intervalID)
+
+setInterval()
+  重复调用一个函数或执行一个代码片段，在每次调用之间具有固定的时间间隔。
+  var intervalID = setInterval(myCallback, 500, "Parameter 1", "Parameter 2");
+
+  function myCallback(a, b) {
+    // Your code here
+    // Parameters are purely optional.
+    console.log(a);
+    console.log(b);
+  }

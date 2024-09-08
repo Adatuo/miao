@@ -22,8 +22,8 @@
     }
     
     #output{
-      width: 300px;
-      height: 200px;
+      width: 600px;
+      height: 400px;
       position:relative;
       > textarea ,#result{
         font-family: consolas;/*等宽字体*/
@@ -89,7 +89,7 @@
   <div>
     
     <div>REGULAR EXPRESSION</div>
-    <input class="border" name="正则表达式"  type="text" id="reInput" value="(.(.)(.))(..) " onkeyup="run()"><!--onkeyup按键弹起来的时候用--> 
+    <input class="border" name="正则表达式"  type="text" id="reInput" onkeyup="run()" value="(.(.)(.))(..) " ><!--onkeyup按键弹起来的时候用--> 
     <button class="border" onclick="run()">RUN</button><!-- onclick点击的时候执行""里的 -->
     <span id="matchState"></span><!-- 运行状态 -->
     <div id="tips"></div><!-- 一个提示 -->
@@ -107,14 +107,13 @@
      <div id="output"><!--将高亮与原文合并到一起 -->
       <div class="" id="result" onscroll="syncScroll2()"></div>    <!-- 因为textarea不能高亮,所以要再写一个套上 -->
       <textarea class="border" id="testStringInput" oninput="run()" onscroll="syncScroll()">
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-        How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
-
-        11 qw
+        An explanation of your regex will be automatically generated as you type.
+        An explanation of your regex will be automatically generated as you type.
+        3 chickens
+        55 cows
+        100 eggs
+        1 dragonfly
+        1 pig
       </textarea><!--oninput输入时触发 可以编辑的文本 -->
 
     </div>
@@ -143,10 +142,16 @@
     }
    
     var testString = testStringInput.value//第二个框里的
-
-    matchState.textContent = 'processing...'
-    getMatchesFromWorker(re,testString,(matches) =>{
+    var done = false //时序辅助
+    setTimeout(() => {
+      if (done == false) {
+         matchState.textContent = 'processing...'
+      }
+    }, 500);
+    
+    getMatchesFromWorker(re,testString,(matches) =>{//f(matches)
       matchState.textContent = 'ok' //成功执行添加ok内容
+      done = true
       var html = ''//拼出符合正则表达式的字符串 
 
       var lastLastIndex = 0 //
@@ -156,20 +161,22 @@
     for (var match of matches) {
       html += testString.slice(lastLastIndex,match.index)
       html +=  highlightMathch(match,matchIndex)  
-      lastLastIndex = re.lastIndex //更新lastLastIndex的位置到达下一个值的位置
+      //下面这一坨不需要,re.lastIndex 相当于没有移动. 因为re.lastIndex是匹配一次移动一次,而已经在worker里面匹配完成所以就不需要了
+      // lastLastIndex = re.lastIndex //更新lastLastIndex的位置到达下一个值的位置
+      // if (match[0].length == 0) {//如果某一次match没有匹配到值,那么lastIndex就要强行移动到下一个
+      //   re.lastIndex++ //：匹配到一个空字符串。当匹配到空字符串时，正则表达式的 lastIndex 不会自动前进，因为空字符串的长度为 0，这会导致下一次匹配从同一位置开始，从而进入一个无限循环。
+      // }  
+      // if (re.global == false) {//g没有循环一次即可 无g第一次找到就行 有g找到全部匹配的
+      //   break
+      // }
 
-      if (match[0].length == 0) {//如果某一次match没有匹配到值,那么lastIndex就要强行移动到下一个
-        re.lastIndex++ //：匹配到一个空字符串。当匹配到空字符串时，正则表达式的 lastIndex 不会自动前进，因为空字符串的长度为 0，这会导致下一次匹配从同一位置开始，从而进入一个无限循环。
-      }  
+      lastLastIndex = match.index + match[0].length //match.index所在的位置加上match[0].length说在的长度就是他下一个的坐标
 
-      if (re.global == false) {//g没有循环一次即可 无g第一次找到就行 有g找到全部匹配的
-        break
-      }
       matchIndex++
     }
     html += testString.slice(lastLastIndex) //把剩下的字符拼到一起
-    result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值
-  },() => {
+    result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值 innerHTML获取样式同时不获取隐藏文本
+  },() => {//g()
     matchState.textContent = 'timeout' //给output的span添加内容,失败timeout
   })
 
@@ -188,12 +195,8 @@
   }
 
   function highlightMathch(match,matchIndex) { //原理在8-15-20:27 括号拼凑20:33 测试用例 re=/(.(.)(.))(..)  /dg re.exec('Indiv  isibi  lities  SSS')
-  //计算分组,从外层到内层的分组
-  var groupIndex = 0  
-  //帮助数组 
-    var helper = new Array(match[0].length + 1).fill('');//多一个的长度是为了拼凑最左右边的括号
-  //零宽断言  
-  if (match[0].length == 0 || !match) {//说明是零宽断言
+    //零宽断言  
+  if (match[0].length == 0) {//说明是零宽断言
     var info = [
         `Match: ${matchIndex}`,
         `-----`,
@@ -202,27 +205,23 @@
       ].join('\n')
       return `<u class="zero-width-assert" title="${info}"></u>`
   }
-    for (var index of match.indices) {//获得indices的数组[ , ]length2 //match.indices有问题
-      var start = index[0] - match.index//获得此分组的(右边)
-      var end = index[1] - match.index//获得此分组的(左边)
-      //用换行符 \n 分隔的字符串
-      var info = [
-        `Match: ${matchIndex + 1}`,
-        `-----`,
-        `Group: ${groupIndex}`,
-        `Pos :${index[0]} -${index[1]}`,
-      ].join('\n')
-      // var info = `
-      //   Match: ${matchIndex + 1}
-      //   -----
-      //   Group: ${groupIndex}
-      //   Pos :${index[0]} -${index[1]}
-      // `
-      helper[start] += `<em data-group-index="${groupIndex}" title = "${info}">`//右边右括号  用${groupIndex}分组来更改颜色
-        
-      helper[end] = `</em>` + helper[end]//左边左括号
 
-      groupIndex++
+  //帮助数组 
+    var helper = new Array(match[0].length + 1).fill('');//多一个的长度是为了拼凑最左右边的括号
+  //计算分组,从外层到内层的分组
+  var groupIndex = 0  
+    for (var index of match.indices) {//获得indices的数组[ , ]length2 //match.indices有问题
+      var start = index[0] - match.index
+        var end = index[1] - match.index
+        var info = [
+          `Match ${matchIndex + 1}`,
+          `-----`,
+          `Group: ${groupIndex}`,
+          `Pos: ${index[0]}-${index[1]}`,
+        ].join('\n')
+        helper[start] += `<em data-group-index="${groupIndex}" title="${info}">`
+        helper[end] = '</em>' + helper[end]
+        groupIndex++
     }
     //拼接
     var result =''
@@ -246,7 +245,7 @@
 
  
 //将得到的正则表达式和String发送到worker  
-  function getMatchesFromWorker(re,string,f,g) {
+  function getMatchesFromWorker(re,string,f,g) {//f正则表达式的匹配 g超时
     var success = false
     var worker = new Worker('./regexp-match-worker.js');//在一个文件夹调用
       //将得到的正则表达式和String发送到worker 
@@ -254,12 +253,12 @@
         re: re,
         string: string,
       })
-      setTimeout(()=>{
+      setTimeout(()=>{//定时器
         if (success == false) {
-          worker.terminate()//2s没有结束这个worker
+          worker.terminate()//2s没有结束这个worker,有可能是数据不够多才没有timeout  时间顺序
           g()//运行g
         }
-      },2000)  
+      },4000)  
       //接受worker发来的数据,在事件的data里面
       worker.addEventListener('message',e => {
           var matches = e.data  

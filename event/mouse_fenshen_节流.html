@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mouse_fenshen</title>
+  <style>
+    span{
+      width: 16px;
+      height: 16px;
+      background-image: url(https://bpic.588ku.com/element_pic/00/00/00/0056a18574b94f5.jpg);
+      position: fixed;
+      background-size: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <script> 
+    function throttle(f, time) {
+  var scheduled = false, lastArgs = []
+  return function(...args) {
+    lastArgs = args
+    if (scheduled == false) {
+      scheduled = true
+      setTimeout(() => {
+        scheduled = false
+        f(...lastArgs)
+      }, time)
+    }
+  }
+}
+  
+const throttledMouseMove = throttle(e => {
+      //移动才增加幻影
+      let mouseX = e.clientX
+      let mouseY = e.clientY
+      let shadow = document.createElement('span')
+          shadow.className = 'span'
+          shadow.style.left = mouseX + 'px'
+          shadow.style.top = mouseY + 'px'
+          document.body.append(shadow)
+      setTimeout(() => {
+        document.body.removed(shadow)
+      }, 16);    
+    },100)
+
+
+// let mouse = document.querySelector("span")//是标签,不是类
+  document.addEventListener('mousedown',e => { 
+    document.onmousemove = throttledMouseMove
+
+    document.onmouseup = function () {
+      document.onmousemove = null
+      document.onmouseup = null
+    }
+      event.preventDefault()
+    })
+  
+    
+  </script>
+  </body>
+</html>

@@ -26,11 +26,11 @@ function add(a,b) {
   return a + b
 }
 function noisy(f) {
-  /*第一个 return 语句返回的不是传入的参数，而是一个新函数。
-  这个新函数会在调用时打印传入的参数并返回计算结果。*/
-  return function (...args) {//搜集参数，都会返回数组
+  /*第一个 return 语句返回的不是传入的参数,而是一个新函数.
+  这个新函数会在调用时打印传入的参数并返回计算结果.*/
+  return function (...args) {//搜集参数,都会返回数组
     console.log("call with",args);
-    var val = f(...args)//返回参数，都会返回数组
+    var val = f(...args)//返回参数,都会返回数组
     console.log("call with",args,"- got",val);3,5 ,8
     return  val;
   }
@@ -49,10 +49,58 @@ function map(array,){
   return result
 }
   
-7-19
+filter
+filter() 
+方法用于创建一个新数组,包含通过提供的函数测试的所有元素.
+换句话说,它会遍历数组中的每个元素,使用一个回调函数对其进行测试,返回true的元素会保留在新数组中
+let numbers = [1, 2, 3, 4, 5, 6];
+
+// 筛选出所有大于 3 的数字
+let filteredNumbers = numbers.filter(function(number) {
+  return number > 3;
+});
+
+console.log(filteredNumbers); // 输出: [4, 5, 6] 是在回调函数中返回的,number不会改变
+
+
+forEach() 
+它会对数组中的每个元素执行一次提供的函数
+与其他迭代方法不同forEach不会返回一个新数组,而是对数组中的每个元素执行指定的回调函数
+遍历数组:forEach最常用于遍历数组并对每个元素执行某种操作
+执行副作用:常用于需要副作用的场景,如更新DOM记录日志等
+//let numbers = [1, 2, 3, 4, 5];
+
+numbers.forEach(function(number, index, arr) {
+  arr[index] = number * 2;
+});
+
+console.log(numbers); // 输出: [2, 4, 6, 8, 10]
+
+map()
+//let numbers = [1, 2, 3, 4, 5];
+
+let doubled = numbers.map(function(number) {
+  return number * 2;
+});
+
+console.log(doubled); // 输出: [2, 4, 6, 8, 10]
+
+
+reduce
+它用于将数组中的所有元素通过一个累加函数累积成一个单一的值.它可以用于求和,求积,计算平均值,转换数据结构等各种操作
+//let numbers = [1, 2, 3, 4, 5];
+
+let sum = numbers.reduce(function(accumulator, currentValue) {
+  return accumulator + currentValue;
+}, 0);
+
+console.log(sum); // 输出: 15
+
+
 配置文件
 var ini = 
 `
+7-19用的时候删除这一行
 [General]
 Name=未命名
 
@@ -211,7 +259,7 @@ ancestry
   //Flattening
   var x = [['a',['b']],[[['c'],'d'],2],[4,5]]
   var x = [['a',['b']],[4,5]]
-  //这样的话，数组里面的数组无法展开需要递归
+  //这样的话,数组里面的数组无法展开需要递归
   //有问题,当第一个是数字的时候直接添加
   function Rresult(x) {
     x.reduce((result , it) => {
@@ -222,15 +270,15 @@ ancestry
   //有些繁琐可以直接加进去,见adatuo-lodash
   var x = [['a',['b']],[[['c'],'d'],2],[4,5]]
   function Rresult(x) {//函数1
-    //不是数组，变成数组
+    //不是数组,变成数组
     if (!Array.isArray(x)) {
       return([x])
     }
-    //函数二，需要返回值
-    //没有Array.会Uncaught TypeError: x.reduce is not a function 。因为数组里面有不是数组的元素
+    //函数二,需要返回值
+    //没有Array.会Uncaught TypeError: x.reduce is not a function .因为数组里面有不是数组的元素
     return x.reduce((result , it) => { 
     return [...result,...Rresult(it)]
-  },[])//要先有数组（空）才能返回值，相当于return []
+  },[])//要先有数组（空）才能返回值,相当于return []
   }
 console.log(Rresult(x));
 
@@ -238,7 +286,7 @@ console.log(Rresult(x));
 //平均值
 var avg = (avg,it,i) => (avg * i + it) / (i + 1)
 //byName,通过其更容易的找出每个人的属性
-//创建空对象，存放名字：属性
+//创建空对象,存放名字：属性
 var byName = {}
   for (let m of ANCESTRY_FILE) {
     //
@@ -249,7 +297,7 @@ function age(ANCESTRY_FILE) {
 return  ANCESTRY_FILE.
   //先filter筛选,能找到mother信息的人
   filter(person => {
-    return byName[person.mother] //person.mother母亲信息在表中，byName[person.mother]，他们母亲的信息
+    return byName[person.mother] //person.mother母亲信息在表中,byName[person.mother],他们母亲的信息
 }).
   //映射mother.age - age
   map(person =>{//这里的person已经被filter筛选过了

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>regexp-rail-graph</title>
+</head>
+<body>
+  <script>
+    let re = /foo|(bar|(ba+z{2,5})[aeiou])/
+
+    function parseRegularExpression(input) {//输入的正则表达式
+      let i = 0//正则表达式的下标
+      let groupIndex = 1 //分组的编号从1开始
+
+      let branches = parseBranches()
+      return {
+        type:"RegularExpression",
+        start: 0,
+        end: i, //解析完成后一定会在最后
+        branches,
+      }
+
+      function parseOnePart() {//正则表达式类型
+        if (input[i] == '[') {
+          return parseCharacterClass()
+        }
+        if (input[i] == '(') {
+          return parseCaptureGroup()
+        }
+        if (input[i] == '?' || input[i] == '*' || input[i] == '+' || input[i] == '{') {//遇见量词
+          return parseQuantity()
+        }
+        if (input[i] == '\\') {
+          return parseEscape()
+        }
+        return parseCharacter() //什么都没遇到
+      }
+
+      function parseEscape() {  //解析反斜杠开始的转义符//暂时只考虑一个反斜杠后面跟一个字符
+        let node = {
+          type: 'Escape',  
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', //原始内容
+          escape:'',  //转义字符符号
+        }
+        i++ //skip '\'
+        node.escape = input[i] //获取转义后的字符
+        i++ //跳过被转义的符号
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树
+      }
+
+      function parseCharacter() { //解析单个字符
+        let node = {  //构建语法树
+          type: 'Character',  //单个字符的类型是Character
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', //源代码的值
+          Character: input[i] //单个字符的字符
+        }
+        i++ //向后走
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树
+      }
+
+      function parseCharacterClass() { //解析中括号括起来的字符组
+        let node = {
+          type: 'CharacterClass', //中括号括起来的字符组的类型是Character
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', //源代码的值
+          invert:false, //是否取反 //$d
+          characterClasses: [] //中括号括起来的字符组的字符
+        }
+        i++ //skip [
+        if (input[i] == '^') { //是取反的话
+          node.invert == true
+          i++ //skip '^'
+        }
+
+        //[^abca-z0-9\d]
+        while (input[i] !== ']') {
+          let part = parseOneClass()
+          node.characterClasses.push(part)
+        }
+        i++ //skip ']'
+       
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树 
+
+        //解析中括号的一部分
+        function parseOneClass() { //暂时没有解决a-z0-9的情况 paresRange
+          if (input[i] == '\\') { // \\反斜杠加两个
+            return parseEscape()
+          } else {
+            return parseCharacter()
+          }
+        }
+
+      }
+
+      function parseQuantity() {  //解析量词,关心的应该是量词的范围 * + = ? {2,5}
+        let node = {  //构建语法树
+          type: 'Quantity',  
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', 
+          min:0,  
+          max:Infinity, //无穷大
+          greedy:true,  //贪婪匹配
+          // quantifier: '{2,5}',
+          repeatElement:null, //重复的是哪一个字符
+        }
+        if (input[i] == '? ') {
+          node.max = 1
+          i++ //skip '?'
+        }else if (input[i] == '+') {
+          node.min = 1
+          i++ //skip '+'
+        }else if (input[i] == "*") {
+          i++ //skip '*'
+        }else if (input[i] == '{') {
+          i++ //skip '{'
+          node.min = parseInteger()
+          i++ //skip ','
+            if (input[i] == '}') {
+              //开放式量词{2,}  无限大
+              i++ //skip '}' 跳过
+            }else{
+              node.max = parseInteger()
+              i++ //skip '}'
+            }         
+        }
+        if (input[i] == '?') {
+          i++ //skip '?'
+          node.greedy = false //非贪婪匹配
+        }
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树
+      }
+
+      function parseInteger() {
+        let start = i
+        while (input[i] >= '0' && input[i] <= '9') {
+          i++
+        }
+        return Number(input.slice(start,i)) //slice的类型是什么返回的就是什么
+      }
+
+      function parseBranches() {  //解析整个捕获分组内的所有分支
+        let branches = []
+        while (input[i] !== ')' && i < input.length) {//或者没有括号,整个就是一个分支
+          let branch = parseBranch() //解析捕获分组的每一个分支 
+          branches.push(branch) //将分支的解析结果放入 branches 数组
+          if (input[i] == "|") {  //暂时未解决/foo|/
+            i++ //skip '|'
+            continue
+          }
+        }
+        return branches
+      }
+
+      //解析一个由|分隔的一个分支("或"分支),但也可能只有一个分支,则不存在|
+      //一个分支代表顺序匹配的若干部分
+      function parseBranch() {  //解析捕获分组的每一个分支
+        let node = {
+          type: 'Branch', 
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', 
+          elements: []  //存储parseOnePart()解析后的元素
+        }
+        while (input[i] !== '|' && input[i] !== ')' && i < input.length) {
+          let element = parseOnePart() //解析分组的元素
+          if (element.type == 'Quantity') { //belike 'a +''
+            if (node.elements.length == 0) {//没有重复的,只有一个量词 /+/
+              throw new SyntaxError("Quantity: Nothing to repeat");   
+            }
+            //合并量词
+            let prevElement = node.elements.pop()
+            element.repeatElement = prevElement
+            element.start = prevElement.start
+            element.raw = input.slice(element.start, element.end)
+          }
+          node.elements.push(element)         
+        }       
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end)
+        return node
+
+        //如果想让语法树看起来简单一点可以用下面这个
+        // if (node.elements.length == 1) {
+        //   return node.elements[0]
+        // }else{
+        //   return node
+        // }
+
+      }
+
+      function parseCaptureGroup() {  //解析捕获分组
+        let node = {
+          type: 'CaptureGroup', 
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', 
+          groupIndex:groupIndex, //分组编号
+          capture: true, //是否为捕获分组 非捕获分组(!:)
+          zeroAssertion: false, //是否为零宽断言
+          positive: true, //true匹配|false排除  零宽断言(也有正向往回看的正向后发断言?<=)
+          lookahead: true,  //true向右 false向左
+          groupName: null,  //具名分组的名字
+          branches:[],  //每一个括号的不同解析
+        }
+
+        i++ //skip '('
+        if (input[i] == '?') {
+          i++ //skip '?'
+          if (input[i] == ':') {  //非捕获分组
+            i++ //skip ':'
+            node.capture = false  //后面就不需要解析了,直接跳出
+          }
+          else if (input[i] == '=') {//匹配向右零宽断言
+            i++ //skip '='
+            zeroAssertion = true
+            positive = true
+            lookahead = true  
+          }else if (input[i] == '!') {//排除向右零宽断言
+            i++ //skip '!'
+            zeroAssertion = true
+            positive = false
+            lookahead = true
+          }else if (input[i] == '<') {//具名分组或者零宽断言
+            i++ //skip '<'
+            if (input[i] == '=') {//匹配向左零宽断言
+            i++ //skip '='
+            zeroAssertion = true
+            positive = true
+            lookahead = false
+            } else if (input[i] == '!') {//?<!排除向左零宽断言
+            i++ //skip '!'
+            zeroAssertion = true
+            positive = false
+            lookahead = false
+            }else{  //什么都不是就是具名分组
+              node.groupName = parseGroupName() //写完看看这里是数组还是什么
+              i++ //skip '>' (?<xxx>
+            }
+          }
+        }
+        //到这里终于解析完了括号自身的属性
+        //接下来解析括号里的内容
+
+        node.branches = parseBranches() 
+        i++ //skip ')'
+
+        //分组编号
+        if (node.zeroAssertion == false && node.capture == true) {//既不是零宽断言也不是非捕获分组
+          groupIndex++  //分组编号++
+        }
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end)
+        return node //返回DOM
+
+        //具名分组名称
+        function parseGroupName() {
+          let start = i
+          while (input[i] != '>') {
+            i++
+          }
+          //(?<foooo>xx)
+          //    i   i
+          return input.slice(start,i) //slice[)
+        }
+      }
+    }
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  function throttle(f, time) {
+  var scheduled = false, lastArgs = []
+  return function(...args) {
+    lastArgs = args
+    if (scheduled == false) {
+      scheduled = true
+      setTimeout(() => {
+        scheduled = false
+        f(...lastArgs)
+      }, time)
+    }
+  }
+}
+
+function debounce(f, time) {
+  var id = null
+  return function(...args) {
+    clearTimeout(id)
+    id = setTimeout(() => {
+      f(...args)
+    }, time)
+  }
+}
+
+addEventListener('click', throttle(e => {
+  console.log(1)
+}, 1000) )
+</script>
+</html>

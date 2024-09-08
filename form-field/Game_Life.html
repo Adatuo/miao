@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of life</title>
+</head>
+<!-- 规则：放置一些生命（蓝色），开始游戏；每一轮，对一个格子，如果它周围八格中：
+有三格存活，则下一轮该格存活（蓝色）；
+有两格存活，则状态不变（蓝→蓝，白→白）；
+其他状况，则死亡（白色） -->
+<body>
+  <button>next</button>
+  <div class="grids">
+    <!-- <input type="checkbox" name="" id="">
+    <input type="checkbox" checked name="" id=""> -->
+  </div>
+
+  <script>
+    const button = document.querySelector('button')
+    const gridFactory = document.querySelector('.grids')//.grids没有div
+
+    //初始化
+    start()
+
+    //按钮
+    let buttonOn
+    button.addEventListener('click',(e) => {
+      buttonOn = e      
+    })
+
+  function start() {
+    for (let i = 0; i < 20; i++) {     
+      let checkboxGroup = document.createElement('div')//分组,必须要放在里面,要多次新建
+      checkboxGroup.className = 'data-life-group'
+      checkboxGroup.id = `${i}`
+      gridFactory.append(checkboxGroup)
+      for (let j = 0; j < 20; j++) {
+        let checkbox = document.createElement('input')//格子,必须要放在里面,要多次新建
+        checkbox.type = 'checkbox'
+        checkbox.className = 'data-life'
+        checkbox.id = `${i}-${j}`
+
+        if (Math.random() >= 0.5) {
+          checkbox.checked = true
+          
+        }        
+
+        if (buttonOn.isTrusted) {
+          if (Math.random() >= 0.5) {
+          checkbox.checked = true
+        } 
+        }
+        checkboxGroup.append(checkbox)
+      } 
+    }
+  }
+
+
+    //状态更新
+    //获取状态
+    const inputFactory = document.querySelectorAll('.data-life')//获得整个input数组
+    const checkboxGroupID = document.querySelectorAll('.data-life-group')   
+
+    //活着的邻居
+    let neighborsAlive = 0
+
+    inputFactory.forEach(it => {//妙蛙
+      //document.querySelectorAll ('.data-life')[o].id.split('-').map(Number)
+      //得到整个input数组,因为forEach一个一个遍历,获取ID(.id),split('-')根据'-'隔开,但是此时还是字符串不是数组,用map一个一个元素转换
+      let [i,j] = it.id.split('-').map(x => Number(x))  //it.id.split('-').map(Number) 妙蛙
+
+      let neighbors = [
+        {x: i-1 ,y: j-1},//左上
+        {x: i ,y: j-1},//上
+        {x: i+1 ,y: j-1},//右上
+        {x: i-1 ,y: j},//左
+        {x: i+1 ,y: j},//右
+        {x: i ,y: j+1},//下
+        {x: i-1 ,y: j+1},//左下
+        {x: i+1 ,y: j+1},//右下
+      ]
+
+      //检查时候在网格内 ({x,y})解构赋值
+      neighbors.forEach(({x,y}) => {
+        //一个个检查是否在网格内
+        if (x >= 0 && x < 19 && y >= 0 && y < 19) {
+          //以ID形式获得邻居check的状态
+          let neighborsCheck = document.getElementById(`${x}-${y}`)
+          if (neighborsCheck && neighborsCheck.check == true) {
+            neighborsAlive++
+          }
+        }
+      });
+    });
+      
+    if (neighborsAlive = 3) {
+      
+    }
+  </script>
+</body>
+</html>

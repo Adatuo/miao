@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini_JavaScript</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+
+</head>
+<body>
+<div class="fixed top-1/2  left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+  <textarea name="" id="" class=" w-[400px] h-[300px] border-2 border-black">
+  var a = 1
+  var b = 2  
+  console.log(a*b)
+  </textarea>
+  <button>run</button>
+</div>  
+
+  <script>
+    let button = document.querySelector("button")
+    let code = document.querySelector("textarea")
+
+    button.addEventListener('click',run)//第一次绑定
+
+    function run(e){        
+      // console.log.prototype = function (it) { 内置函数，不是构造函数,修改没有影响
+      //   return console.log(it)
+      // }  
+
+      //重写 console.log,解决没有返回值,既保留原有的log,又能有返回值    
+      // const originalConsoleLog = console.log //保存原始console.log
+      // let logOut ='' //接住返回值
+      // //重写
+      // console.log = function(...args) {
+      //   logOut = args.length === 1 ? args[0]:args.join(' ')
+      //   originalConsoleLog.apply(console,args)//保障原本的console.log功能不变
+      //   return logOut//返回
+      // }
+      
+      const console = { //只会影响下面
+        log(...arg){//arg是一个数组
+          return arg.join(' ') + '\n'
+        }
+      }
+      
+      // console.log = function(...args) { //会影响全局
+      //   return args.join(' ') + '\n'
+      // }
+      
+
+      try {
+        let result = eval(code.value);
+        // console.log(result);//控制台测试
+        code.value = code.value +'\n' + "-".repeat(code.offsetWidth) +'\n' + result
+      } catch (e) {
+        // console.log(e);//控制台测试
+        code.value = code.value +'\n' + "-".repeat(code.offsetWidth) +'\n' + e
+      }     
+      e.preventDefault()//阻止按键默认行为
+
+      button.removeEventListener('click',run)//移除run上的事件监听器,只执行一次
+
+      code.addEventListener('input',rRun)//监听输入事件,重新执行
+    }
+
+    //重新输入后继续运行
+    function rRun() {
+      button.addEventListener('click',run)//重新绑定
+      code.removeEventListener('input',rRun)//移除code上的事件监听器
+    }
+
+  </script>
+</body>
+</html>

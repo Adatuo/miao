@@ -1,0 +1,41 @@
+<body>
+    <div class="grids">
+      <!-- <input type="checkbox" name="" id="">
+      <input type="checkbox" checked name="" id=""> -->
+    </div>
+  
+    <script>
+      const gridFactory = document.querySelector('.grids');
+      
+      // 初始化
+      for (let i = 0; i < 20; i++) { 
+        let checkboxGroup = document.createElement('div'); // 每一行的分组
+        gridFactory.append(checkboxGroup);  // 添加分组到 gridFactory
+        
+        for (let j = 0; j < 20; j++) {
+          let checkbox = document.createElement('input');  // 在每次循环内创建新的 checkbox
+          checkbox.type = 'checkbox';
+          checkbox.className = 'data-life';
+          checkbox.id = `${i}-${j}`;  // 使用i-j组合作为唯一ID
+          
+          // 随机设置选中状态
+          if (Math.random() >= 0.5) {
+            checkbox.checked = true;
+          }        
+  
+          checkboxGroup.append(checkbox);  // 将复选框添加到分组
+        }
+        
+        gridFactory.append(document.createElement('br'));  // 添加换行符到 gridFactory
+      }
+  
+      // 状态更新
+      // 获取状态
+      const inputFactory = document.querySelectorAll('.data-life');
+      for (let i = 0; i < inputFactory.length; i++) {
+        if (inputFactory[i].checked) {
+          console.log(inputFactory[i].id);  // 输出选中复选框的ID      
+        }  
+      }
+    </script>
+  </body>

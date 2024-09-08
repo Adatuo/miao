@@ -1,0 +1,45 @@
+
+<p style="text-align: center;margin-top: 150px;">
+  <img src="img/cat.png" style="position: relative ">
+</p>
+<script>
+  function foo() {
+    var img = document.querySelector('img')
+
+    var r = 100
+
+    for (var i = 0; i < 10000; i++) {
+      var angle = i / 100
+      var left = Math.sin(angle) * r
+      var top1 = Math.cos(angle) * r
+      console.log(left, top1)
+      img.style.left = left + 'px'
+      img.style.top = top1 + 'px'
+    }
+  }
+
+  var cat = document.querySelector("img");
+  var angle = 0, lastTime = null;
+
+  function animate(time) {
+    // console.log(time)
+
+    if (lastTime != null)
+      angle += (time - lastTime) * 0.001;
+    lastTime = time;
+    
+    // angle += 0.01
+    // angle = time / 1000
+    // angle = Date.now() / 1000 一般用这个
+
+    cat.style.top = (Math.sin(angle) * 100) + "px";
+    cat.style.left = (Math.cos(angle) * 100) + "px";
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+</script>
+
+for (var i = 0; i < 100; i++) { var a=i / 100 var x=Math.sin(a) * 20 var y=Math.cos(a) * 20 draw(x, y) }

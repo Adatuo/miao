@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini-regex103</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+  <style class = "text/tailwind">
+    input,button{
+      outline: none;/* 去除元素轮廓样式 */
+    }
+
+     #result strong{
+      font-weight: normal;
+      &:nth-of-type(odd){/* ? */
+        background-color: #9fcfff;
+      }
+      &:nth-of-type(even){/* ? */
+        background-color: #d5ebff;
+      }
+    }
+    
+    #output{
+      width: 600px;
+      height: 400px;
+      position:relative;
+      > textarea ,#result{
+        font-family: consolas;/*等宽字体*/
+        white-space: pre-wrap;/* 自动换行换行 */
+        word-break: break-all;/* 折返 */
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        border:1px solid;
+        /*position:absolute;/* 相对于output绝对定位 */
+        background-color: transparent;/* 白色背景变为透明色 */
+      }
+    }
+    #result > em:nth-of-type(odd){/*奇数元素*/
+
+    }
+    #result > em:nth-of-type(even){/*偶数元素*/
+      opacity: 0.6;
+    }
+    em{
+      font-style: normal;/*em本身不是斜体,但是会被浏览器渲染成斜体*/
+    }
+    /*一个元素的里面如果有hover的元素，自己就不要框了
+      如果一个元素里面没有被hover的元素，但其自身被hover，则显示框*/
+    em:not(:has(:hover)):hover{ 
+      outline: 2px solid gray;
+    }
+    /*实际上这个选择器：em:not(:has(:hover)):hover
+    就是只选中了直接被hover的元素，不选中这个元素的祖先元素
+    简单的：hover·选择器在选中一个元素的同时，也选中了其所有的祖先元素*/
+    em:not(:has(:hover)):hover em{
+      background-color:inherit/*元素获取其父元素的值.继承始终来自文档树中的父元素，即使父元素不是包含块*/
+    }
+    [data-group-index="0"]{
+      background-color: #9fcfff;
+    }
+    [data-group-index="1"]{
+      background-color: #9fcba1;
+    }
+    [data-group-index="2"]{
+      background-color: #e0bf8b;
+    }
+    [data-group-index="3"]{
+      background-color: #acadfc;
+    }
+    [data-group-index="4"]{
+      background-color: #e1abf5;
+    }
+    .zero-width-assert{
+      border-left: 2px dotted magenta; 
+      opacity: 1 !important;/*确保完全不透明,并且有最高优先级无法覆盖*/
+      margin-left: -1px;/*缩小一个像素*/
+      margin-right: -1px;
+      position: relative;
+      z-index: 8;/*较大的重叠元素会覆盖较小的元素*/
+      &:hover{
+        box-shadow: 0 0 2px red;
+      }
+    }
+
+    .group-hover-tip{
+      transform: translateX(-50%) translateY(-100%) translateY(-5%); /* 偏移 */
+      position: fixed;
+      background-color: black;
+      color: white;
+      display: none; /* 先藏起来,hover的时候才能看见 */
+      white-space: pre-wrap;  /*自动换行 */
+      /* normal：多余的空格会被折叠，文本会自动换行。
+      nowrap：文本不会换行，所有内容在一行显示。
+      pre：空格和换行符都被保留，内容不会自动换行。
+      pre-wrap：空格和换行符保留，文本在需要时自动换行。 */
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div contenteditable> <!--contenteditable使可编辑,同时自带一些HTML特性(下划线加粗) -->
+      hello world
+    </div>
+    <div>REGULAR EXPRESSION</div>
+    <input class="border" name="正则表达式"  type="text" id="reInput" value="(.(.)(.))(..) " onkeyup="run()"><!--onkeyup按键弹起来的时候用--> 
+    <button class="border" onclick="run()">RUN</button><!-- onclick点击的时候执行""里的 -->
+    <span id="matchState"></span><!-- 运行状态 -->
+    <div id="tips"></div><!-- 一个提示 -->
+   <div>FLAGS</div> <!-- 模式选择 -->
+    <label><input type="checkbox" id="flag-g" checked>g</label>
+    <label><input type="checkbox" id="flag-m">m</label>
+    <label><input type="checkbox" id="flag-i">i</label>
+    <label><input type="checkbox" id="flag-y">y</label>
+    <label><input type="checkbox" id="flag-u">u</label>
+    <label><input type="checkbox" id="flag-s">s</label>
+    <label><input type="checkbox" id="flag-d" checked>d</label><!-- checked默认勾上-->
+    <label><input type="checkbox" id="flag-v">v</label>
+    
+    <div>TEST STRING</div>
+     <div id="output"><!--将高亮与原文合并到一起 -->
+      <div contenteditable class="" id="result" oninput="run()"> <!-- run()立即匹配正则,但是每一次重新匹配光标都会刷新到首行 -->
+          How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+          How to be better? Will Up you mind , such as Deeply reading and travel or kneow new something.
+  
+          11 qw
+      </div>    
+      <div class="group-hover-tip"></div>
+      <!-- 因为textarea不能高亮,所以要再写一个套上 -->
+      <!-- <textarea class="border" id="testStringInput" oninput="run()" onscroll="syncScroll()">
+      </textarea>//oninput输入时触发 可以编辑的文本 -->
+
+    </div>
+  
+  </div>
+ 
+</body>
+<script>
+  var result = document.getElementById('result');  // 1.变量名可能冲突 2.可维护性差,其他人可能不知道怎么来的
+   
+  // 元素的id为xxx时，页面的全局就会出现一个叫xxx的变量，指向一个表示那个标签的对象
+  run()//一开始就run一次
+   function run() {
+    var reString = reInput.value //可以通过value属性读取到文本框的值
+    if (reString == '') {//正则表达式是空直接返回
+      return
+    }
+    var flags = getFlags()//拿到模式
+    try {
+       var re = new RegExp(reString,flags) //此为新建正则表达式 //此处把所有模式都加上了
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        tips.innerHTML = error.message
+        return //语法错误停止执行
+      }else{//不是这个错误就抛出
+        throw error       
+      }
+    }
+   
+    var testString = result.textContent //获取result二合一框里的内容 textContent获取所有包括隐藏元素  innerHTML获取不包括隐藏元素内容,以及样式
+    var done = false //时序辅助
+    setTimeout(() => {
+      if (done == false) {
+         matchState.textContent = 'processing...'
+      }
+    }, 500);
+    
+    getMatchesFromWorker(re,testString,(matches) =>{
+      matchState.textContent = 'ok' //成功执行添加ok内容
+      done = true
+      var html = ''//拼出符合正则表达式的字符串 
+
+      var lastLastIndex = 0 //
+
+      var matchIndex = 0 //记录每个match的编号
+
+    for (var match of matches) {
+      html += testString.slice(lastLastIndex,match.index)
+      html +=  highlightMathch(match,matchIndex)  
+
+      lastLastIndex = match.index + match[0].length //当下的位置 + matches已经匹配出来分组的数组的每一个match的长度
+      matchIndex++
+    }
+    html += testString.slice(lastLastIndex) //把剩下的字符拼到一起
+    var cursorIndex = getCursorPosition()//立即拿到输入字符前光标的位置
+    result.innerHTML = html //把值传给result,因为不是文本框,不能用value获取值 innerHTML获取样式同时不获取隐藏文本
+    regetCursorPosition(result,cursorIndex)//还原位置
+  },() => {
+    matchState.textContent = 'timeout' //给output的span添加内容,失败timeout
+  })
+
+}
+
+   function getFlags() {
+    var flags = ['g','m','i','y','u','s','d','v']
+    return flags.filter(it => {
+    var element = document.getElementById('flag-' + it)//获取一个 HTML 元素，其 id 是 'flag-' + it，这里的 it 是 flags 数组中的一个元素。
+    if (element.checked) {//对于chechbox来说,checked属性可以返回它是否有被打上勾
+      return true
+    }else{
+      return false
+    }
+   }).join('')
+  }
+
+  function highlightMathch(match,matchIndex) { //原理在8-15-20:27 括号拼凑20:33 测试用例 re=/(.(.)(.))(..)  /dg re.exec('Indiv  isibi  lities  SSS')
+  //计算分组,从外层到内层的分组
+  var groupIndex = 0  
+  //帮助数组 
+    var helper = new Array(match[0].length + 1).fill('');//多一个的长度是为了拼凑最左右边的括号
+  //零宽断言  
+  if (match[0].length == 0 || !match) {//说明是零宽断言
+    var info = [
+        `Match: ${matchIndex}`,
+        `-----`,
+        `Group: [empty string]`,
+        `Pos :${match.index} -${match.index}`,
+      ].join('\n')
+      return `<u class="zero-width-assert" title="${info}"></u>` //u标签非文本形式注释
+  }
+  
+    for (var index of match.indices) {//获得indices的数组[ , ]length2 //match.indices有问题
+      var start = index[0] - match.index//获得此分组的(右边)
+      var end = index[1] - match.index//获得此分组的(左边)
+      //用换行符 \n 分隔的字符串
+      var info = [
+        `Match: ${matchIndex + 1}`,
+        `-----`,
+        `Group: ${groupIndex}`,
+        `Pos :${index[0]} -${index[1]}`,
+      ].join('\n')
+      // var info = `
+      //   Match: ${matchIndex + 1}
+      //   -----
+      //   Group: ${groupIndex}
+      //   Pos :${index[0]} -${index[1]}
+      // `
+      helper[start] += `<em data-group-index="${groupIndex}" data-title = "${info}">`//右边右括号  用${groupIndex}分组来更改颜色
+        
+      helper[end] = `</em>` + helper[end]//左边左括号 `</em>`
+
+      groupIndex++
+    }
+    //拼接
+    var result =''
+    for (var i = 0; i < match[0].length; i++) {//var与let
+      result += helper[i] + match[0][i]
+    }
+    result += helper[i]//正好移动到最后一个
+    return result
+  }
+
+
+  //返回光标在整个result输入框的位置
+  function getCursorPosition(){
+    var selection = window.getSelection() //调用selection.anchorNode获得光标位置
+    var pos = 0 //光标位置
+    traverseTextNode(result,textNode => {//当 HTML 元素具有 id 属性时，浏览器会自动在全局作用域（window 对象）中创建一个同名的变量，并将该变量指向该 DOM 元素。
+      if (textNode === selection.anchorNode) {//如果先序遍历的找到了开头就停止
+        pos += selection.anchorOffset //就是起始位置
+        return false  //不能break,它只能结束当前循环,而跳不出所有 跳出递归
+      }else{
+        pos += textNode.textContent.length //加上文本节点(Only)的长度继续向后面找位置
+      }
+    })
+    return pos //返回最终的位置
+  }
+  //先序遍历DOM文本节点(only)
+  function traverseTextNode(node,action) {//action是textNode =>
+    for (var child of node.childNodes) {//DOM二叉树状结构
+      if (child.nodeType == document.TEXT_NODE) {//如果是文本节点           
+        if (action(child) === false) {//child是否符合要求
+          return false //不能用 break 只能用来跳出循环结构，不能用于跳出 if 语句或递归
+        }   
+      }else if (child.nodeType == document.ELEMENT_NODE) {//是元素节点就继续递归
+        if (traverseTextNode(child,action) === false) {
+          return false
+        }
+      }
+    }
+  }
+
+
+  //复位光标在result输入框的位置
+  //将光标设置在node结点的第index位置，node是一个元素结点
+  //程序会计算应该把光标放在node中的哪个文本结点的第几个index
+  function regetCursorPosition(node,index){//node 就是 result DOM 相当于第一个元素节点. index是cursorIndex光标下标pos
+    var selection = window.getSelection() //用来调用setPosition设置位置
+    traverseTextNode(node,textNode => {
+      if (index > textNode.textContent.length) { //大于的话就叫说明还没到光标位置
+        index -= textNode.textContent.length //减到光标位置  
+      }else{
+        //当输入
+        selection.setPosition(textNode,index)//到达位置但不是全部要,以index结尾设置光标位置
+        return false //跳出循环
+      }
+    })
+  }
+ 
+  //提示框
+  var groupHoverTip = document.querySelector('.group-hover-tip')//拿到元素
+  result.addEventListener('mousemove',e => {
+    if (e.target.matches('em')) { //找到em标签
+      var em = e.target
+      var emBoxes = em.getClientRects() //拿到位置信息  同时拿到重叠的矩形信息
+      var title = em.dataset.title  //拿到title的内容
+      var mouseX = e.clientX  //拿到鼠标的X作为left
+      var mouseY = e.clientY  //拿到鼠标的X作为top(视口)
+
+      var box = getHoverBox(emBoxes,mouseX,mouseY)
+
+      groupHoverTip.textContent = title //拿到em的文本内容并放入
+      //.style 在JS里面指定元素样式,必须要有定位才能实现
+      groupHoverTip.style.display = 'block' //移动到这上面就展示
+      groupHoverTip.style.top = box.top + 'px' //距离视口的距离 offsetTop、offsetLeft定位到才是父元素(轨道)
+      groupHoverTip.style.left = mouseX + 'px'  //水平方向
+    }
+  })
+  result.addEventListener('mouseleave',e => {
+    groupHoverTip.style.display = 'none' //鼠标离开就隐藏
+  },true)//用捕获是因为mouseleave事件不冒泡，但可以被捕获到
+  //解决图形重叠问题
+  function getHoverBox(boxes,x,y) {//emBoxes,mouseX,mouseY
+    if (boxes.length == 1) {//只有一个直接返回
+      return boxes[0]//返回DOM
+    }
+    for (var box of boxes) {
+      if (y <= box.top && y >= box.bottom) {//鼠标在区域内 top bottom都是相对于视口的位置
+        return boxes//返回DOM
+      }
+    }
+  }
+
+  //将得到的正则表达式和String发送到worker  
+  function getMatchesFromWorker(re,string,f,g) {
+    var success = false
+    var worker = new Worker('./regexp-match-worker.js');//在一个文件夹调用
+      //将得到的正则表达式和String发送到worker 
+      worker.postMessage({
+        re: re,
+        string: string,
+      })
+      setTimeout(()=>{
+        if (success == false) {
+          worker.terminate()//2s没有结束这个worker,有可能是数据不够多才没有timeout  时间顺序
+          g()//运行g
+        }
+      },2000)  
+      //接受worker发来的数据,在事件的data里面
+      worker.addEventListener('message',e => {
+          var matches = e.data  
+          success = true
+          worker.terminate()//结束这个worker
+          f(matches)//这个函数处理得到的数据
+        //  return matches 只是在这个函数里面return getMatchesFromWorkder无法拿到返回值
+        })
+
+}
+</script>
+</html>

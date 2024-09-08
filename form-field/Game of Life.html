@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game of life</title>
+</head>
+<!-- 有些应该先实现逻辑,再做界面 -->
+ <!-- (1)当前细胞为死亡状态时，当周围有3个存活细胞时，则迭代后该细胞变成存活状态(模拟繁殖)；若原先为生，则保持不
+变。
+(2)当前细胞为存活状态时，当周围的邻居细胞低于两个(不包含两个)存活时，该细胞变成死亡状态(模拟生命数量稀少)。
+(3)当前细胞为存活状态时，当周围有两个或3个存活细胞时，该细胞保持原样。
+(4)当前细胞为存活状态时，当周围有3个以上的存活细胞时，该细胞变成死亡状态(模拟生命数量过多)。 -->
+<body>
+  <button id="next">next</button>
+  <button id="autoplay">autoplay</button>
+
+  <div id="stage"></div>
+
+  <script>
+    class Conway {
+      constructor(width = 10, height = 10) {//构造方法
+        //存储width,height
+        this.width = width
+        this.height = height
+        this.world = new Array(height).fill(0).map(it => new Array(width).fill(0));//创建一个长度为height的数组,用0填满,用map在每一个数组中创建一个(width)长度的数组,用0填满.形成了行\列的二维数组
+        this.randomSeed()
+      }
+      set(row,col,isLive){//isLive不能被任意修改
+        if (isLive == 0 || isLive == 1) {
+          this.world[row][col] = isLive
+        }
+      }
+      randomSeed(radio = 0.3){//普通方法
+        for (let h = 0; h < this.height; h++) {
+          for (let w = 0; w < this.width; w++) {
+            if (Math.random() < radio) {
+              this.world[h][w] = 1 //alive
+            }
+          }         
+        }
+      }
+      coutNneighbors(width,height){//周围一圈有多少活着的邻居 中心点
+        let count = 0
+        for (let h = height - 1; h <= height + 1; h++) {
+          for (let w = width - 1; w <= width + 1; w++) {
+            if (h === height && w === width) {//正中心的点什么也不做
+              
+            }else{
+            //   if (h == 0){ //第一行
+            //     count += this.world[height - 1]?.[w] ?? 0 //前面有行向后读 统计最后一行死活
+            //   }else if (h == height - 1){//最后一行
+            //     count += this.world[0]?.[w] ?? 0 //前面有行向后读 统计第一行死活
+            //   }
+            //   if (w == 0) { // 第一列
+            //   count += this.world[h]?.[width - 1] ?? 0; // 最后一列的状态
+            // } else if (w == width - 1) { // 最后一列
+            //   count += this.world[h]?.[0] ?? 0; // 第一列的状态
+            // }
+
+            let nh = h
+            if (h < 0) {//<0 说明在首行之外 0 - 1 = -1 考虑负数
+              nh = this.height - 1  //链接到最后一行
+            }else if (h >= this.height - 1) { //>= this.height - 1 说明在最后一行之后一行
+              nh = 0  //链接到第一一行
+            }
+
+            let nw = w
+            if (w < 0) {
+              nw = this.width - 1
+            }else if (w >= this.width - 1) {
+              nw = 0
+            }
+              // ?. optional chain 该语法的前面如果非空，才继续向后读
+              // ?? non-nullable operator 非空运算符，左边非空返回左边，左边为空返回右边，空是null/undefined
+              count += this.world[nh]?.[nw] ?? 0 //前面有行向后读
+            }
+          }    
+        }
+        return count
+      }
+      next(){
+        var newWorld  = new Array(this.height).fill(0).map(it => new Array(this.width).fill(0));//创建一个长度为height的数组,用0填满,用map在每一个数组中创建一个(width)长度的数组,用0填满
+        for (let h = 0; h < this.height; h++) {
+          for (let w = 0; w < this.width; w++) {
+            let live = this.world[h][w] //这个格子是否存活,存活1\死亡0
+            let neighbors = this.coutNneighbors(w,h) //周围一圈有多少活着的邻居
+
+            if (live) {//不需要死亡状态,因为一开始就是fill('0')
+              if (neighbors == 2 || neighbors == 3) {//有2个或3个邻居存活,则存活
+                newWorld[h][w] = 1 
+              }
+            }
+              else {
+                if (neighbors == 3){//有3个邻居存活则复活
+                  newWorld[h][w] = 1
+                }
+              }  
+            }
+          }         
+        
+          if (JSON.stringify(this.world) === JSON.stringify(newWorld)) {//取巧的对比新旧世界状态
+            return true //表示状态已经稳定
+          }else{
+            this.world = newWorld //等于新世界
+            return false
+          }
+
+        //this.world = newWorld //等于新世界
+        //return this //c = new Conway() return this相当于返回c , 而c已经是一个康威生命 不返回世界了
+        }       
+     
+      readerToCheckboxes(){//画格子的html
+        return this.world.map((row,rowIdx) => {//先拿出每一行 rowIdx每一行的下标
+          return  `<div>` +row.map((live,colIdx) => { //找到每行每一个(相当于列)还存活的格子 colIdx每一行的下标
+            return   `<input type="checkbox" data-row='${rowIdx}' data-col='${colIdx}'  ${live ? 'checked' : ''}>` // 1存活(live == true)checked 0死亡(live == false) '' 什么都没有就不选中
+          }).join('') + `</div>` //join('')变成数组 , `<div></div>`放在块里
+        }).join('\n')//每一个div为一行
+      }
+
+      }
+
+    let game = new Conway(20,20)//创建世界  画大写不容易处于稳定状态
+    let stage = document.querySelector('#stage')
+    let nextBtn = document.querySelector('#next')
+    let autoplayBtn = document.querySelector('#autoplay')
+    let interval
+    let playing = false
+
+    stage.innerHTML = game.readerToCheckboxes()//在#stage的内容里innerHTML画出来
+
+    nextBtn.addEventListener('click',e => {
+      game.next()//生成下一个世界的状态
+      stage.innerHTML = game.readerToCheckboxes()//画出格子
+    })   
+
+    autoplayBtn.addEventListener('click',e => {
+      if (playing) {
+        clearInterval(interval)//清除定时任务
+        autoplayBtn.textContent = 'autoplay'//让按钮的内容为autoplay
+        playing = false
+      }else{
+        playing = true
+        interval = setInterval(() => {
+          if (game.next() === true) {//状态稳定 //这里就相当于执行了一次game.next()
+            clearInterval(interval)//清除定时任务
+            autoplayBtn.textContent = 'autoplay'//让按钮的内容为autoplay
+          }
+          stage.innerHTML = game.readerToCheckboxes()//画出格子
+        },50)
+        autoplayBtn.textContent = 'stop'//让按钮的内容为stop
+      }
+    })
+
+    stage.addEventListener('click',e => {//点击input会触发事件
+      if (e.target.matches('input[type="checkbox"]')) {
+        let checked = e.target.checked
+        let row = e.target.dataset.row //找到data标签中命名为row的值
+        let col = e.target.dataset.col //找到data标签中命名为col的值
+
+        game.set(row,col,checked ? 1 : 0) 
+      }
+    })
+  </script>
+
+</body>
+</html>

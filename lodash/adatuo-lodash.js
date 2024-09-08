@@ -36,7 +36,49 @@ var adatuo = function () {
     return a === b
   }
 
+  //深度比较两个对象,有相同的属性值返回true,不同返回false
+  function matches(obj) {
+    var _this = this //拿到调用这个方法的对象
+    return function (o) { //判断_this对象里的o是否包含obj
+      for (var key in obj) { //拿到对比的key
+        //hasOwnProperty,key同时存在才继续比较
+        if (o.hasOwnProperty(key) && obj.hasOwnProperty(key)) { //hasOwnProperty() 方法返回一个布尔值，表示对象自有属性（而不是继承来的属性）中是否具有指定的属性。
+          if (!_this.isEqual(o[key],obj[key])) {//isEqual作为方法调用,对比值是否相等
+            return false
+          }       
+        }
+      }
+      return true
+    }
+  }
 
+  function matchesProperty(arr) { //arr字符串,符合obj其中的一对key value就返回true 否则false
+    return function (obj) {
+      for (let i = 0; i < arr.length; i++) {
+       if (i % 2 == 0) {//
+        var key = arr[i]  //作为key
+        var val = arr[i+1]  //作为value      
+       if ( //Object.hasOwnProperty.call(obj, key)
+        obj.hasOwnProperty(key) &&
+        obj[key] === val
+       ) {
+        return true
+       } 
+      }
+    }
+      return false
+    }  
+  }
+
+  function property(key) { //传入要查询的key
+    let keys = key.split('.') //传入的是由.分割的字符串
+    return function (obj) { //传入要对比的obj
+      for (var key of keys) {
+        obj = obj[key]
+      }
+      return obj
+    }
+  }
 
     function compact(array) {
       for (let i = array.length - 1; i >= 0; i--) {
@@ -293,9 +335,24 @@ var adatuo = function () {
       return array
     }
 
-    function every(collection, predicate=_.identity) {
-      
+  function every(array, predicate = it => it) { //防止it传入null报错
+    if (typeof predicate === 'object' && predicate !== null) {//数组
+      if (Array.isArray(predicate)) {
+        predicate = this.matchesProperty(predicate)
+      } else {
+        predicate = this.matches(predicate)
+      }
+    } else if (typeof predicate === 'number' || typeof predicate === 'string') {
+      predicate = this.property(predicate)
+    } else if (predicate === null) {
+      predicate = it => it
     }
+    for (let i = 0; i < array.length; i++) {
+      let item = array[i]
+      if (!predicate(item)) return false
+    }
+    return true
+  }
 
     function some(collection, predicate=_.identity) {
       
