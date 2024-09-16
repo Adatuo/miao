@@ -1,0 +1,101 @@
+  * 3d变换
+    * 同样只能对元素进行**线性变幻**，所以不会出现曲面
+      * 实际上在计算机3d中，不存在曲面，都是有多个平面三角形组成视觉上的曲面
+    * 元素比2d时多出一个z轴，并且可以沿着z轴进行一些变换
+    * 支持的变换：
+      * rotatex/y/z() 角度变换
+      * rotate3d(x,y,z)沿着一个向量旋转
+      * translatex/y/z() 平移
+      * scale 缩小
+      * 没有skew 倾斜
+    * 3d中观看位置与距离会观察结果产生影响，所以需要设置观察位置与距离
+      * 通过perspective和perspective-origin设置观察距离与位置
+        * 注意2d中不存在观察角度一说，因为只在平面内变换
+      * 不同的距离和位置会有不同的效果（可以据此做一个裸眼3d）
+    * transform-style ； 变换时是否保留3d效果还是只显示3d的投影效果
+    * transform-origin: x y z;设置坐标原点相对元素的位置
+    * perspective  观察距离
+      * persepective属性与perspective()变换的区别
+    * perspective-origin 距离位置，眼睛一定是面向xoy平面的
+      * 实现裸眼3d https://damiaoedu.com/ly.html
+    * backface-visibility
+    * 案例：
+      * 淘宝造物节
+      * 公转但不自转的笑脸
+    * 作业:实现一个rgb色彩空间立方体
+
+ 
+
+
+
+
+* 动画与缓动
+  * 动画与缓动的区别
+    * 缓动(transition)需要元素的样式被动(用户交互或js修改)发生变化
+    * 动画不需要交互就可以一直执行
+  * transition
+    * transition-property
+    * transition-duration
+    * transition-delay
+    * transition-timing-function
+  * animation
+    * 需要先声明关键帧
+      ```
+      @keyframes ani-name {
+        0% {
+          width: 100px;
+        }
+        50% {
+          width: 200px;
+        }
+        100% {
+      
+        }
+      }
+      ```
+  * animation-name 关键帧名字
+  * animation-duration 动画执行时间
+  * animation-delay 动画延迟执行时间
+  * animation-timing-function linear 计算到达百分之多少的时候是怎样
+  * animation-iteration-count: number/ infinite（∞+）; 动画执行时间迭代，执行次数
+  * animation-fill-mode: none,backwards（开始前就进入第一帧的状态）,forwards（播放完成后保留最后一帧）,both（开始第一帧，结束最后一帧）;开始前和结束后的状态
+  * animation-direction: normal,alternate,reverse,alternate-reverse；正，反，正反，反正
+  * animation-play-state: running/paused
+  * 案例：
+    * 时钟
+    * animate.css  https://animate.style/
+  * 作业:公转但不自转的笑脸(至少两个方案)
+
+
+
+* @声明总结
+  * @media
+  * @font-face
+  * @keyframes
+  * @import "a.css"; 相当于把这个css文件的源代码写在这一行的位置
+  * @support (display: grid) { div {color:red} } 当支持grid时里面的代码生效
+  * @layer 更清晰的选择器优先级:前面的@layer里面的选择器优先级总是比后面的要低,同一个layer里面则是正常比较优先级
+    ```
+    @layer foo {
+      div {
+        color: red;
+      }
+      .foo {
+        font-size: 18px;
+      }
+    }
+    
+    @layer bar {
+      p {
+        color: red;
+      }
+      #counter {
+        font-size: 18px;
+      }
+    }
+    ```
+  * @container 容器查询,媒体查询一般是查询窗口的宽度
+    * 窗口查询则是查询其上层某个祖先(不一定是包含块)的宽度来决定下层元素的样式
+      *
+      resize: both; 让元素可以被鼠标调整大小,需要跟overflow一起使用
+      overflow: auto;

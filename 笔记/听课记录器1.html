@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://class.damiaoedu.com:44313/statics/lesson-recorder.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>听课记录器</title>
+  <style>
+    .buttons button {
+      font-size: 24px;
+    }
+    ol {
+      padding-left: 2em;
+      font-size: 20px;
+      font-family: consolas;
+    }
+    ol :is(input,button) {
+      vertical-align: bottom;
+      font: inherit
+    }
+  </style>
+</head>
+<body>
+  <div class="container"><h3>听课记录器,请确保系统时间准确</h3> <p>听现场课时使用,在需要的时机点击按钮记录时间</p> <div class="buttons"><button style="color: red;"><strong>重点</strong></button><button style="color: orange;"><strong>难点</strong></button><button style="color: green;"><strong>面试题</strong></button><button style="color: violet;"><strong>需要重听</strong></button><button style="color: magenta;"><strong>举个栗子</strong></button></div> <button>管理按钮</button> <div class="records"><ol><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li><li><button>Del</button> <input title="内容可编辑，会自动保存，请严格保持时间格式，包括前导0" style="width: 300px;"> <button title="微调分钟，减一分钟">-</button><button title="微调分钟，加一分钟">+</button></li></ol></div></div>
+  <script src="./听课记录器1_files/vue-2.7.14.js.下载"></script>
+  <script>
+    if (true || localStorage.getItem('recorderButtons') == null) {
+      localStorage.setItem('recorderButtons', JSON.stringify([
+        {
+          text:'重点',
+          color: 'red',
+          size: 16,
+        },
+        {
+          text:'难点',
+          color: 'orange',
+          size: 16,
+        },
+        {
+          text:'面试题',
+          color: 'green',
+          size: 16,
+        },
+        {
+          text:'需要重听',
+          color: 'violet',
+          size: 16,
+        },
+        {
+          text:'举个栗子',
+          color: 'magenta',
+          size: 16,
+        },
+      ]))
+    }
+
+    var buttons = JSON.parse(localStorage.getItem('recorderButtons'))
+    var records = JSON.parse(localStorage.getItem('recorderItems')) || []
+
+    var app = new Vue({
+      el: '.container',
+      data: {
+        buttons: buttons,
+        records: records,
+      },
+      watch: {
+        records: {
+          deep: true,
+          handler(val) {
+            localStorage.setItem('recorderItems', JSON.stringify(val))
+            console.log('saved records')
+          }
+        }
+      },
+      methods: {
+        makeRecord(btn) {
+          this.records.unshift(`${this.format(new Date())} ${btn.text}`)
+        },
+        toggleManage() {
+
+        },
+        format(date) {
+          return date.toLocaleString().replace(/(\/)(\d+)/g,(_,p, d) => {
+            return p + d.padStart(2, '0')
+          })
+        },
+        subMin(i) {
+          var time = new Date(this.records[i].slice(0, 19))
+          var desc = this.records[i].slice(20)
+          var newTime = new Date(time.getTime() - 60 * 1000)
+          this.$set(this.records, i, `${this.format(newTime)} ${desc}`)
+        },
+        addMin(i) {
+          var time = new Date(this.records[i].slice(0, 19))
+          var desc = this.records[i].slice(20)
+          var newTime = new Date(time.getTime() + 60 * 1000)
+          this.$set(this.records, i, `${this.format(newTime)} ${desc}`)
+        }
+      }
+    })
+  </script>
+
+
+</body></html>

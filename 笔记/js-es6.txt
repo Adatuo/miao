@@ -1,0 +1,183 @@
+es6 : ecma script 6
+是js语言在2015年发布的新版本
+自那之后js语言标准每年更新一次
+后续就通过年份来命名了
+即es6也称es2015
+依次类推，到现在已经es12了
+
+es6是一个相当大的版本更新，之后的es789101112都是非常小的更新
+
+js高级程序设计
+Understanding ES6
+ESLint
+
+
+
+
+Object.preventExtensions(obj)  阻止对象新增属性
+Object.freeze(obj)  完全冻结对象（但不是递归冻结）
+Object.seal(obj) 阻止对象的属性集合发生变化（即不能增删属性，但可以修改属性的值）
+
+对应的三个函数判断对象是否被执行了以上操作
+
+Object.isExtensionable(obj)
+Object.isFrozen(obj)
+Object.isSeal(obj)
+
+
+函数的三种目的：
+函数
+方法
+构造函数
+lamda函数（箭头函数，用在map，filter里时的那种小函数）
+
+
+
+Arrow Functions与普通函数的区别：
+没有this，super，arguments和new.target
+  即如果使用这些变量或表达式，相当于在if语句里使用，所以看的是其外层的function函数里的相应绑定
+
+不能被用new调用，会报错
+没有原型属性，即prototype属性（不是没有__proto__属性）
+
+
+
+尾调用优化：
+
+尾调用：函数的return语句仅返回的是一个函数调用。
+  return foo(1,2)
+  return foo(x + 1, y)
+  return 1 + foo(5,6) x
+即跟在return语句后面的完全是一句函数调用。该调用不能与其它表达参与运算，但函数的参数是可以有运算的，也可以有变量
+当这种情况发生的时候，在被尾调用的函数b的启动运行之后，调用尾调用的函数a就可以从栈中移除了，相当于a的调用者在直接调用b
+最终的效果就是减少栈空间的占用
+当我们能将一些运算写成尾递归时，就不怕递归爆栈了
+因为只要是尾调用，栈空间是不增长的。
+
+
+function fibb(n, a = 0, b = 1) {
+  if (n == 0) {
+    return a
+  } else {
+    return fibb(n - 1, b, a + b)
+  }
+}
+
+
+
+
+
+
+Object.assign()
+
+
+
+
+Symbols与Symbols属性
+Symbols是一种新增的原始类型
+x = Symbol()// 原始类型，所以不用new创建
+x = Symbol('oiwej') // 字符串是这个symbol的一个标签，便于识别的
+又由于没有合适的直接量语法了，所以就用函数调用了
+一个symbol表达一种唯一性
+symbol不可复制，也无法重新创建出同一个symbol
+symbol的另一大作用是做为对象的属性名
+而想要读取到这个属性名就需要那个symbol才可以（可以利用这个实现私有属性）
+由于symbol的唯一性，所以它做为对象的属性时，相当于不会占用一个名字。不像字符串属性名，用一个就少一个。
+
+symbol属性默认不可枚举
+
+Object.getOwnPropertySymbols这个函数可以获取到一个对象的symbol属性集合
+
+symbol不能被自动类型转换
+
+Symbol.for(str)可以通过同样的字符串创建或返回同一个symbol
+
+
+
+生成器函数：
+function * foo(a,b,c) {
+  yield 2
+}
+生成器函数调用返回生成器
+
+Iterator: 迭代器
+Generator: 生成器
+可迭代对象: 当一个对象的Symbol.iterator属性被正确实现时，它就是一个可迭代对象
+
+
+
+
+
+
+
+
+Array.from(  {0:1,1:2,length:2}  )
+
+静态方法、实例方法/原型方法
+
+静态方法：直接挂在构造函数上的，如Array.from
+实例方法：挂在构造函数的prototype上的
+
+
+
+
+什么是Proxy？
+它可以让我们全方位的监控一个对象的动作和行为。
+可以拦截对对象的所有操作：如属性的读取，设置，存在性判断，函数的调用，属性增删等等
+
+obj = {a:1,b:2}
+p = new Proxy(obj, {
+  get(target, prop, proxy) {
+    return 8
+  }, // 通过p读取属性时调用
+  set(target, prop, value, proxy) {
+    if (prop == 'a' || prop == 'b') {
+      target[prop] = value
+    }
+  }, // 通过p设置对象的属性时调用
+  hasOwnProperty() {}, //判断对象有无自有属性时调用
+  has(target, prop, proxy) {
+    return true 
+  }, // 'foo' in obj时调用这个函数
+  deleteProperty(target, prop, proxy) {
+    if (prop == 'a') {
+      delete obj[prop]
+    }
+  },// 删除属性时调用
+})
+
+
+
+
+
+bigint
+是一个新的原型类型，它表示没有范围限制的精确整数
+直接量写法：928749283749823749283n
+函数创建写法(注意没有new，因为不是对象而是原始类型）: BigInt('2894392384293472934')
+不传数是因为太大的时候写成数本身就会丢精度
+
+bigint不能与number混合计算
+BigInt(number)把number转为bigint
+Number(bigint)把bigint转为number（会丢精度）
+
+
+
+
+
+typed array
+连续内存片段
+速度非常快
+长度不可变
+只能存特定类型的数据：
+int8，16，32
+uint8，16，32
+float32，64
+
+
+
+
+
+Blob    也表示固定长度的内存所存储的数据表示的一个文件（并且包含文件的类型），但是这个对象我们不能读取到里面的数据，很大程度上是因为我们不需要，这个数据可以直接给浏览器读
+如果有需要，Blob对象与ArrayBuffer可以相互转换（可以自己的搜）
+new Blob([...data],{type: 'image/jpeg'}) 
+

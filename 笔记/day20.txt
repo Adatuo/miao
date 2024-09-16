@@ -1,0 +1,83 @@
+* 表格布局
+  * 表的编排
+    * 可以认为有虚拟的分隔线，单元格要么由最小的格子形成，要么由多个最小的格子组合成矩形
+  * 表格布局的特点
+    * 同一行高度相同
+    * 同一列宽度相同
+  * 布局方式:行内,块级,定位,浮动,弹性,表格,网格
+  * 表格元素的display值
+    * table: table,inline-table 块级表,行内表
+    * caption: table-caption
+    * td: table-cell
+    * tr: table-row
+    * tbody: table-row-group
+    * thead: table-header-group
+    * tfoot: table-footer-group
+    * col: table-column
+    * colgroup: table-column-group
+    * 只要愿意,用其它元素按与表格相同的嵌套方式并设置相同的display也可以显示成表格
+  * 以行为主的编排,行有对应的标签,但列没有
+  * 抽象的列标签只能控制4个样式,同时不能指定交互效果如hover
+    * border
+    * background
+    * width
+    * visibility
+  * 匿名表对象,css对表格布局元素的自动补全
+    * html对table系列标签也会补全
+  * 表格元素的层次
+    * 单元格,行,行组,列,列组,表
+  * 标题
+    * 标题的位置 caption-side: top/bottom;
+  * 边框模型,合并与分开
+    * border-collapse
+      * 分隔 separate
+        * 分隔时,只有table和td可以设置边框,其它表格元素都不能设置边框
+        * border-spacing: x y;
+        * empty-cell: show/hide
+      * 合并 collapse
+        * 合并规则: "最有意思的胜出(most intersting)"
+          * 最粗的优先
+          * 粗细相同相同看边框样式
+            * double>solid>dashed>dotted
+          * 样式也相同,只有颜色不同,看来源,层次越高越优先
+          * none优先级最低,别的元素在这里设置了边框就显示它的
+          * hidden优先级最高,只要这里设置了hidden就没边框
+  * 表的大小
+    * table-layout: auto/fixed;
+  * 对齐
+    * vertical-align用在表单格(td,th)上的效果
+      * top,bottom,middle,baseline
+
+
+* 缓动
+  * 元素的样式发生变化时不是突变,而是缓慢变到目标样式
+  * transition
+  * transition-duration 缓动的时间
+  * transition-timing-function
+    * 控制缓如果随时间进行
+    * ease 先慢后快再慢
+    * ease-in 先快后慢
+    * ease-out 先慢后快
+    * linear 匀速
+    * steps(n) 步进式
+    * steps(n,start) = step-start(n)
+    * steps(n,end) = step-end(n)
+    * cubic-bezier(.34,.34,.52,.95)
+  * transition-delay
+    * 缓动延迟一会儿再开始执行
+    * 可以为负值,相当于直接从中间开始
+    * 相当于看电影时提前到还是迟到了,负值相当于迟到
+  * transition-property
+    * 哪些属性需要执行缓动
+    * 一般只有数值或带单位的数值可以执行缓动
+    * 也有个别非数值属性可以执行
+      * visibility
+  * 多个属性使用不同的方式缓动
+    * transition: width 1s, height 2s 2s linear;
+    * 等价于下面
+    * transition-property: width, height;
+    * transition-duration: 1s, 2s;
+    * transition-delay: 0s, 2s;
+    * transition-timing-function: ease, linear;
+  * 缓动的去程与回程使用不一样的缓方式
+    * 在div{}和div:hover{}里分别指定不同的transition属性即可

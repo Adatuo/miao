@@ -1,5 +1,6 @@
 7.17
-高阶函数
+高阶函数  
+不能返回if
 function forEach(array,doSomething) {
   for (let i = 0; i < array.length; i++) {
     doSomething(array[i],i,array)
@@ -8,6 +9,10 @@ function forEach(array,doSomething) {
 forEach([1,2,3,4],function(it,idx){
   console.log(it,idx);
 })
+[1,2,3,4].forEach(function(it,idx){
+  console.log(it,idx);
+})
+
 
 箭头函数
 [1,2,3,4].forEach(it =>{
@@ -82,6 +87,10 @@ map()
 let doubled = numbers.map(function(number) {
   return number * 2;
 });
+characterClasses.map(function(item) {
+  return drawCharacterGraph(item);  // 隐式传递了当前元素作为参数
+});
+//let graphs = node.elements.map(drawGraph)
 
 console.log(doubled); // 输出: [2, 4, 6, 8, 10]
 
@@ -90,9 +99,11 @@ reduce
 它用于将数组中的所有元素通过一个累加函数累积成一个单一的值.它可以用于求和,求积,计算平均值,转换数据结构等各种操作
 //let numbers = [1, 2, 3, 4, 5];
 
-let sum = numbers.reduce(function(accumulator, currentValue) {
+let sum = numbers.reduce(function(accumulator, currentValue) {//(当前值,累加值)
   return accumulator + currentValue;
 }, 0);
+
+let sum2 = numbers.reduce((accumulator, currentValue) => (accumulator + currentValue),0);
 
 console.log(sum); // 输出: 15
 

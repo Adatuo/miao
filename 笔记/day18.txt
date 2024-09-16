@@ -1,0 +1,126 @@
+* 第九章：颜色与背景
+  * color
+    * 颜色 前景色（与之对应的则是背景色）
+      * 一般画图工具中都有类似对应的图标
+    * 默认为黑色
+    * 会被子元素继承
+      * 所以设定一个元素的颜色，其子元素都将是这个颜色
+        * 这是很明显的(#333)
+    * 会做为border，text/box-shadow的默认值
+      * text-shadow: 2px 3px 3px;
+      * box-shadow: 5px 10px 5px ;
+      * border: 10px solid;
+    * css3的currentColor
+      * 用在其它属性上比如bgc上，或者linear-gradient等
+  * background
+    * background-color
+      * 背景色
+        * 默认值为 transparent  ，即透明
+      * 不继承
+        * 否则会有奇怪的效果，比如如果设置了semi透明颜色，而且又继承的话。。
+    * background-image
+      * url()
+      * 默认从padding box开始渲染（画）的
+      * 背景图片无法从网页上直接复制
+    * background-size
+      * https://developer.mozilla.org/en-US/docs/Web/CSS/background-size#Browser_compatibility
+      * 百分比
+        * 图片从哪个盒子开始平铺，那么百分比就基于哪个盒子的宽高
+      * contain 图片由无穷小放大到正好被元素包围
+      * cover 图片由无穷大缩小到正好覆盖元素
+      * object-fit
+        * img
+        * video等
+      * 如果attachment为fixed，背景区为浏览器可视区（即视口），不包括滚动条。不能为负值。
+    * background-repeat 图片水平和垂直是否平铺
+      * background-repeat
+        * repeat
+        * repeat-x/y
+        * no-repeat
+    * background-origin css3 设置图片从哪个位置开始平铺
+      * content-box
+      * padding-box
+      * border-box
+      * 与box-sizing的关键字是对应的
+    * background-attachment 背景图片相对于谁不动
+      * scroll 背景图片相对于元素自身不动
+      * local  背景图片相对于元素的内容不动，有滚动条才能看出与前者的区别
+      * fixed  背景图片相对于视口不动
+        * 为此值时bg-size的百分比以浏览器窗口的大小来计算
+        * 可以用来做视差滚动
+        * http://www.mi.com/xiaoyi/?cfrom=list
+    * background-position 图片在哪个具体位置平铺
+      * background-position-x/y
+      * 雪碧图，css sprite
+      * 0 0
+      * center 200px
+      * 100px
+      * 0px 10px 相对于左上角
+      * 50% 30% 相对于左上角
+      * top left /// right bottom 让图片处于某个角落
+      * top 20px right 50px   相对于右上角，往元素中心水平偏50px，垂直偏移20px
+      * calc(100% - 50px) 从最右往多偏移50px
+    * background-clip 图片剪裁
+      * xx-box
+      * 平铺以后再裁剪
+      * 连背景颜色一起裁剪到所设置的盒子
+    * -webkit-background-clip
+      * text  裁到只剩文字经过的区域
+    * css3 多背景
+      * 分开写，合并写
+    * background: <bg-img> <bg-repeat> <bg-origin>  <bg-size> / <bt-pos> , <bg-img> <bg-repeat> <bg-origin> <bg-clip>, <bg-img> <bg-repeat> <bg-origin> <bg-clip> bg-color;
+    * 应用
+      * 伪元素里的图片，
+      * css sprite
+      * 动画，菜单，小米网首页logo动画
+      * 视差滚动：小蚁摄像机页面效果，Nike活动页面效果
+      * 多背景做花纹
+
+
+* # 定位布局
+  
+  * 定位布局通过直接指定元素的位置来实现布局
+  * 某些定位元素会脱离常规流/正常流
+    * 脱离常规流是什么意思？
+      * 即其它元素感知不到它们
+      * 或者说其它元素当它们不存在
+        * 在不指定位置时，它们自己还是以原来的起点为起点
+      * 有这个对比，常规流才更好理解，常规流中的元素都能被周围的元素感知到
+        * 如父元素、后续的元素等
+  * 定位元素的包含块
+    * 固定定位：视口
+    * 绝对定位：最近的定位祖先（的padding-box，而不是content-box）
+    * 相对定位：保持原来的包含块
+    * sticky定位：动态变化
+    * 不定位：保持原来的包含块
+  * 定位元素的布局块：是其margin-box
+  * 定位元素自动触发BFC，即里面的margin不会跑出去
+  * 定位布局通过**position**属性触发
+  * 有多种定位方式：
+    * 固定定位 fixed
+      * 脱离常规流，将视口（浏览器窗口）当成自己的包含块
+    * 绝对定位 absolute
+      * 脱离常规流，把最近的定位祖先（即position不为默认值static）的padding-box当成自己的包含块
+        * 当找不到定位祖先时，相对于页面的第一屏定位，即第一屏是它的包含块
+      * 一定确定好包含块，剩下的就跟fixed定位差不多了
+    * 相对定位 relative
+      * 没有脱离常规流，相对于自身原来的位置偏移
+      * 如果不指定位置，它就还跟原来一样
+    * 粘黏定位 sticky
+    * 不定位 static
+  * 如果不通过方位属性指定方位，元素在原来的位置，起点也在原来的起点
+  * z-index，元素重叠时调整覆盖顺序
+    * 只能用在定位元素上，在其它元素上无效（目前）
+    * 由于表示的是顺序，所以只能是整数，可以为负
+      * 为负时会跑到未定位元素的下方（被未定位元素覆盖）
+    * 父元素定位时子元素无法通过z调整到被父元素覆盖
+    * z越大元素越能覆盖其它元素，当z相同时，后面的元素盖住前面的元素
+  * 定位中的margin：auto和width：auto以及top/left/right/bottom:auto;
+    * 两对边的margin：auto时，会平分，垂直方向也会
+      * 即可以通过这个手段让元素居中
+    * width为auto元素可能被方位属性的指定而拉伸
+    * 方位为auto时相应的方向上元素的位置是保持原来的位置
+  * 什么时候用定位？
+    * 基本上，如果页面中有元素发生了明显的重叠，那么肯定要用到定位。
+  * 什么时候不用定位？
+    * 元素没有重叠并且后面跟着前面，删除一些元素希望后面的自动向前补位的也不用

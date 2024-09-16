@@ -1,0 +1,11 @@
+{
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "vue-html": "html",
+    "razor": "html",
+},
+"editor.quickSuggestions": {
+    "strings": true
+}
+
+}

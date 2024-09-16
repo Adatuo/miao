@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!-- saved from url=(0123)https://class.damiaoedu.com:44313/codes/js/mini-regex101-match-in-worker-%E9%AB%98%E4%BA%AE%E5%90%88%E5%B9%B6-tailwind.html -->
+<html lang="en" class="w-full h-full"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input, textarea, label, pre {
+      font-family: consolas;
+    }
+    /* 零宽断言的红色条 */
+    pre > em {
+      border-left: 4px dotted violet;
+      margin-left: -2px;
+      margin-right: -2px;
+      filter: blur(0.4px);
+      position: relative;
+      z-index: 2;
+      xdisplay: inline-block;
+      pointer-events: none;
+      height: 1em;
+      vertical-align: bottom;
+      transition: .5s;
+      &:hover {
+        border-color: magenta;
+        box-shadow: 0 0 5px grey;
+      }
+    }
+    pre > b:nth-of-type(odd) {
+      background-color: #d5ebff;
+    }
+    pre > b:nth-of-type(even) {
+      background-color: #9fcfff;
+    }
+
+    /* pre > b  表示一个匹配 */
+    /* pre > b b 表示一个匹配里的一个分组,但分组有可能嵌套,所以不能用 b>b */
+    pre > b {
+      [data-group="1"] {
+        --group-color: #9fcba1;
+      }
+      [data-group="2"] {
+        --group-color: #e0bf8b;
+      }
+      [data-group="3"] {
+        --group-color: #acadfc;
+      }
+      [data-group="4"] {
+        --group-color: #e1abf5;
+      }
+      [data-group="5"] {
+        --group-color: #ef9b95;
+      }
+    }
+
+    pre > b:nth-of-type(odd) b {
+      background-color: color-mix(in srgb, var(--group-color) 60%, white);
+    }
+
+    pre > b:nth-of-type(even) b {
+      background-color: var(--group-color);
+    }
+
+
+    /* 一个元素被hover的同时,其内部没有被hover的元素 */
+    b.hover-target.hover-target {
+      /* border-color: red; */
+      position: relative;
+      box-shadow: 0 0 2px grey,0 0 2px grey,0 0 2px grey,0 0 2px grey,
+                  inset 0 0 2px grey, inset 0 0 2px grey, inset 0 0 2px grey, inset 0 0 2px grey;
+    }
+    b.hover-target.hover-target b {
+      background-color: transparent;
+    }
+
+    .result-wrapper {
+      /* width: 400px; */
+      /* height: 300px; */
+      position: relative;
+      > textarea, > pre {
+        overflow: auto;
+        box-sizing: border-box;
+        xposition: absolute;
+        font-size: 24px;
+        padding: 5px;
+        margin: 0;
+        border: 2px solid;
+        border-radius: 2px;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        word-break: break-all;
+        white-space: break-spaces;
+      }
+    }
+
+
+    #hoverCard {
+      position: fixed;
+      white-space: pre;
+      background-color: black;
+      border-radius: 5px;
+      color: white;
+      font-size: 12px;
+      padding: 0.5em;
+      font-weight: normal;
+      z-index: 888;
+      transform: translate(-50%, -100%);
+      display: none;
+    }
+  </style>
+  <script src="./Document_files/saved_resource"></script>
+<style>/* ! tailwindcss v3.4.5 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.float-right{float:right}.m-0{margin:0px}.flex{display:flex}.hidden{display:none}.h-full{height:100%}.w-48{width:12rem}.w-full{width:100%}.flex-1{flex:1 1 0%}.flex-row{flex-direction:row}.bg-sky-200{--tw-bg-opacity:1;background-color:rgb(186 230 253 / var(--tw-bg-opacity))}.bg-slate-500{--tw-bg-opacity:1;background-color:rgb(100 116 139 / var(--tw-bg-opacity))}.p-4{padding:1rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}@media (min-width: 640px){.sm\:block{display:block}}@media (min-width: 1024px){.lg\:block{display:block}}</style></head>
+<body class="w-full h-full m-0">
+  <div class="flex-row h-full">
+    <h1 class="bg-slate-500 text-white text-2xl p-4">
+      正则
+      worker
+      selection api
+      dom 事件
+      :has选择器
+    </h1>
+    <div class="flex flex-row flex-1">
+      <aside class="w-48 p-4 hidden lg:block">
+        正则表达式常用语法：
+      </aside>
+
+      <main class="flex-1 p-4 ">
+
+        <div>
+          正则表达式(<span id="timing">3个匹配，耗时176ms</span>)
+          <div class="float-right">
+            正则选项：<label><input onclick="run()" id="flagI" type="checkbox">i</label>
+            <label><input onclick="run()" id="flagG" type="checkbox" checked="">g</label>
+            <label><input onclick="run()" id="flagM" type="checkbox">m</label>
+            <label><input onclick="run()" id="flagS" type="checkbox">s</label>
+            <label><input onclick="run()" id="flagU" type="checkbox">u</label>
+            <label><input onclick="run()" id="flagY" type="checkbox">y</label>
+          </div>
+        </div>
+
+
+        <textarea type="text" class="border-px w-full bg-sky-200" id="reInput" oninput="run()">(f).(.(.(..)(..)).)</textarea>
+           <!-- <button onclick="run()">Run</button> -->
+        <p id="reInputError"></p>
+        测试字符串<br>
+        <div class="result-wrapper">
+          <pre id="output" contenteditable="" oninput="run(event)"><b data-match="1" data-group="0" data-group-content="foobabaz " data-group-start-index="0" data-group-end-index="9"><b data-match="1" data-group="1" data-group-content="f" data-group-start-index="0" data-group-end-index="1">f</b>o<b data-match="1" data-group="2" data-group-content="obabaz " data-group-start-index="2" data-group-end-index="9">o<b data-match="1" data-group="3" data-group-content="babaz" data-group-start-index="3" data-group-end-index="8">b<b data-match="1" data-group="4" data-group-content="ab" data-group-start-index="4" data-group-end-index="6">ab</b><b data-match="1" data-group="5" data-group-content="az" data-group-start-index="6" data-group-end-index="8">az</b></b> </b></b><b data-match="2" data-group="0" data-group-content="foobaaljf" data-group-start-index="9" data-group-end-index="18"><b data-match="2" data-group="1" data-group-content="f" data-group-start-index="9" data-group-end-index="10">f</b>o<b data-match="2" data-group="2" data-group-content="obaaljf" data-group-start-index="11" data-group-end-index="18">o<b data-match="2" data-group="3" data-group-content="baalj" data-group-start-index="12" data-group-end-index="17">b<b data-match="2" data-group="4" data-group-content="aa" data-group-start-index="13" data-group-end-index="15">aa</b><b data-match="2" data-group="5" data-group-content="lj" data-group-start-index="15" data-group-end-index="17">lj</b></b>f</b></b>oiw lsjd<b data-match="3" data-group="0" data-group-content="foiwe foo" data-group-start-index="26" data-group-end-index="35"><b data-match="3" data-group="1" data-group-content="f" data-group-start-index="26" data-group-end-index="27">f</b>o<b data-match="3" data-group="2" data-group-content="iwe foo" data-group-start-index="28" data-group-end-index="35">i<b data-match="3" data-group="3" data-group-content="we fo" data-group-start-index="29" data-group-end-index="34">w<b data-match="3" data-group="4" data-group-content="e " data-group-start-index="30" data-group-end-index="32">e </b><b data-match="3" data-group="5" data-group-content="fo" data-group-start-index="32" data-group-end-index="34">fo</b></b>o</b></b>barbaaaa</pre>
+          替换
+          <input type="text" class="bg-sky-200" id="replacement" value="#" oninput="run()">
+          <pre id="replaceOutput">##oiw lsjd#barbaaaa</pre>
+        </div>
+      </main>
+      <aside class="w-48  p-4  hidden sm:block">
+        正则表达式的解释：
+        <br><br><br><br><br>
+        所有的匹配：
+      </aside>
+
+      <div id="hoverCard"></div>
+    </div>
+  </div>
+  <script>
+
+    function getFlags() {
+      var flags = ''
+      if (flagI.checked) {
+        flags += 'i'
+      }
+      if (flagG.checked) {
+        flags += 'g'
+      }
+      if (flagM.checked) {
+        flags += 'm'
+      }
+      if (flagS.checked) {
+        flags += 's'
+      }
+      if (flagU.checked) {
+        flags += 'u'
+      }
+      if (flagY.checked) {
+        flags += 'y'
+      }
+      return flags
+    }
+    function run(e) {
+      console.log(e)
+
+      // 保存光标位置
+      var cursorPosition = getCursorPosition(output)
+
+      console.log('光标位置', cursorPosition)
+
+      // output.innerHTML = ''
+      reInputError.innerHTML = ''
+      var reSource = reInput.value
+
+      if (reSource == '') {
+        return
+      }
+      var flags = getFlags()
+      try {
+        var re = new RegExp(reSource, flags + 'd')
+      } catch(e) {
+        timing.textContent = '正则表达式语法错误'
+        reInputError.innerHTML = e
+        return
+      }
+
+      var string = output.innerText
+      var match
+      var html = ''
+      var lastLastIndex = 0
+      var matchIndex = 1
+
+      timing.textContent = '匹配中...'
+
+      var startTime = Date.now()
+      getAllMatch(re, string, (err, matches) => {
+        if (err) {
+          timing.textContent = '匹配超时'
+        } else {
+          timing.textContent = `${matches.length}个匹配，耗时${Date.now() - startTime}ms`
+
+          for (var match of matches) {
+
+            html += string.slice(lastLastIndex, match.index)
+            if (match[0] == '') {
+              html += '<em></em>'
+            } else {
+              html += wrapOneMatch(match, matchIndex++)
+            }
+
+            lastLastIndex = match.index + match[0].length
+          }
+
+          html += string.slice(lastLastIndex)
+          // debugger
+          output.innerHTML = html
+
+          // 还原光标位置
+          restoreCursorPosition(output, cursorPosition)
+
+          replaceOutput.innerHTML = string.replace(re, replacement.value)
+        }
+      })
+    }
+
+
+    output.addEventListener('mouseover', e => {
+      if (e.target.matches('[data-group]')) {
+        var target = e.target
+        target.classList.add('hover-target')
+        // var box = target.getBoundingClientRect()
+        var boxes = target.getClientRects() // 获取到元素生成的多个矩形区域
+
+        // 鼠标在视口中的位置
+        var x = e.clientX
+        var y = e.clientY
+        console.log(x, y, boxes)
+
+        // 计算出鼠标在元素生成的哪个盒子里
+        var box = [...boxes].filter(box => {
+          return x >= Math.floor(box.left) && x <= Math.ceil(box.right) && y >= Math.floor(box.top) && y <= Math.ceil(box.bottom)
+        }).at(0)
+
+        // console.log(box)
+
+        hoverCard.style.display = 'block'
+        hoverCard.textContent = target.textContent
+        hoverCard.style.top = box.top + 'px'
+        hoverCard.style.left = box.left + box.width / 2 + 'px'
+      }
+    })
+    output.addEventListener('mouseout', e => {
+      if (e.target.matches('[data-group]')) {
+        var target = e.target
+        target.classList.remove('hover-target')
+        hoverCard.style.display = 'none'
+      }
+    })
+
+    // 还原光标在node结点中的位置
+    function restoreCursorPosition(node, position) {
+      var selection = window.getSelection()
+
+      traverseTextNode(node, textNode => {
+        if (position > textNode.nodeValue.length) {
+          position -= textNode.nodeValue.length
+        } else {
+          selection.setPosition(textNode, position)
+          return false
+        }
+      })
+
+    }
+    function getCursorPosition(pre) {
+      var selection = window.getSelection()
+      var pos = 0
+
+      traverseTextNode(pre, textNode => {
+        if (textNode === selection.anchorNode) {
+          pos += selection.anchorOffset
+          return false
+        } else {
+          pos += textNode.nodeValue.length
+        }
+      })
+
+      return pos
+    }
+
+    // 遍历node中的所有文本结点,如果action函数返回false
+    // 则停止遍历
+    function traverseTextNode(node, action) {
+      if (node.nodeType === document.TEXT_NODE) {
+        if (action(node) === false) {
+          return false
+        }
+      } else if (node.nodeType === document.ELEMENT_NODE) {
+        // 这里不能用node.children,因为它不包含文本结点
+        // 而我们正是要遍历文本结点
+        for (var child of node.childNodes) {
+          if (traverseTextNode(child, action) === false) {
+            return false
+          }
+        }
+      }
+    }
+
+    // 将一个匹配及其内的每个捕获分组都用标签包起来以高亮
+    function wrapOneMatch2(match) {
+      // 先把每个捕获分组的范围转换为相对于这次的匹配的范围
+      var indices = match.indices.map(([start, end]) => {
+        return [start - match.index, end - match.index]
+      })
+      var fullMatch = match[0]
+      var result = ''
+      var prevEnd = 0
+      for (var i = 1; i < indices.length; i++) {
+        var index = indices[i]
+        var [start, end] = index
+        result += fullMatch.slice(prevEnd, start)
+        result += '<i>' + fullMatch.slice(start, end) + '</i>'
+        prevEnd = end
+      }
+      result += fullMatch.slice(prevEnd)
+
+      return '<b>' + result + '</b>'
+    }
+
+
+    // 将一个匹配及其内的每个捕获分组都用标签包起来以高亮
+    function wrapOneMatch(match, matchIndex) {
+      // 先把每个捕获分组的范围转换为相对于这次的匹配的范围
+      var indices = match.indices.map(([start, end]) => {
+        return [start - match.index, end - match.index]
+      })
+      var fullMatch = match[0]
+      var chars = fullMatch.split('')
+      var tags = Array(chars.length + 1).fill('')
+
+      for (var i = 1; i < indices.length; i++) {
+        var [start, end] = indices[i]
+        tags[start] += `<b data-match="${matchIndex}" data-group="${i}" data-group-content="${match[i]}" data-group-start-index="${match.indices[i][0]}" data-group-end-index="${match.indices[i][1]}">`
+        tags[end] += '</b>'
+      }
+
+      var result = ''
+      for (var i = 0; i < chars.length; i++) {
+        result += tags[i] + chars[i]
+      }
+      result += tags[i]
+
+      return `<b data-match="${matchIndex}" data-group="0" data-group-content="${match[0]}" data-group-start-index="${match.indices[0][0]}" data-group-end-index="${match.indices[0][1]}">` + result + '</b>'
+    }
+
+    run()
+
+
+
+
+
+    // 在worker中获取re对string的所有匹配对象
+    // 之所以放到worker里执行是因为,正则的匹配可能花费很久的时间
+    // 如果真的花很久的时间,会造成页面的卡死无响应
+    function getAllMatch(re, string, callback) {
+      var blob = new Blob([`
+
+        addEventListener('message', e => {
+          var {re, string} = e.data
+          var matches = []
+          var match = null
+
+          while(match = re.exec(string)) {
+            matches.push(match)
+            if (re.global == false) {
+              break
+            }
+            if (match[0] == '') {
+              re.lastIndex++
+            }
+          }
+
+          postMessage(matches)
+        })
+
+      `], {type: 'application/javascript'})
+
+      var workerUrl = URL.createObjectURL(blob)
+
+      var worker = new Worker(workerUrl)
+      var ret = false
+
+      worker.addEventListener('message', e => {
+        ret = true
+        var matches = e.data
+        worker.terminate() // 关闭worker
+        callback(null, matches)
+      })
+
+      worker.postMessage({
+        re,string
+      })
+
+      setTimeout(() => {
+        // 说明两秒以后worker还没给出结果
+        if (ret === false) {
+          worker.terminate()
+          callback(new Error('xxxxxxx'), null)
+        }
+      }, 2000)
+    }
+  </script>
+
+
+</body><div style="all: initial;"><div id="__hcfy__" style="all: initial;"><template shadowrootmode="open"><style>#root{-webkit-text-size-adjust:100%;box-sizing:border-box;font-size:14px;font-weight:400;letter-spacing:0;line-height:1.28581;text-transform:none;color:#182026;font-family:-apple-system,"BlinkMacSystemFont","Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Open Sans","Helvetica Neue","Icons16",sans-serif;touch-action:manipulation}#root>.bp5-portal{z-index:9999999999}</style><link rel="stylesheet" href="chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/normalize.css"><link rel="stylesheet" href="chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/blueprint.css"><link rel="stylesheet" href="chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/blueprint-select.css"><link rel="stylesheet" href="chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/cropper.css"><style>#translate-panel{background-color:#f6f7f9;display:flex;flex-direction:column;padding-bottom:8px}.bp5-dark #translate-panel{background-color:#252a31}#translate-panel .fixed{flex-shrink:0;margin-bottom:10px}#translate-panel .body{flex-grow:1;overflow:auto;overscroll-behavior:contain}#translate-panel .body::-webkit-scrollbar{width:8px;background-color:rgba(0,0,0,0);-webkit-border-radius:100px}#translate-panel .body::-webkit-scrollbar:hover{background-color:rgba(0,0,0,.09)}#translate-panel .body::-webkit-scrollbar-thumb:vertical{background:rgba(0,0,0,.5);-webkit-border-radius:100px}#translate-panel .body::-webkit-scrollbar-thumb:vertical:active{background:rgba(0,0,0,.61);-webkit-border-radius:100px}#translate-panel.size-small,#translate-panel.size-small h6.bp5-heading,#translate-panel.size-small .bp5-control.bp5-large,#translate-panel.size-small textarea.bp5-input.bp5-small{font-size:14px}#translate-panel.size-small .phonetic-item,#translate-panel.size-small .quick-settings a{font-size:12px}#translate-panel.size-middle,#translate-panel.size-middle h6.bp5-heading,#translate-panel.size-middle .bp5-control.bp5-large,#translate-panel.size-middle textarea.bp5-input{font-size:18px}#translate-panel.size-middle .phonetic-item,#translate-panel.size-middle .quick-settings a{font-size:14px}#translate-panel.size-large,#translate-panel.size-large h6.bp5-heading,#translate-panel.size-large .bp5-control.bp5-large,#translate-panel.size-large textarea.bp5-input.bp5-large{font-size:22px}#translate-panel.size-large .source,#translate-panel.size-large .phonetic-item,#translate-panel.size-large .quick-settings a{font-size:18px}#translate-panel .bp5-button.bp5-small,#translate-panel .bp5-small .bp5-button{min-height:20px;min-width:20px}#translate-panel .header{display:flex;align-items:center;padding:4px 6px 4px 10px;border-bottom:1px solid #d1d1d1}.bp5-dark #translate-panel .header{border-bottom-color:rgba(17,20,24,.4)}#translate-panel .header .drag-block{min-width:5px;flex-shrink:0;flex-grow:1;align-self:stretch}#translate-panel .header .left{flex-shrink:0;display:flex}#translate-panel .header .right{flex-shrink:0;display:flex;align-items:center}#translate-panel .header .right .bp5-icon-arrow-right{flex-shrink:0;margin:0 5px}#translate-panel .header .right>.bp5-button{flex-shrink:0;margin:0 1px}#translate-panel .header .right>.bp5-button:last-child{margin-right:0}#translate-panel .quick-settings{padding:4px 9px;margin:0 1px}#translate-panel .quick-settings>div{margin-bottom:5px}#translate-panel .quick-settings .bp5-control{margin-bottom:0}#translate-panel .query-text{position:relative;padding:10px 10px 2px 10px}#translate-panel .query-text textarea.bp5-input{min-height:44px;font-family:system-ui,-apple-system,"Segoe UI","Roboto","Ubuntu","Cantarell","Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";overscroll-behavior:contain}#translate-panel .query-text .translate-btn{position:absolute;opacity:.6}#translate-panel .query-text .translate-btn:hover{opacity:1}#translate-panel .body{padding:0 10px}#translate-panel .body .bp5-card:first-child{margin-top:1px}#translate-panel .body .bp5-card:last-child{margin-bottom:1px}#translate-panel .body .no-api{margin:20px 0}.result-block{margin:8px 0;padding:2px 5px}.result-block .bp5-button{visibility:hidden}.result-block .error .bp5-button,.result-block:hover .bp5-button{visibility:visible}.result-block .legend{display:flex;align-items:center;justify-content:space-between}.result-block .legend .legend-left{display:flex;align-items:center}.result-block .legend .api-ico,.result-block .legend .bp5-heading{flex-shrink:0;white-space:nowrap}.result-block .legend .api-ico{display:inline-block;width:14px;height:14px;background-size:contain;margin-right:3px}.result-block .legend .bp5-heading{margin-bottom:0;margin-right:10px}.result-block .legend .source{cursor:pointer;font-size:12px;display:inline-flex;align-items:center}.result-block .legend .source .source-text{overflow:hidden}.result-block .legend .source .bp5-icon{position:relative;top:-1px;margin-left:1px}.result-block .phonetic{display:flex;flex-wrap:wrap}.result-block .phonetic .phonetic-item{display:flex;align-items:center;font-size:12px}.result-block .phonetic .phonetic-item:not(:last-child){margin-right:12px}.result-block .common-result p{line-height:1.3;margin:2px 0;overflow-wrap:break-word}.result-block .common-result .dict a{text-decoration:underline}.result-block .error{font-size:12px;padding:5px 10px}.result-block .dict-pos{margin-right:5px}.external-translators{margin-bottom:3px;padding:0;display:flex;flex-wrap:wrap}.external-translators>div{margin:0 5px 5px 0}.quick-links a{margin:0 5px 5px 0}#popper-container{width:250px;max-width:100%;position:absolute;left:0;top:0;z-index:9999999998;touch-action:none;transition:opacity .2s;background-color:#f6f7f9}.bp5-dark #popper-container{background-color:#252a31}#popper-container.show{opacity:1;pointer-events:auto;-moz-user-select:auto;user-select:auto}#popper-container,#popper-container[data-popper-reference-hidden=true]{opacity:0;pointer-events:none;-moz-user-select:none;user-select:none}#popper-container .drag-block{cursor:-webkit-grab;cursor:grab}#popper-container.pin{position:fixed}#popper-container.pin .arrow{display:none}#popper-container .arrow,#popper-container .arrow::before{position:absolute;width:8px;height:8px;z-index:-1}#popper-container .arrow::before{content:"";transform:rotate(45deg);background:#f6f7f9}.bp5-dark #popper-container .arrow::before{background-color:#252a31}#popper-container .arrow{display:none}#popper-container.show[data-popper-placement]:not([data-popper-reference-hidden=true]) .arrow{display:block}#popper-container[data-popper-placement^=top] .arrow{bottom:-5px}#popper-container[data-popper-placement^=top] .arrow::before{border-right:1px solid #d1d1d1;border-bottom:1px solid #d1d1d1}#popper-container[data-popper-placement^=bottom] .arrow{top:-5px}#popper-container[data-popper-placement^=bottom] .arrow::before{border-left:1px solid #d1d1d1;border-top:1px solid #d1d1d1}#popper-container[data-popper-placement^=left] .arrow{right:-5px}#popper-container[data-popper-placement^=left] .arrow::before{border-right:1px solid #d1d1d1;border-top:1px solid #d1d1d1}#popper-container[data-popper-placement^=right] .arrow{left:-5px}#popper-container[data-popper-placement^=right] .arrow::before{border-left:1px solid #d1d1d1;border-bottom:1px solid #d1d1d1}#translate-btn{display:none;position:absolute;z-index:9999999999;left:0;top:0}#translate-btn .bp5-button{padding:2px;min-width:0;min-height:0}#translate-btn .btn-icon{width:18px;height:18px;background-image:url(chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/logo.png);background-size:contain}.bp5-dark #translate-btn .btn-icon{background-image:url(chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/logowhite36.png)}#translate-btn.show{display:block}.translate-type-selector .bp5-label{display:inline}.translate-type-selector .bp5-radio{margin-bottom:0}#ocr-container{position:fixed;z-index:99999999999999;left:0;top:0;right:0;bottom:0}#ocr-container .toolbar{display:none;position:absolute;z-index:1}#ocr-container img{max-width:100%}#app{cursor:default}.switch-pin{flex-shrink:0;cursor:pointer}.switch-pin .bp5-icon-pin{transition:transform .2s,color .2s;transform:rotate(-45deg)}.pin .switch-pin .bp5-icon-pin{transform:rotate(-70deg)}.cut-btn{margin-left:2px}.app-toaster-container{position:fixed !important;z-index:9999999999 !important}.app-toaster-container .bp5-toast{min-width:auto}#web-trs-panel .app-toaster-container{padding-right:0;padding-left:0}#web-trs-panel .page-trs-form-group{margin:0 0 0 0;align-items:center}#web-trs-panel .page-trs-form-group>label{width:70px}</style><div id="root" dir="ltr"><div id="app"><div id="translate-btn"><button type="button" class="bp5-button"><span class="btn-icon"></span></button></div><div id="popper-container" class="bp5-elevation-4" style="width: 290px; transform: translate(0px, 0px);"><div id="translate-panel" class="size-middle"><div class="fixed"><div class="header"><div class="left"><div class="switch-pin"><button type="button" class="bp5-button bp5-minimal"><span aria-hidden="true" class="bp5-icon bp5-icon-pin"><svg data-icon="pin" height="18" role="img" viewBox="0 0 16 16" width="18"><path d="M9.41.92c-.51.51-.41 1.5.15 2.56L4.34 7.54C2.8 6.48 1.45 6.05.92 6.58l3.54 3.54-3.54 4.95 4.95-3.54 3.54 3.54c.53-.53.1-1.88-.96-3.42l4.06-5.22c1.06.56 2.04.66 2.55.15L9.41.92z" fill-rule="evenodd"></path></svg></span></button></div><button type="button" title="图片翻译" class="bp5-button bp5-minimal"><span aria-hidden="true" class="bp5-icon bp5-icon-media"><svg data-icon="media" height="18" role="img" viewBox="0 0 16 16" width="18"><path d="M11.99 6.99c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm3-5h-14c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-10c0-.55-.45-1-1-1zm-1 9l-5-3-1 2-3-4-3 5v-7h12v7z" fill-rule="evenodd"></path></svg></span></button><button type="button" title="语音翻译" class="bp5-button bp5-minimal"><span class="bp5-icon"><svg version="1.1" id="Capa_1" width="18" height="18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.9 490.9" xml:space="preserve"><g><g><path d="M245.5,322.9c53,0,96.2-43.2,96.2-96.2V96.2c0-53-43.2-96.2-96.2-96.2s-96.2,43.2-96.2,96.2v130.5 C149.3,279.8,192.5,322.9,245.5,322.9z M173.8,96.2c0-39.5,32.2-71.7,71.7-71.7s71.7,32.2,71.7,71.7v130.5 c0,39.5-32.2,71.7-71.7,71.7s-71.7-32.2-71.7-71.7V96.2z"></path><path d="M94.4,214.5c-6.8,0-12.3,5.5-12.3,12.3c0,85.9,66.7,156.6,151.1,162.8v76.7h-63.9c-6.8,0-12.3,5.5-12.3,12.3 s5.5,12.3,12.3,12.3h152.3c6.8,0,12.3-5.5,12.3-12.3s-5.5-12.3-12.3-12.3h-63.9v-76.7c84.4-6.3,151.1-76.9,151.1-162.8 c0-6.8-5.5-12.3-12.3-12.3s-12.3,5.5-12.3,12.3c0,76.6-62.3,138.9-138.9,138.9s-138.9-62.3-138.9-138.9 C106.6,220,101.2,214.5,94.4,214.5z"></path></g></g></svg></span></button></div><div class="drag-block" title="按住不放可以拖动"></div><div class="right"><button type="button" disabled="" title="添加到收藏夹" class="bp5-button bp5-disabled bp5-minimal" tabindex="-1"><span aria-hidden="true" class="bp5-icon bp5-icon-star-empty"><svg data-icon="star-empty" height="18" role="img" viewBox="0 0 16 16" width="18"><path d="M16 6.11l-5.53-.84L8 0 5.53 5.27 0 6.11l4 4.1L3.06 16 8 13.27 12.94 16 12 10.21l4-4.1zM4.91 13.2l.59-3.62L3 7.02l3.45-.53L8 3.2l1.55 3.29 3.45.53-2.5 2.56.59 3.62L8 11.49 4.91 13.2z" fill-rule="evenodd"></path></svg></span></button><button type="button" class="bp5-button bp5-minimal settings" title="快捷设置"><span aria-hidden="true" class="bp5-icon bp5-icon-cog"><svg data-icon="cog" height="18" role="img" viewBox="0 0 16 16" width="18"><path d="M15.19 6.39h-1.85c-.11-.37-.27-.71-.45-1.04l1.36-1.36c.31-.31.31-.82 0-1.13l-1.13-1.13a.803.803 0 00-1.13 0l-1.36 1.36c-.33-.17-.67-.33-1.04-.44V.79c0-.44-.36-.8-.8-.8h-1.6c-.44 0-.8.36-.8.8v1.86c-.39.12-.75.28-1.1.47l-1.3-1.3c-.3-.3-.79-.3-1.09 0L1.82 2.91c-.3.3-.3.79 0 1.09l1.3 1.3c-.2.34-.36.7-.48 1.09H.79c-.44 0-.8.36-.8.8v1.6c0 .44.36.8.8.8h1.85c.11.37.27.71.45 1.04l-1.36 1.36c-.31.31-.31.82 0 1.13l1.13 1.13c.31.31.82.31 1.13 0l1.36-1.36c.33.18.67.33 1.04.44v1.86c0 .44.36.8.8.8h1.6c.44 0 .8-.36.8-.8v-1.86c.39-.12.75-.28 1.1-.47l1.3 1.3c.3.3.79.3 1.09 0l1.09-1.09c.3-.3.3-.79 0-1.09l-1.3-1.3c.19-.35.36-.71.48-1.1h1.85c.44 0 .8-.36.8-.8v-1.6a.816.816 0 00-.81-.79zm-7.2 4.6c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" fill-rule="evenodd"></path></svg></span></button><button type="button" title="关闭(Esc)" class="bp5-button bp5-minimal"><span aria-hidden="true" class="bp5-icon bp5-icon-cross"><svg data-icon="cross" height="22" role="img" viewBox="0 0 20 20" width="22"><path d="M11.41 10l4.29-4.29c.19-.18.3-.43.3-.71a1.003 1.003 0 00-1.71-.71L10 8.59l-4.29-4.3a1.003 1.003 0 00-1.42 1.42L8.59 10 4.3 14.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71l4.29-4.3 4.29 4.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L11.41 10z" fill-rule="evenodd"></path></svg></span></button></div></div><div class="bp5-collapse"><div class="bp5-collapse-body" aria-hidden="true"><div class="quick-settings bp5-card bp5-elevation-0"><div><span aria-controls="listbox-0" class="lang-select bp5-popover-target" aria-expanded="false" aria-haspopup="listbox" role="combobox"><button type="button" class="bp5-button"><span class="bp5-button-text">自动检测</span><span aria-hidden="true" class="bp5-icon bp5-icon-caret-down"><svg data-icon="caret-down" height="16" role="img" viewBox="0 0 16 16" width="16"><path d="M12 6.5c0-.28-.22-.5-.5-.5h-7a.495.495 0 00-.37.83l3.5 4c.09.1.22.17.37.17s.28-.07.37-.17l3.5-4c.08-.09.13-.2.13-.33z" fill-rule="evenodd"></path></svg></span></button></span><span aria-hidden="true" class="bp5-icon bp5-icon-arrow-right" style="margin: 0px 10px;"><svg data-icon="arrow-right" height="16" role="img" viewBox="0 0 16 16" width="16"><path d="M14.7 7.29l-5-5a.965.965 0 00-.71-.3 1.003 1.003 0 00-.71 1.71l3.29 3.29H1.99c-.55 0-1 .45-1 1s.45 1 1 1h9.59l-3.29 3.29a1.003 1.003 0 001.42 1.42l5-5c.18-.18.29-.43.29-.71s-.12-.52-.3-.7z" fill-rule="evenodd"></path></svg></span><span aria-controls="listbox-1" class="lang-select bp5-popover-target" aria-expanded="false" aria-haspopup="listbox" role="combobox"><button type="button" class="bp5-button"><span class="bp5-button-text">中文(简体)</span><span aria-hidden="true" class="bp5-icon bp5-icon-caret-down"><svg data-icon="caret-down" height="16" role="img" viewBox="0 0 16 16" width="16"><path d="M12 6.5c0-.28-.22-.5-.5-.5h-7a.495.495 0 00-.37.83l3.5 4c.09.1.22.17.37.17s.28-.07.37-.17l3.5-4c.08-.09.13-.2.13-.33z" fill-rule="evenodd"></path></svg></span></button></span></div><div><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox" checked=""><span class="bp5-control-indicator"></span>谷歌</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>DeepL(内置)</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>DeepL</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>ChatGPT</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>Claude</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>Gemini</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>硅基</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>混元</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>文心</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>智谱</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>豆包</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>通义</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>DeepSeek</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>零一</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>MiniMax</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>百川</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>Kimi</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>百度</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>百度(专业版)</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>腾讯</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>彩云</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>阿里</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>阿里(专业版)</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox" checked=""><span class="bp5-control-indicator"></span>有道</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>火山</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>必应词典</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>搜狗</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox" checked=""><span class="bp5-control-indicator"></span>Yandex</label></div><div><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>自动朗读</label><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>自动复制</label></div><div class="bp5-radio-group"><label class="bp5-control bp5-radio bp5-inline"><input name="Blueprint5.RadioGroup-0" type="radio" value="small"><span class="bp5-control-indicator"></span>小</label><label class="bp5-control bp5-radio bp5-inline"><input name="Blueprint5.RadioGroup-0" type="radio" value="middle" checked=""><span class="bp5-control-indicator"></span>中</label><label class="bp5-control bp5-radio bp5-inline"><input name="Blueprint5.RadioGroup-0" type="radio" value="large"><span class="bp5-control-indicator"></span>大</label></div><div><label class="bp5-control bp5-checkbox bp5-inline"><input type="checkbox"><span class="bp5-control-indicator"></span>显示文本框</label><label class="bp5-control bp5-checkbox bp5-inline" style="margin-right: 0px;"><input type="checkbox"><span class="bp5-control-indicator"></span>鼠标悬浮取词</label></div><a class="bp5-text-small">打开完整设置</a></div></div></div></div><div class="body"><p>请输入需要翻译的文本。</p></div></div><div class="arrow"></div></div><div id="web-trs-panel"></div></div></div></template></div></div></html>

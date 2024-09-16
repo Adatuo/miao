@@ -1,0 +1,141 @@
+* 盒模型，box model
+    - 盒模型是什么
+    - margin外边距
+        + 可以为负值
+        + 垂直margin会合并
+        + 垂直margin在有些情况下会超出到父元素之外
+        + 值的复制
+            * margin: a; -> a a a a
+            * margin: a b; -> a b a b
+            * margin: a b c; -> a b c b
+            * margin: a b c d; -> a b c d
+            * padding同理
+        + margin-left/right/top/bottom
+    - border
+        + border-width: 3px 5px 2px ;
+            * 边框宽度
+        + border-color: red green;
+            * 默认为color的值
+        + border-style: solid dotted dashed double;
+            * solid	条状
+            * dotted	点状
+            * 其它
+        + 所有边框可以写在一个属性里面
+            * border: style color width;顺序任意
+            * border: none
+        + 也可以单独设置某一边的边框
+            * border-left/top/bottom/right: style color width;
+        + 甚至可以完全分开设置任意一边的任意一个属性
+            * border-left-width/color/style
+        + 画三角形
+            * http://jsbin.com/nasolud/1/edit?css,output
+    - padding
+        + 内边距，不能为负值
+        + 背景颜色会显示在padding上面
+    - content
+        + 内容区域
+    - width
+        + block类型的元素会占满父元素的水平内容区域
+        + 更严格的说，是 margin-left,border-left-width,padding-left,width,padding-right,border-right-width,marign-right 加起来正好等于父元素内容水平宽度
+            * http://jsbin.com/pakege/1/edit?html,css,output
+    - box-sizing
+        + 宽度的计算方式
+            * border-box
+              * border-box就是用元素内容和padding和border一起决定width和height，啥意思，就是width和元素的内容以及padding和border相互制约。
+              * 下面用几句话简洁解释一下。
+                owidth和height改变,paddign和border不改变时，元素内容的宽高会发生相应的改变，改变的值就是width和height改变的值。opaddign和border改变，width和height不改变时，元素内容的宽高会发生相应的改变，改变的值就是width和height改变的值。·元素内容的宽高等于:元素的宽高- ( border + padding )
+            * content-box
+              * Chrome浏览器box-sizing默认是content-box,content-box就是元素的width和height决定了元素的宽高，这意味着元素的border和padding等不能算在元素的width和height中，padding和border的改变不能改变width和height的值。
+            * 没有margin/padding-box
+            * 但另一个属性支持这两个选项
+        + doctype
+            * 在ie低版本下，如果不声明doctype的话，默认为border-box模型
+    - display
+        + none
+        + inline
+        + block
+        + inline-block
+            * img
+            * 从外面看是inline的，从里面看是block的
+        + table类/list类
+    - height
+        + 非定位元素写百分比是无效的
+            * 原因：它的高度会影响父元素，而父元素被它撑高后又会反过来影响它，逻辑上就不成立
+        + 定位元素写百分比是相对于其定位祖先，而非直接父元素
+            * 应用：做出类似选择父元素的功能
+                - http://jsbin.com/rofugib/1/edit?html,css,output
+    - 定位
+        + position
+            * static
+                - 在哪就在哪，默认值
+            * relative
+                - 相对于自己本身的位置做偏移
+            * absolute
+                - 相对于离自己最近的一个定位了的（position属性不会static）祖先元素做定位
+            * fixed
+                - 相对于浏览器窗口进行定位
+                - 应用：回到顶部
+                - 应用：固定搜索栏
+            * sticky
+                - obslated
+        + top，left，right，bottom
+            * 定位了但是没指定这几个值的任意一个，元素会在原来的位置，与之后的内容重合
+            * 定位原点是padding box
+            * 比百分比时，以父元素宽度为基准值
+        + 各种应用：
+    - 案例：级联菜单
+        + http://jsbin.com/hedozaq/1/edit?html,css,output
+    - 案例：slider
+        + http://jsbin.com/tijiqi/1/edit?html,css
+        + http://jsbin.com/tijiqi/2/edit?html,css
+        + http://jsbin.com/tijiqi/3/edit?html,css
+
+
+* 第七章 **基本视觉格式化(布局)** basic visual formatting
+  * 什么是格式化(formatting)
+    * 其实就是布局，是元素怎么摆放，有多宽，有多高
+  * 基本框，即每个元素产生的矩形区域
+    * 块元素是一个
+    * 行内元素可能是多个
+  * 包含块 containing block
+    * 每个元素的最近的块级祖先就是这个元素的包含块
+      * 更明确的说：是该块级祖先的content-box
+  * 常规流 Normal Flow
+    * 也叫正常流
+      * 指文档内容从上到下从左到右的排布方式，一个跟着一个
+    * 翻译为"文档流"是错误的(至少是容易让人混淆的)
+      * 因为js中也个概念叫文档流(document flow)，但跟这个完全不一样
+  * 替换元素，非替换元素，块级元素，行内元素，根元素的概念
+  * **块元素的布局**
+    * 水平方向
+      * 水平方向的七个宽度之和等于包含块的宽度
+      * 但是里面有三个可以为auto，很多灵活的应用都是基于这个
+        * margin-left,margin-right,width
+      * 并且margin不仅可以为auto还可以为负（其它的五个不行）
+        * 好在负值至少是明确指定的值，比auto的要简单
+        * 为0是对齐包含块的左边缘，为正是向中心方向偏，为负则是向反方向
+      * 各种auto的情况
+        * 一个auto
+          * 值被计算出来
+        * 两个auto
+          * 如果有一个在宽度（width）上，则另一个相当于0
+          * 如果有都在margin上，则平分，结果就是元素会在包含块中居中
+        * 三个auto
+          * 相当于两个margin为0
+        * 零个auto
+          * 当所有的值加起来不等于包含块的宽度时，元素就过分受限了
+            * margin-right被重置为auto
+        * 以上所有的auto计算中，margin-left不会自动计算为负值
+          * 如果被计算为负值，则会用0替代
+          * 除非自己指定为负值
+          * 而在文字书写方向从右向左时，margin-right不会计算为负值
+        * 应用：
+          * 定宽居中
+            * width设置为某个值，margin左右设定为auto
+          * 两边固定留白，宽度占剩余空间
+      * 值为百分比时（宽度，margin都可以写百分比）
+        * 跟写长度没有什么区别，基于包含块的宽度（多数时候是父元素的内容区域的宽度）
+      * 对于替换元素来说，相当于宽度被提前指定了，其它同非替换元素
+        * 宽度写auto是由替换元素的“源”来指定宽度
+        * 如果只指定某一个维的尺寸，另一个维会被自动按比例计算出来
+          * 即保持了内容的原始比例

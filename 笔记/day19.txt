@@ -1,0 +1,45 @@
+* 第八章 padding border margin
+  * width
+  * height
+  * margin vs padding
+    * padding区域能看到背景
+  * border-style
+    * solid,dashed,dotted,double,groove,ridge,outset,inset,hidden,none
+    * border-color
+    * border-width
+    * border-top: red 2px double;
+    * border-top-color: blue;
+  * border-radius 边框圆角
+    * 从左上开始顺时针旋转
+    * border-radius: 20px;
+    * border-radius: 10px 20px;
+    * border-top-left-radius: 30px 15px;
+  * border-image;
+    * border-image-repeat: space / round;
+    * border-image-slice: 84; 注意不能有单位
+
+    * border-image: url(https://tse3-mm.cn.bing.net/th/id/OIP-C.MQvb8oSoGjRT0wKwgw8z6gAAAA?rs=1&pid=ImgDetMain);
+    * border-image-slice: 78 [fill]; 图片的裁剪
+    * border-image-repeat: round/stretch/space/repeat;  边框图片的重复
+    * border-image-width: 40px; 边框图片的宽度,默认跟边框宽度一样,所以如果不设置这个属性就要设置边框宽度了
+    * border-image-outset: 7px; 图片向外扩散一定的量,只能为正
+
+  * max-width 设置元素的最大宽度
+    * 当width:auto的计算结果大于max-width时,元素的宽度取max-width的大小
+  * min-width
+    * 当width:auto的计算结果小于min-width时,元素的宽度取min-width的大小
+  * max-height
+  * min-height
+  * visibility:visible,hidden,collapse
+    * 设置元素的可见性
+    * 元素不可见时位置还是保留的!
+  * display: none;
+    * 元素完全消失,脱离常规流且不可见
+  * opacity 元素的透明度 取值0-1或0%-100%
+  * overflow: hidden,auto,visible,scroll
+    * overflow-x:;
+    * overflow-y:;
+
+* 关于元素的宽度
+  * 会比最宽的一个单词要宽
+  * 又不会被内容自动撑到比自己的包含块还宽

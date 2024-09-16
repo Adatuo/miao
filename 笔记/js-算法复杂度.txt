@@ -1,0 +1,72 @@
+function reverseArray(array) {
+  var result = []
+
+  for (var i = array.length - 1; i >= 0; i--) {
+    result.push(array[i])
+  }
+  
+  return result
+}
+
+8n+2
+
+function reverseArray(array) {
+  var result = []
+
+  for (var item of array) {
+    result.push(item)
+  }
+
+  return result 
+}
+
+function reverseArrayInPlace(array) {
+  var stop = Math.trunc(array.length / 2)
+  for (var i = 0; i < stop; i++) {
+    var j = array.length - i - 1
+    var temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array 
+}
+
+4  =  O(1)
+
+5 * 8 + 7 + 2  =  O(1)
+
+c/c++/java的原始数组都是连续空间存储的
+但js中的数组是特殊的对象，它的存储形式跟对象类似，但其背后肯定有连续形式存储的数组
+（实际上会根据使用方式动态选择是连续存储还是对象形式存储）
+
+
+
+算法复杂度：
+  算法复杂度是分析一个算法/一段程序运行所需的时间和空间（内存）的。
+
+  如何衡量程序运行的时间？
+    将程序运行时扫执行的所有操作的时间加起来，就是程序的总时间
+      实际是计算机在执行不同的原子操作的时候（如赋值、加法、乘法等）时，时间是不一样的，但是每种原子操作所花的时间是固定的，不随操作数的变化而变化
+        所以只要是固定时间的原子操作，我们不去纠结具体是多少时间，都统一算做一个时间单位
+          所以
+            var a = 1
+            var b = 2 * 3 + a * a - 5
+
+            "fowiejfowiejf" + "oifwejfoiwejf"
+    一个算法所花时间除了程序本身，往往还取决于程序的输入
+    所以程序的时间复杂度往往是与输入有关的
+    有函数调用时，要看函数内部是怎么写的，包括系统自带函数
+
+    如果一个程序的运算时间最终计算出为
+      100*n*n + 5*n + 1050   =   O(n*n)
+
+      如果存在一个常数c以及一个n0，让c*T(n)在n0之后始终大于F(n)
+      则可以说 F(n) = O(T(n))
+
+  空间复杂度是程序在运算过程中占用空间最多的时刻(最多同时占用的空间总数)
+  (空间与时间不一样，时间一定是累计的，但空间用过还可以清空后重复使用 )
+  即程序能够挪腾得开的情况下所需要的最小空间
+  空间是不累计的，用过，清除再使用是不重复计算的。
+  每个变量占用一个空间单位
+  数组占用的空间单位数量为数组的长度
+  对象占用的空间是对象中属性的个数

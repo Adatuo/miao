@@ -1,0 +1,59 @@
+* 课程设计
+  * 没有ppt
+  * 用的是书本
+    * 《css权威指南》&《the book of css3》
+    * 《eloquent javascript》《JS编程精解》
+  * 书本没有的内容，大多数都md的讲稿
+  * 计算机网络
+  * 算法
+  * 基础
+  * 课程是面向零基础的，所以一开始的**部分内容**对**一些**同学来说会过于简单
+
+* 你免费在平台上播，为什么我要花钱听？
+
+* 软件安装
+  * Chrome&FireFox
+    * https://www.google.cn/chrome/
+  * VSCode
+    * https://code.visualstudio.com/Download
+  * git
+    * https://git-scm.com/downloads
+  * Node.js
+    * https://nodejs.org/en/download/
+
+* 设置搜索引擎为bing.com
+
+* 前端已死?
+  * 前端死了没?
+  * 前端什么时候死?
+  * 前端死到什么程度了?
+* 多个角度看待
+  * 这个话从哪里传出来的
+  * 前端后端人数差不多,后端死没死?
+  * 在校大学生
+  * 会有人像十几年前的我一样对前端感兴趣
+  * 大学计算机教育质量有因为“前端已死”而变好吗？
+  * 未来的高手只能由现在已经存在的从业者成长而来吗?
+  * 约400w从业者
+  * 从业人员混杂,上下限差距非常巨大
+
+* 练习打字
+  * 标准键位,两个食指分别放在f和j上
+  * 双拼 https://api.ihint.me/shuang/
+  * 标点符号
+  * 全半角
+    * ！ ! ( （
+    * 打字效率跟学习效率息息相关
+
+* 为什么用课本而不是自己做ppt?
+
+* 几篇文章
+  * 提问的智慧 https://lug.ustc.edu.cn/wiki/doc/smart-questions/
+  * 花十年学编程 http://daiyuwen.freeshell.org/gb/misc/21-days-cn.html
+  * 花两年面试一个人 https://www.cnblogs.com/zwblog/articles/5322423.html
+
+* 数学知识回顾（略）
+  * 坐标系，函数，集合，数列，映射，导数
+* 二进制
+  * 二进制的转换
+* 二进制与十六进制

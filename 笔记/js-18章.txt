@@ -1,0 +1,36 @@
+  input.select()
+
+选中元素内的文字
+
+
+tabindex为-1的元素无法通过Tab键获取到焦点
+
+
+
+复杂度不会消失，只会__转移__
+
+
+<select>的替代品：
+chosen.js
+selec2.js
+
+
+
+MIME 类型：（媒体类型）
+maintype/subtype
+text/html
+text/css
+application/javascript
+image/jpeg
+image/png
+...
+
+
+
+
+想要使用文件而不是获取文件的内容时：
+file = $0.files[0]
+url = URL.createObjectURL(file)
+img = document.createElement('img')
+img.src = url
+document.body.append(img)

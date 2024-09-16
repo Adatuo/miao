@@ -1,0 +1,57 @@
+
+
+
+DOM其他常用的属性或方法
+
+innerHTML
+  可以获取到某个标签内部的内容的html表示
+  它也是可写的，可以通过这个属性方便的修改一个元素内部的html结构
+  以往它的性能比较慢且只有ie浏览器支持所以书上没讲
+  但现在它的性能已经非常好了，也标准化了，所以完全可以使用
+  赋值时浏览器会解析给定的字符串并构建dom（可以通过火焰图看到）
+outerHTML
+  获取到元素自身的整个html表示
+  其它同innerHTML
+innerText
+outerText
+  它俩一样，之所以有两个是为了跟inner/outerHTML对称
+  都可以获取到元素内的所有纯文字，不含标签
+  它们跟textContent有何区别？
+  textContent获取的字符串不受css的影响，直接就是原始文本结点的文本内容的拼接
+  innerText获取到的内容受css影响，如多个连续空格会只剩一个
+  以上两级属性其实都是getter/setter
+children
+  所有的元素子结点，不包含文本子结点和注释子结点
+className
+classList
+  可以通过这个接口更方便的操作类名列表
+  add
+  remove
+  toggle
+  contains
+  很像集合操作，因为类名就是集合（不重复）
+dataset
+  可以通过这个接口方便的操作标签的data-属性
+cloneNode(deep?)
+  复制这个结点
+  传入true可以深层次复制
+closest(selector)
+  返回当前结点的祖先中满足选择器的最近祖先
+append(...nodes)
+  可以向元素增加结点或直接增加字符串
+  可以一次性增加多个
+  比appendChild更方便
+prepend()
+contains(node)
+  判断当前结点是否包含其它结点（node）
+matches(selector)
+  判断结点是否满足选择器
+normalize()
+  将元素内的连续文本子结点合成一个
+getClientRects()
+  获取元素生成的多个矩形框的大小及位置（相对于视口）
+getAttributeNames（）
+  获取元素的所有attribute的名字组成的数组，方便操作所有属性
+scrollBy/To
+  设置元素内容的滚动位置
+

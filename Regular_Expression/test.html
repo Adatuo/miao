@@ -248,7 +248,6 @@
         }
 
         i++ //skip '('
-
         if (input[i] == '?') {
           i++ //skip '?'
           if (input[i] == ':') {  //非捕获分组
@@ -283,20 +282,18 @@
             }
           }
         }
-
         //到这里终于解析完了括号自身的属性
         //接下来解析括号里的内容
+
+        node.branches = parseBranches() 
+        i++ //skip ')'
+
         //分组编号
         if (node.zeroAssertion == false && node.capture == true) {//既不是零宽断言也不是非捕获分组
           groupIndex++  //分组编号++
         }else{//非捕获,零宽断言不需要编号
           node.groupIndex = undefined
         }
-
-        node.branches = parseBranches() 
-        i++ //skip ')'
-
-
 
         node.end = i
         node.raw = input.slice(node.start,node.end)
@@ -441,52 +438,53 @@
       
       let branchesGraphs = drawBranchesGraph(node.branches) //分组就是包含了分支图形
       let width = branchesGraphs.width + graphPadding * 2 //框进整个元素
-      let height = branchesGraphs.height + graphPadding * 2
+      let height = branchesGraphs.height + graphPadding * 3
 
-      let g = elt('g')
-      let bg = elt('rect',{ //解决g靠不到边的问题
-        fill:"none",
-        width,
-        height,
-      })
-      g.append(bg)
+      let g = elt('g'); // 根容器
 
-      //虚线框
-      let dashedBorder = elt('rect',{ 
-        'stroke':"#908c83",
-        'stroke-width':2,
-        'stroke-dasharray':'5,5',
-        rx:"3",
-        ry:"3",
-        width,
-        height,
-        fill:"none",
-      })
+// 文字图层
+let textLayer = elt('g');
+let groupNumber = elt('text', { x: width / 2, y: -graphPadding }, "group #" + node.groupIndex);
+textLayer.append(groupNumber);
 
-      branchesGraphs.g.setAttribute('transform',`translate(${graphPadding},${graphPadding})`)//希望整个分支图形(以及分子中的每一个小图形)放在虚线框里面
+// 虚线框图层
+let dashedBorderLayer = elt('g');
+let dashedBorder = elt('rect', {
+  'stroke': "#908c83",
+  'stroke-width': 2,
+  'stroke-dasharray': '5,5',
+  rx: "3",
+  ry: "3",
+  width,
+  height,
+  fill: "none",
+});
+dashedBorderLayer.append(dashedBorder);
 
-      g.append(dashedBorder)//虚框放入
-      g.append(branchesGraphs.g)//把画出来的g放入虚框中
+// 分支图层
+let branchesLayer = elt('g');
+branchesGraphs.g.setAttribute('transform', `translate(${graphPadding},${graphPadding})`);
+branchesLayer.append(branchesGraphs.g);
 
-      //group #num 文字
-      let groupNumber = elt('text',{
-        y:graphPadding *2
-      }," group #" + node.groupIndex)
-      g.append(groupNumber)
+// 连接线图层
+let connectionLayer = elt('g');
+let paddingLine = elt('path', {
+  d: `M 0 ${height / 2}
+       L ${graphPadding} ${height / 2}
+       M ${width} ${height / 2}
+       L ${width - graphPadding} ${height / 2}`,
+  stroke: "black",
+  'stroke-width': '2',
+  fill: 'none',
+});
+connectionLayer.append(paddingLine);
 
-      //因为虚线框的缘故连接处被断开,再次加上去
-      let paddingLine = elt('path',{
-        d:`M 0 ${height/2}
-           L ${graphPadding} ${height/2}
-           M ${width} ${height/2}
-           L ${width - graphPadding} ${height/2} `,
-        stroke:"black",//颜色填充
-        'stroke-width':'2',   
-        fill:'none'
-      })
-      g.append(paddingLine)
+// 将各个图层按顺序添加到根容器中
+g.append(dashedBorderLayer);
+g.append(branchesLayer);
+g.append(textLayer);
+g.append(connectionLayer);
 
-      
        
       let bbox = g.getBBox()//简化最小矩形拿取
       return {

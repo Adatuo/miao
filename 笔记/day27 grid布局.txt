@@ -1,0 +1,58 @@
+* grid布局
+  * grid是二维布局。其实表格也是二维布局
+  * 布局模型：
+    * 类似表格，同一行高度相同，同一列宽度相同
+    * 将父元素按网格的形式分成区块
+    * grid container 网格窗口
+    * grid line：分隔空间使用的线
+    * grid cell：由线分出来的一个最小的块
+    * grid track：一行或一列cell的集合体
+    * grid area：由多个最小的块组合成的矩形
+    * grid item：放置在area中的grid子元素
+      * grid item默认占一个cell,也可以设置成多个
+  * grid布局上下文里也不能出现浮动元素
+  * grid容器内的连续匿名文本会成为一个grid子元素
+  * 适用于grid container的css属性
+    * display: grid/inline-grid
+    * grid-template-columns: 20% 60% 20%;
+    * grid-template-columns: 1fr 1fr 1fr;
+    * grid-template-columns: 20% 60% 20%;
+    * grid-template-rows: 60px auto 5em;
+    * gap 网格间隙
+  * 适用于grid item的属性
+    * grid-column-start/end: 2;
+    * grid-row-start/end: 2;
+    * grid-column: 2 / 3;
+    * grid-row: 1 / span 3;
+    * z-index在grid布局里可以直接使用
+    * justify-content/align-content/align-items
+  * 重复
+    * grid-template-columns: 1fr repeat(11, 10px 1fr);重复11次后面这个东西
+  * grid-template-areas: 'a b c';给区域命名
+  * 然后就可以用区域的名称来指定grid item的位置了
+  * grid-template: grid-template-columns / grid-template-rows;
+    * 一个属性设置行和列的模板
+  * 隐式grid:当行或列用完时,自动增加的行或列的高或宽
+    * grid-auto-columns: 1fr;
+    * grid-auto-rows: 80px;
+  * grid-auto-flow: row/column  [dense];元素的填充方向,从左往右/从上往下再折行
+    * 加个dense的作用是稠密填充
+      * 本来一定是按顺序填充
+      * 但加个dense的话前面的空位会填前面
+  * grid中的对齐,跟flex中使用的几乎是同一组属性控制的,效果也类似
+    *
+      justify-content: start; 批量调整cell在grid窗口中的水平位置
+      justify-items: center; 批量调整grid子元素在cell中的位置
+      align-content: space-between; 批量调整cell在grid窗口中的垂直位置
+      align-items: center; 批量调整cell在grid窗口中的水平位置
+      place-items: ; 一个属性直接设置justify-items和align-items
+
+      align-self: ; 设定子元素在cell中的垂直位置
+      justify-self: ;设定子元素在cell中的水平位置
+  * 案例:
+    * 实现几个常见布局
+    * inst https://jsbin.com/yutasicuho/edit?html,css,output
+    * 小米产品列表 https://jsbin.com/quqoriguho/1/edit?html,css,output
+    * 小米轮播图菜单 https://jsbin.com/zulujahuqi/1/edit?html,css,output
+    * 邮箱 https://jsbin.com/cazadicela/1/edit?html,css,output
+    * oald https://jsbin.com/yutasicuho/edit?html,css,output

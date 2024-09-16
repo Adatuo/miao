@@ -1,0 +1,8 @@
+    main.t{
+        border: 20px 20px solid red;/* 不用这行 */
+        background-color: red;
+        /* margin: 20px; 上下左右都留空 */
+    }
+    main.y {
+        margin: auto;
+    }

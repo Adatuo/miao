@@ -27,7 +27,7 @@
    * 
    */
 
-//最小堆
+//最小堆的操作
   class PriorityQueue {
     constructor() {
       this._items = []
@@ -112,7 +112,7 @@
    * 所以push和pop的复杂度都为log(n)
    * 
    */
-  //最大堆
+  //最大堆的操作
   class PriorityQueue2 {
     // predicate谓词函数，元素在堆中的位置由其传给这个函数后的返回值决定
     constructor(predicate = it => it) {
@@ -210,7 +210,8 @@
     array[j] = t
   }
   // 从数组的idx位置向下调堆，只调range之内的元素，range及其之外的不调
-  function heapDown(array, idx, range = array.length) {
+  //[4, 5, 6, 2, 1, 8, 9, 4, 0, 2, 1, 5, 6, 8, 9]
+  function heapDown2(array, idx, range = array.length) {//最大
     while(true) {//可以写成真，因为里面一定会break，因为当元素被交换到最后一行时，必然没有子结点了，也就不会交换了，那么必然就break了
       var maxIdx = idx // 先认为这个元素为最大的，记录它的下标为最大下标
 
@@ -233,11 +234,35 @@
       }
     }
   }
+  function heapDown(array, idx, range = array.length) {//最小
+    while(true) {//可以写成真，因为里面一定会break，因为当元素被交换到最后一行时，必然没有子结点了，也就不会交换了，那么必然就break了
+      var minIdx = idx // 先认为这个元素为最小的，记录它的下标为最小下标
+
+      var leftIdx = idx * 2 + 1
+      // 判断leftIdx < this._items.length的作用是确保它的子结点还存在
+      if (leftIdx < range && (array[leftIdx]) < (array[minIdx])) {
+        minIdx = leftIdx
+      }
+
+      var rightIdx = idx * 2 + 2
+      if (rightIdx < range && (array[rightIdx]) < (array[minIdx])) {
+        minIdx = rightIdx
+      }
+
+      if (minIdx !== idx) {
+        swap(array, minIdx, idx)
+        idx = minIdx
+      } else {
+        break
+      }
+    }
+  }
+  
   // 将一个无序数组不使用任何额外空间的情况下原地调整成一个堆
   // 可以起名叫“堆化”
   function heapify(array) {
     for (var i = (array.length - 1) >> 1; i >= 0; i--) {
-      heapDown(array, i)
+      heapDown(array, i)//min //heapDown2 max
     }
     return array
   }

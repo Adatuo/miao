@@ -1,0 +1,78 @@
+  * git保存/管理的是**变更**,变更包括:
+    * 内容的增加、删除
+    * 文件的删除
+    * 文件自身改名
+    * 文件位置移动
+    * 等
+  * 将代码推到github或其它类似网站
+    * 推送到本机的另一个文件夹
+  * git remote add origin git@github.com/xieranmaya/git2024.git
+    * 为当前文件夹的仓库添加远程仓库
+      * origin是为该远程仓库起的名字
+      * 后面一长串是远程仓库的实际地址
+  * git remote set-url origin NEW_URL
+    * 设置某个远程仓库的地址(在地址填错或需要修改地址的情况下使用)
+      * origin是需要修改地址的远程仓库的名字
+  * git remote remove origin
+    * 删掉某个远程仓库
+  * git push origin master
+    * 将master分支的历史推送到origin这个远程仓库中
+  * git push -u origin master
+    * 推的同时设置master与origin仓库的关联关系
+    * 后续不需要再每次指定仓库和分支了,只需要用git push就可以了
+  * git push
+    * 将当前分支推送到与其关联的远程仓库里
+
+  * 首次push的过程中可能出现的报错或输出
+    ```
+    The authenticity of host 'github.com (20.205.243.166)' can't be established.ECDSA key fingerprint is sHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgufQM.Are you sure you want to continue connecting (yes/no/[fingerprint])?y
+    Please type 'yes' , 'no’ or the fingerprint: yes
+    ```
+    意思是远程服务器身份无法确认,通过出示远程服务器的指纹问你是否确认跟这个服务器建立连接
+    ```
+    warning: Permanently added 'github.com,20.205.243.166’(ECDSA) to the 1ist of known hosts.
+    ```
+    在你输入完yes后,系统会将该服务及其指纹存到当前计算机上,未来如果该服务器的指纹不是这个,那么就会报错并且拒绝连接
+
+    ```
+    git@github.com: Permission denied (pub1ickey) .fatal:could not read from remote repository.
+    Please make sure you have the correct access rightsand the repository exists.
+    ```
+    github无法确认目前推送者的身份,所以告诉你没有权限
+    解决方案是在自己电脑上生成一对公私钥,并将公钥传到github网站自己的账号里
+      Settings - SSH & PGP Keys菜单下
+
+    ```
+      git push
+      fatal: The current branch master has no upstream branch.
+      To push the current branch and set the remote as upstream,use
+    ```
+      当前分支没有关联的远程仓库,所以无法push
+      要么push时指定远程仓库的完整地址
+      要关先为当前分支关联一个远程仓库
+  * git pull 把远程那些你本机没有的"变更"拉取到本机并且合并到相应的文件中
+  * vi编辑器,命令行里编辑器
+    * 两个主要模式:
+      * 常规模式(浏览模式)
+        * 按Esc进入
+      * 编辑模式
+        * 按i进入
+      * 命令模式
+        * 按:进入
+          * 进入之后再输入具体的命令,但是命令全是一个字母
+          * :w 存盘
+          * :q 退出,但如果对文件做了修改则不能退出
+          * :q! 强制退出
+          * :wq 先存盘再退出
+  * vimtutor   vi编辑器的自带教程命令
+  * 用vscode管理git仓库
+  * GitHub Pages 服务
+    * 某个仓库如果开启了pages服务
+    * 则访仓库的文件可以在  USERNAME.github.io/REPO_NAME/FILE_PATH 访问到
+    * xieranmaya.github.io/git2024/page.html 访问到
+  * ssh-keygen 生成公私钥对，一路回车就行了，生成好放在~/.ssh文件夹里面
+  * 作业:
+    * 把你那天抄写的html页面和md页面
+    * 分别让它们能够在以下两个地址访问到
+      * https://USERNAME.github.io/miao/css-zen-garden.html
+      * https://USERNAME.github.io/miao/react.md

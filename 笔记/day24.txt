@@ -1,0 +1,46 @@
+* TailwindCSS
+  * 类似物：unocss，windi css
+  * 传统css写法：
+    * 定义html，想类名，在css里为类名写样式
+    * 想类名很烦，写出来的css又不好维护
+  * tailwind
+    * 直接在html的类名中使用工具类名，每个工具类名带来一个方面的样式
+    * 不用费劲起类名了
+    * 相同的类名可以复用
+    * 再也不用维护css代码
+  * 为什么不直接使用内联css？
+    * 内联无法实现hover，focus等交互效果以及动画等
+    * 无法实现响应式
+    * 设计不受限制（不受设计语言的限制，但tw可以让设计受限制）
+  * 可维护性会比css好吗？
+    * 配合一些工具（批量编辑，组件化等）后，会
+* 如何安装
+  * 最简单的方式：直接引入它的js
+    * 用到什么类名，生成什么类名，所以不会出现css文件过大的问题
+      * 如果是把你可能用到的类名全部事件生成好，文件大小将会是天文数字，甚至有些效果是完不成的
+  * 其它方式官网也有讲
+* 小试牛刀
+  * 一个全宽文字居中效果
+  * 实现一个邮箱布局
+  * 实现tw官网示例
+  * 实现一个oald布局
+  * 实现小米官网产品列表
+* hover，focus等
+  * hover，focus，active
+  * first,last,odd,even
+  * required,invalid,disabled
+  * 基于祖先的状态进行样式化
+    * 给祖先加上group类名，然后在后代中使用group-hover:xxx来在祖先被hover时执行xxx效果
+  * 基于前一个元素的状态加样式
+    * 前peer后peer-hover:text-xl
+  * 自定义类名修饰符
+    * [&.foo]:mx-5 当元素有foo类名时应用mx-5效果
+    * [&_p]:mt-4
+* 响应式
+  * sm,md,lg,xl修饰符
+* 深色模式
+  * dark修饰符
+  * 跟随系统vs自行指定
+    * @media (prefers-color-scheme: dark/light) {  div {} }
+* 工具类
+  * 需要时在文档找

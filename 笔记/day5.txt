@@ -1,0 +1,50 @@
+
+
+
+
+* git
+  * git不是git bash
+    * git bash是命令行程序的一个运行环境
+      * git/ls/pwd/nudoku/...都是要在命令行环境下运行的
+      * linux自带命令行环境的
+      * windows只自带自己的系统的命令行环境，不能直接使用linux的
+        * 但是linux系统的命令行环境更流行
+          * 所以我们在windows上装一个软件来模拟/提供类linux的命令行环境
+  * git也不是github
+    * git是一个软件
+    * github是一个网站
+  * 它是一个命令行软件
+  * 版本控制
+    * 论文.doc
+    * 论文修改版.doc
+    * 论文-修改版2.doc
+    * 论文-最终修改版.doc
+    * 论文-最终再也不改版2.doc
+  * 所有命令现场写
+    * git init 初始化当前工作目录为一个git仓库(或者说是我们将用git来管理这个文件夹里的文件版本)
+    * git add file1 file2 file3 将文件添加到暂存区,可以一次性添加多个文件
+    * git add . 把当前文件夹中所有的文件都添加到暂存区
+    * git status 查看当前仓库的状态,可以看到暂存区状态,工作目录状态
+    * git config --global user.email "you@example.com"
+    * git config --global user.name "Your Name"
+    * git commit -m "对这次提交的描述"
+    * git diff 显示工作目录与暂存区的差异
+    * git diff --cached 显示暂存区与最近的一次提交之间的差异
+    * git log 查看提交记录/日志
+      * 保存代码时在最后一行额外加一个回车可以减少git diff信息的噪音
+    * git commit -a -m "woiefjowiefj" -a 表示先添加所有文件后再提交
+      * 基本等价于
+      * git add .
+      * git commit -m "owijfe"
+    * git的暂存区可以实现一次性修改多个文件但分多次提交
+      * 在修改的多个文件从业务逻辑上是不一样的时候,应该分开提交
+    * git add -p 一段一段添加,git会区分出同一个文件中不同部分的变更,每一部分可以分别添加到暂存区
+    * git restore file 将文件从暂存区取出放入工作目录,替换同名文件
+    * git restore --staged <file> 将文件unstage,即add的还原操作(其实是将文件从最近一次提交中取出来放入暂存区)
+    * git commit --amend -m "修改了论文的末尾"
+      * 如果最近的一次提交出来了纰漏,则可以通过--amend来进行修复,它会把你最后一次的提交删掉,用这个提交来替代
+    * git config --global alias.ci commit 创建全局git命令别名commit就可以用ci替代了
+    * git config --global alias.st status
+  * 去注册一个github.com网站的账号,用户名不要用数字开头,用字母开头
+
+

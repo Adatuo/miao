@@ -1,0 +1,83 @@
+* # flexbox 弹性盒模型
+  
+  * 大号的行内布局,可以方便的创建横/纵向排列的布局
+  
+  * 但专为布局而设计，之前的布局方式中可能遇到的问题基本上都不存在
+    * 如行内布局水平方向的空格,垂直方向的基线底部留白
+    * 浮动的不闭合
+    * 尺寸计算也更为灵活
+    
+  * 默认摆放方式类似于行内布局，水平排列，空间不够就折行，不同行之间没有关系
+  
+  * 可以通过设置主轴，交叉轴的方向来改变排布方向,但99%的情况都是从左往右,折行时从上往下
+    * 但一共可以设置八种排布方向
+    
+  * 为了方便讲解,我们先只考虑向右排列,向下折行的
+  
+  * 通过**display: flex/inline-flex;**触发弹性盒模型
+    * 触发弹性盒模型的元素称为flex container,flex容器
+    * 其内的子元素称为flex item,flex子元素,flex子元素不能浮动(无效,但可以定位)(浮动只能存在于块级布局上下文里,无法存在于flex布局上下文或grid布局上下文)
+      * flex子元素内默认为块框
+    
+  * flex块级弹性盒,inline-flex行内弹性盒,定位弹性盒(+position),浮动弹性盒(+float)
+  
+  * 应用于flex container的属性
+    * flex-direction: row横向/column纵向(-reverse);设置主轴方向,或者说设置元素的主要排布方向，也可以r反向分割
+    
+    * flex-wrap: wrap/wrap-reverse/nowrap;设置交叉轴(侧轴)的方向,或者说空间不够向哪个方向去折行
+    
+    * flex-flow以上两个属性的简写
+    
+      ### 居中
+    
+    * **justify-content**:;元素在行中的水平分布,左,右,中,space-between,space-around,space-evenly
+    
+    * **align-content**:;所有的行在整个包含块的垂直方向的分布/只有一行时无效,只有一行的时候元素的高度就是那个行
+    
+    * align-items:;每行的元素在那一行的垂直位置
+    
+    * gap; 设置**元素之间**的间隙
+    
+  * 应用于flex item的属性
+    * align-self:;应用于flex子元素,用于设置这个元素在行中的垂直位置;与align-items的区别是它只设置一个,而后者批量设置所有子元素
+    * order:;改变元素的显示顺序,order越大越在后面,order相同按元素在html中的顺序显示,order默认为0
+  
+    * 以下为空间分配相关的属性
+    * flex-grow;扩张系数(纯数),设置一行中多余的水平空间如何分配,仅在一行有多余空间时生效(空间分配)
+    * flex-shrink;收缩系数(纯数),当空间不够时每个元素怎么收缩,仅在元素超出包含块时生效(即元素不折行,因为一旦折就不会有元素在行中超出,除非这行只有一个元素且它还比包含块长).需要乘以主轴方向上的基础尺寸之后做为收缩权重
+      * 由上面的规则可知grow跟shrink只有一个会生效
+    * flex-basis;设置元素的基础宽度/高度(取决于主轴的方向,即flex-direction)
+      * 即主轴水平时相当于width
+      * 主轴垂直时这个属性相当于height
+      * 但是它还是受max/min-width/height影响的
+      * 当两个都设置的时候,不为auto的那个生效,都不为auto时在flex上下文里是flex-basis生效
+    * flex;一次性设置上面三个属性,前一个数代表grow,后一个数代表shrink
+      * flex: auto;
+      * flex: none;
+      * flex: 1;
+      * flex: 0;
+    * 如果有grow,则这一行就没有额外的空间来进行justify-content了
+    * 先根据元素的基础宽度将元素分在每一行,然后在这个结果上对元素进行grow或shrink(所以grow和shrink不会改变元素在哪一行),然后如果有额外空间才会justity-content;
+    * g和s它们都是在主轴上生效的,交叉轴由于是一个次要的轴,所以分的话只平分
+    
+  * 一些需要讨论的问题
+    * 嵌套flex布局
+    * flex容器中的匿名文本
+      * 连续的匿名文本可以当成一整个flex子元素,但由于元素没有标签,不能为其设置flex相关属性如align-self,grow,shrink等,但是可以通过给父元素设置相关的属性来影响它
+        * 可以利用这个来实现双向居中
+    * flex容器中的浮动元素
+      * flex上下文里不能存在浮动元素,设置浮动无效
+    * margin为auto时的情况
+      * flex上下文中auto的margin会尽量大且均等分配
+      * 空间分配的优先级:gap>grow>margin>justify-content
+    * 弹性盒模型中的overflow
+    * 横向无法撑开包含块(后续的grid算是解决了这个问题)
+    
+  * 案例
+    * 小米产品列表
+    * 主页大图旁边的产品子菜单
+    * instgram布局(无法实现)
+    
+  * 作业
+    * qq邮箱与oald布局
+    * flex froggy
