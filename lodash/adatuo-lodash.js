@@ -38,8 +38,8 @@ var adatuo = function () {
 
   //深度比较两个对象,有相同的属性值返回true,不同返回false
   function matches(obj) {
-    var _this = this //拿到调用这个方法的对象
-    return function (o) { //判断_this对象里的o是否包含obj
+    var _this = this //拿到调用这个方法的对象,方便调用isEqual
+    return function (o) { //闭包传入
       for (var key in obj) { //拿到对比的key
         //hasOwnProperty,key同时存在才继续比较
         if (o.hasOwnProperty(key) && obj.hasOwnProperty(key)) { //hasOwnProperty() 方法返回一个布尔值，表示对象自有属性（而不是继承来的属性）中是否具有指定的属性。
@@ -70,11 +70,12 @@ var adatuo = function () {
     }  
   }
 
-  function property(key) { //传入要查询的key
+  //获取对象中深层属性的value
+  function property(key) { //传入要查询的深层key  exmaple:obj{ 'a': { 'b': 2 } }
     let keys = key.split('.') //传入的是由.分割的字符串
-    return function (obj) { //传入要对比的obj
+    return function (obj) { //传入要对比的
       for (var key of keys) {
-        obj = obj[key]
+        obj = obj[key] //{ 'b': 2 } => obj.b
       }
       return obj
     }
@@ -338,25 +339,39 @@ var adatuo = function () {
   function every(array, predicate = it => it) { //防止it传入null报错
     if (typeof predicate === 'object' && predicate !== null) {//数组
       if (Array.isArray(predicate)) {
-        predicate = this.matchesProperty(predicate)
+        predicate = this.matchesProperty(predicate)//predicate转换成 是否key value符合 的函数
       } else {
-        predicate = this.matches(predicate)
+        predicate = this.matches(predicate)//是否对象符合
       }
     } else if (typeof predicate === 'number' || typeof predicate === 'string') {
-      predicate = this.property(predicate)
-    } else if (predicate === null) {
+      predicate = this.property(predicate)//obj{ 'a': { 'b': 2 } }有可能会有深层属性
+    } else if (predicate === null) {//为空直接返回
       predicate = it => it
     }
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {//这里是predicate变成了函数或者当predicate是其他的function的是否来测试array的每个元素是否符合某个条件
       let item = array[i]
       if (!predicate(item)) return false
     }
     return true
   }
-
-    function some(collection, predicate=_.identity) {
-      
-    }
+    //Boolean()是一个函数
+    // function some(array, predicate = it => it) {
+    //   if (typeof predicate === 'object' && predicate !== null) {
+    //     if (Array.isArray(predicate)) {
+    //       predicate = this.matchesProperty(predicate)
+    //     } else {
+    //       predicate = this.matches(predicate)
+    //     }
+    //   } else if (typeof predicate === 'number' || typeof predicate === 'string') {
+    //     predicate = this.property(predicate)
+    //   } else if (predicate === null) {
+    //     predicate = it => it
+    //   }
+    //   for (let i = 0; i < array.length; i++) {
+    //     if (predicate(item)) return true
+    //   }
+    //   return true
+    // }
 
     function countBy(collection,) {
       

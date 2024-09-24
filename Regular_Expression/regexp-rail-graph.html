@@ -24,17 +24,23 @@
   </style>
 </head>
 <body>
+  <div id = 'input'>
+    <input  name="正则表达式"  type="text" id="regexpInput"><!--onkeyup按键弹起来的时候用--> 
+    <button  onclick="run()">绘制</button><!-- onclick点击的时候执行""里的 -->
+  </div>
+  <!-- <div id="tips"></div>一个提示 暂时还未想到能抱什么错误-->
   <div>
-     <svg width="800" height="800" xmlns="http://www.w3.org/2000/svg"></svg><!-- 如果图形过大会无法显示完全 -->
+     <svg id = "canvas" width="800" height="800" xmlns="http://www.w3.org/2000/svg"></svg><!-- 如果图形过大会无法显示完全 -->
   </div>
 
 
 
   <script>
-    let re = /foo|(bar|(ba+z{2,5})[aeiou])/
+    let re = /foo|(bar|(ba+z{2,5})[aeiou])/ //测试用例
     let graphPadding = 10 //框边距方便修改
+    let canvasClear = document.getElementById('canvas')
 
-    function parseRegularExpression(input) {//输入的正则表达式
+    function parseRegularExpression(input) {//输入的正则表达式      
       let i = 0//正则表达式的下标
       let groupIndex = 1 //分组的编号从1开始
 
@@ -62,7 +68,7 @@
         return parseCharacter() //什么都没遇到
       }
 
-      function parseEscape() {  //解析反斜杠开始的转义符//暂时只考虑一个反斜杠后面跟一个字符
+      function parseEscape() {  //解析反斜杠开始的转义符,在字符串中两个反斜杠代表转义字符  暂时只考虑一个反斜杠后面跟一个字符
         let node = {
           type: 'Escape',  
           start: i, //起始位置
@@ -70,8 +76,8 @@
           raw:'', //原始内容
           escape:'',  //转义字符符号
         }
-        i++ //skip '\'
-        node.escape = input[i] //获取转义后的字符
+        i++ //skip '\'  跳过反斜杠'\\'
+        node.escape = input[i] //获取转义的符号
         i++ //跳过被转义的符号
 
         node.end = i
@@ -196,7 +202,7 @@
 
       //解析一个由|分隔的一个分支("或"分支),但也可能只有一个分支,则不存在|
       //一个分支代表顺序匹配的若干部分
-      function parseBranch() {  //解析一个顺序
+      function parseBranch() {  //解析每一个分支的所有部分
         let node = {
           type: 'Branch', 
           start: i, //起始位置
@@ -315,7 +321,7 @@
       }
     }
   
-    function drawRegularExpresionGraph(reTree) {//画出正则表达式图形    
+    function drawRegularExpresionGraph(reTree) {//画出正则表达式图形  
       let branchesGraph = drawBranchesGraph(reTree.branches)
       // let branchesSize = branchesGraph.getBBox()
 
@@ -354,6 +360,8 @@
           fill:'#6b6659',
       })
       g.append(circleEnd)
+
+
     }
 
     var svg = document.querySelector('svg')
@@ -377,6 +385,7 @@
     }
 
     function drawCharacterGraph(node) {//画单个字符的图形
+      
       let g = elt('g')
       
       let text =  elt('text',{
@@ -405,7 +414,7 @@
     }
     function drawCharacterClassGraph(node) {//画出中括号匹配任意字符的图形
       let g = elt('g')
-      let characterGraphs = node.characterClasses.map(drawCharacterGraph)//画出每一个图,参数隐式传递
+      let characterGraphs = node.characterClasses.map(drawGraph)//画出每一个图,参数隐式传递
       // let size = text.getBBox()
       let width = Math.max(...characterGraphs.map(it => it.width)) + graphPadding * 2//最宽的 it.getBBox()调用的是<g>的最小矩形,既然要把这个块包在里面那么就要这样
       let height = characterGraphs.map(it => it.height).reduce((a,b) => a + b) + graphPadding * (characterGraphs.length + 1)
@@ -434,8 +443,58 @@
         height:bbox.height,
       }
     }
-    function drawEscapeGraph(node) {//画出转义字符的图形
+    function drawEscapeGraph(node) {//画出转义字符的图形  
+      let g = elt('g')
       
+      //转义字符ASCLL
+      let escapeAscllHex = ''
+      if (node.escape == 'n') {
+        escapeAscllHex ='New Line' +' ' + '(' + '0xOA' + ')'
+      }else if (node.escape == 'r') {
+        escapeAscllHex ='Carriage Return' +' ' + '(' + '0xOD' + ')'
+      }else if (node.escape == 't') {
+        escapeAscllHex ='Horizontal Tab' +' ' + '(' + '0x09' + ')'
+      }else if (node.escape == 'd') {
+        escapeAscllHex ='Digit'
+      }else if (node.escape == 'D') {
+        escapeAscllHex ='Non-Digit'
+      }else if (node.escape == 'w') {
+        escapeAscllHex ='Word Character'
+      }else if (node.escape == 'W') {
+        escapeAscllHex ='Non-Word Character'
+      }else if (node.escape == 's') {
+        escapeAscllHex ='Whitespace'
+      }else if (node.escape == 'S') {
+        escapeAscllHex ='Non-Whitespace'
+      }else if (node.escape == 'b') {
+        escapeAscllHex ='Word Boundary'+' ' + '(' + '0x08' + ')'
+      }else if (node.escape == 'B') {
+        escapeAscllHex ='Non-Word Boundary'
+      }
+
+      let text =  elt('text',{
+        'alignment-baseline' : 'text-before-edge', 
+        x:graphPadding,
+        y:graphPadding,
+      },'"' + escapeAscllHex + '"' )//图里的文字  加上引号
+      let size = text.getBBox()
+      
+      let bg = elt('rect',{//要画了才会有最小矩形
+        fill:'#bada55', //背景色
+        rx:'3', //圆弧
+        ry:'3', //圆弧
+        width:size.width + graphPadding * 2,//留白(px)四周都多出了10个像素 
+        height:size.height + graphPadding * 2,//留白
+      })//背景
+ 
+      g.append(bg,text)//放到g里边去
+
+      let bbox = g.getBBox()//简化最小矩形拿取
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      }
     }
     function drawCaptureGroupGraph(node) {//画出捕获分组的框
       
@@ -666,13 +725,25 @@
         })
         g.append(upline)
       }
-      if (node.max > 1) {//重复次数>1就画下半部分
+      if (node.max > 1) {//重复次数>1就画下半部分 箭头使用增量画出:y1 = x1 + length * sin(degree) y2 = y1 - length * cos(degree)
         let downline = elt('path',{
           d:`
-          M ${graphPadding * 2} ${height/2} a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${graphPadding}
-          L ${graphPadding} ${height/2 + graphPadding * 2} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${graphPadding}
-          L ${width - graphPadding * 2} ${height/2 + graphPadding * 3} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${-graphPadding}
-          L ${width - graphPadding} ${height/2 + graphPadding} a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${-graphPadding}
+          M ${graphPadding * 2} ${height/2} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${graphPadding}
+          
+          L ${graphPadding} ${height/2 + graphPadding * 2} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${graphPadding}
+          
+          L ${width - graphPadding * 2} ${height/2 + graphPadding * 3} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${-graphPadding}
+
+          L ${width - graphPadding + graphPadding * Math.sqrt(2)/2} ${height/2 + graphPadding * 2 - graphPadding * Math.sqrt(2)/2}
+          M ${width - graphPadding} ${height/2 + graphPadding * 2}
+          L ${width - graphPadding - graphPadding * Math.sqrt(2)/2} ${height/2 + graphPadding * 2 - graphPadding * Math.sqrt(2)/2}
+
+          M ${width - graphPadding} ${height/2 + graphPadding * 2}
+          L ${width - graphPadding} ${height/2 + graphPadding} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${-graphPadding}
           `,
           stroke:"black",
           "stroke-width":2,
@@ -680,6 +751,20 @@
         })
         g.append(downline)
       }
+      // if (node.max > 1) {//重复次数>1就画下半部分
+      //   let downline = elt('path',{
+      //     d:`
+      //     M ${graphPadding * 2} ${height/2} a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${graphPadding}
+      //     L ${graphPadding} ${height/2 + graphPadding * 2} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${graphPadding}
+      //     L ${width - graphPadding * 2} ${height/2 + graphPadding * 3} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${-graphPadding}
+      //     L ${width - graphPadding} ${height/2 + graphPadding} a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${-graphPadding}
+      //     `,
+      //     stroke:"black",
+      //     "stroke-width":2,
+      //     fill:'none', 
+      //   })
+      //   g.append(downline)
+      // }
 
 
       let bbox = g.getBBox()//简化最小矩形拿取
@@ -711,6 +796,24 @@
       }
     }
 
+    function run() {
+      canvasClear.innerHTML=''
+      let reString = regexpInput.value
+      if (reString == '') {//正则表达式是空直接返回
+      return
+    }
+    try {
+      let tree = parseRegularExpression(reString)
+      drawRegularExpresionGraph(tree)
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        tips.innerHTML = error.message
+        return //语法错误停止执行
+      }else{//不是这个错误就抛出
+        throw error       
+      }
+    }
+    }
   </script>
 </body>
 </html>

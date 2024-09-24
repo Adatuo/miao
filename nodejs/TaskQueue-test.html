@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskQueue_test</title>
+</head>
+<body>
+  <script>
+    class TaskQueue {
+      constructor() {
+        this._tasks = []//存放没有进行的任务
+        this._running = false //任务状态
+        this._next = this._next.bind(this)
+      //   this._next()：立即调用函数 _next，执行其中的逻辑。
+      //   this._next：引用函数 _next，不执行它,通常用于回调,异步等需要稍后由其他代码调用的例子中，只传递或保存它的定义。在需要时可以调用，通常会与 bind() 结合使用，确保 this 的正确性。
+      //回调函数的定义就是：一个函数被作为参数传递给另一个函数，并在稍后某个时刻被调用。
+      /*task(this._next)：在这行代码中，你将 this._next（即类的 _next 方法）作为回调函数传递给 task 函数。
+      task 函数不会立即执行 _next，而是会在某个时刻根据逻辑来调用它。 */ 
+    }
+
+      //下一个任务
+      _next(){
+        if (this._tasks.length == 0) {
+          this._running = false
+        }else{
+          let task = this._tasks.shift()
+          task(this._next)
+        }
+      }
+
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {//task是一个个小任务函数 
+        if (this._running) {//
+          this._tasks.push(task)
+        }else{
+          //没有任务在运行就执行存放的任务         
+          this._running = true
+          task(this._next)//task()里面是要放一个回调函数的
+        }
+        return this
+      }
+    }
+    //if (this._running)疑惑
+    // let a = false
+    // if (a) {
+    //   console.log("b");
+    // }else{
+    //   console.log("c")
+    // }
+    
+    class TaskQueue {
+      constructor() {
+        this._tasks = []//存放没有进行的任务
+        this._running = false //任务状态
+        this._next = () => {
+          if (this._tasks.length == 0) {
+          this._running = false
+        }else{
+          let task = this._tasks.shift()
+          task(this._next)
+        }
+        }
+    }
+
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {//task是一个个小任务函数 
+        if (this._running) {//
+          this._tasks.push(task)
+        }else{
+          //没有任务在运行就执行存放的任务         
+          this._running = true
+          task(this._next)//task()里面是要放一个回调函数的
+        }
+        return this
+      }
+    }
+
+      var tq = new TaskQueue()
+      tq.addTask(next => {
+          console.log(1)
+          setTimeout(next,1000)
+      })
+      tq.addTask(next => {
+          console.log(2)
+          next()
+      })    
+  </script>
+</body>
+</html>

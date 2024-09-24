@@ -1364,11 +1364,12 @@ SYN握手包 ACK recet
 20:14 浏览器中的绝对地址
 20:16 没填地址读出来就是当前界面的地址
 20:20 路径部分,查询字符串部分,井号部分
-20:22~25 解析URL(面试) 迭代器是什么
+20:22~25 解析URL(面试,用url = new URL('http://www.a.com:8080/foo/bar.html?a=1&b=2#abz') url.searchParams.set('a', 3) //必须是完整链接,js\node.js都可以使用)      ~迭代器是什么?逐一访问集合对象（如数组、链表等）的元素，而不暴露其内部表示~
+## XML
 20:41 XMLHttpRequst
 20:52 request
 20:54 AJAX就是下载(面试)
-20:01 迅雷(面试)
+21:01 迅雷(面试)
 let xhr =new XMLHttpRequest()
 xhr.open('GET','https://class.damiaoedu.com:44313/exam/2',false)
 xhr.send()
@@ -1378,6 +1379,7 @@ console.log(xhr.responseText)
 21:20 异步  同步发送的话可能会卡住(请求过多) 试一试?
 21:28 onload
 21:33 回调用法
+21:51 XML直接变成DOM  xhr.responseXML
 21:58 沙箱
 22:03 域
 22:11 虽然不能跨域发送求,但是可以自己设置哪些可以跨域
@@ -1385,3 +1387,108 @@ console.log(xhr.responseText)
 (跨域是面试重点)
 22:16 只在浏览器有限制
 22:19 封装,callback
+
+## 异步
+9-18
+20:14 错误抛给了控制台
+20:16 errocllback
+20:20 异步调用抛错
+20"24 详细解释,已经结束就不会抛出
+20:30 火焰图解释
+20:36 get removeLoading
+20:39 try catch的好处
+20:47 逻辑清晰
+20:59 为什么要写异步,购物车
+21:03 jQuery任务队列*(面试) 不能用return,就变成同步了
+21:14 jQuery任务队列调用时间
+21:19 回调地狱
+21:20 jQuery任务队列总结
+21:23 300ms
+21:30 TaskQueue (面试)
+21:48 asyncJS 
+21:54 series,串行 undefined是因为本身就没有返回值
+21:58 启动时机与结束一致,说明在同时运行 parallel并行
+22:20 一单异步就不能通过返回给出结果,只能通过回调给出
+
+## taskqueue promise
+9-19
+20:05 taskqueue
+20:11 这不就是迅雷下载吗
+20:15 undefind问题
+20:18 this由调用方式决定,与调用位置没关系
+20:22 next()为undefind的原因
+20:26 bind把this绑定在上面  返回一个新的函数,this也就固定了
+20:31 箭头函数的this就是构造函数的
+20:57 parallelLimit
+21:26 map形参解构
+21:46 promises
+21:56 promises异步操作表达,用回调函数非常灵活
+22:03 promises形式 举例
+22:08 谁先调用谁是promises的状态
+22:17 then  必须异步
+22:21 then先于事件绑定
+22:25 调用then会产生新的promises
+22:28 p2 = p.then(f1,f2) p2的结构由then的返回值决定
+
+9-20  
+## then
+20:10 面试几乎不会出现这道题 |x+y|>2 
+20:13 p2 = p.then(f1,f2)
+20:15 如果f1或f2运行时抛错了，则p2就失败，原因为抛出的错误
+20:23 失败的返回值
+20:31 返回值是promise
+20:43 失败了怎么办?就取前面的p
+21:08 showloading
+21:10 catch相当于给then传递第二个参数
+21:14 简化调用,但是没什么用处
+21:18 同步
+21:20 异步递归
+21:26 then里面的函数可能是异步的,then是同步的
+21:46 specification of promise 与js 的promise不一样
+22:07 清空调用?
+22:21 Resolvepromise
+22:25 get当作属性读取也可能报错(get 报错)
+22:27 为什么要读出来then
+22:28 防呆
+
+9-22
+20:04 不能预测链接
+20:11 根据数量变化处理
+20:15 then返回的不同的情况
+20:18 then一定是异步的要用let
+20:21 可以变成reduce
+20:23 数量不确定的promise串行调用
+20:28 promiseall简易解释
+20:34 文本的请求用并行(因为不太可能跑满带宽),串行会浪费.虽然服务器确实会变慢,当时是在服务器而不是在网络上进行,不影响速度
+20:44 请求时间线(面试)
+20:53 并行加载,串行执行 urlCSDN/
+21:24 catch的必要
+21:26 console为什么要bind,固定this,promise有可能变化 log现在是纯函数可以不bind了
+21:31 在promise里面就不需要用其它异步,除非new Promise封装起来
+21:48 promise.resolve
+21:51 promise.reject  没有处理的话错误会直接到控制台
+21:55 promise工场,给then传递promise作为函数传递
+21:56 then必须接函数!!!
+22:01 为什么promise构造函数是立即执行的
+22:06 foo
+22:11 与promise有关的函数
+22:27 面试实现promise.xxx
+
+
+20:06 all
+20:15 为什么instanceof Promise不可以?因为有其它符合标准的实现 解决用resolve包一层就总会是promise了
+20:37 promise any(面试)
+20:39 为什么every空返回true some返回false
+20:58 finally
+21:01 finally不接参数,关心时间但是不关心结果
+21:04 手写finally(面试)
+21:18 polyfill
+21:20 shim
+21:25 promise暂时结束..
+21:36 HTTP
+21:42 RPC remote procedu calls 远程过程调用
+22:04 ariaNG
+22:15 ariaNG信息解析jsonrpc HTTP封装方式之一
+22:25 RESTful/RESTAPI
+22:30 HTTp安全
+22:31 钥匙验证流程

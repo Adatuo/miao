@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面试</title>
+</head>
+<body>
+  <script>
+    //tasks = [task,task,...] task=function每一个task都是函数
+    async.seriesTest([function(done){},function(done){},function(done){}],() => {
+      console.log('all task done');//前面已经按照预定方式执行完毕
+    })
+
+    async.series([
+      function(done){
+        console.log(1);//start 0 立即打印,但是到了1000才结束
+        setTimeout(done,1000)//end 1000
+      },
+      function(done){
+        console.log(2);//start 1000 立即打印,但是到了3000才结束
+        setTimeout(done,2000)//end 3000
+      },
+      function(done){
+        console.log(3);//start 3000 立即打印,但是到了4000才结束
+        setTimeout(done,1000)//end 4000
+      },
+    ],() => {
+      console.log('all task done');//4000     
+    })
+    //并行,异步任务就可以同时启动.启动时机与结束时机在时间上有重叠
+    async.parallel([//同时运行,最慢的那个运行完成,所有才运行完毕
+      function(done){
+        console.log(1); 
+        setTimeout(done,1000)
+      },
+      function(done){
+        console.log(2); 
+        setTimeout(done,2000)
+      },
+      function(done){
+        console.log(3);
+        setTimeout(done,1000)
+      },
+    ],() => {
+      console.log('all task done');   //运行完毕log
+    })
+
+    async.parallelLimit([//同时运行限制 ,最慢的那个运行完成,所有才运行完毕
+      function(done){
+        console.log(1); //同时 0
+        setTimeout(done,1000)
+      },
+      function(done){
+        console.log(2); //同时  1000
+        setTimeout(done,2000)
+      },
+      function(done){
+        console.log(3); //由于前两个同时运行,所以是1s后出现 3000
+        setTimeout(done,3000)
+      },
+      function(done){
+        console.log(4); //由于前两个同时运行,所以是1s后出现 3000
+        setTimeout(done,1000)
+      },
+    ],2,() => {
+      console.log('all task done');   //运行完毕log
+    })
+
+    //this不是一成不变的,根据调用位置决定(特别重要),
+    //可以使用.bind绑定this .bind(value),this就会等于value 但是每一次绑定就会创建一个新的函数(不过一般问题不大)
+    class TaskQueue1 {
+      constructor() {
+        this._tasks = [] //总要一个数组来存储待下载任务
+        // this.task = task //获取任务
+        this._running = false //需要一个值来表示任务是否正在执行,刚创建出的时候肯定没有任务在进行
+      }
+
+      //下一个任务
+      _next(){
+        if (this._tasks.length == 0) {//没有任务,就false
+          this._running = false
+        }else{
+          let task = this._tasks.shift()//取出第一个任务,并删除
+          task(this._next.bind(this)) //递归继续,将_next的this强行绑定为自己前面的this而不是窗口
+        }
+      }
+
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {//task是一个个小任务函数 
+        if (this._running) {//如果有任务在下载,那就就添加到任务列表,否则就立即启动并启动下一个任务
+          this._tasks.push(task)          
+        }else{
+          this._running = true
+          task(this._next.bind(this)) //task任务,然后启动下一个任务,这里会被window调用,然后为空
+        }
+        return this //因为需要链式调用必须要返回当前的实例 就算不链式调用这样也很好
+      }
+    }
+
+    class TaskQueue2 {
+      constructor() {
+        this._tasks = [] 
+        this._running = false 
+        this._nextThis = this._next.bind(this)//直接绑定this,避免每一次调用的时候,bind创建新的函数
+        //也可以这样,因为_next是原型上的  先运行右边,在原型上绑定this,然后赋值的一瞬间this._next =才被赋值 9.19 20:29
+        //this._next = this._next.bind(this)
+      }
+
+      //下一个任务
+      _next(){
+        if (this._tasks.length == 0) {
+          this._running = false
+        }else{
+          let task = this._tasks.shift()
+          task(this._nextThis) //递归继续,将_next的this强行绑定为自己前面的this而不是窗口
+        }
+      }
+    
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {
+        if (this._running) {
+          this._tasks.push(task)          
+        }else{
+          this._running = true
+          task(this._nextThis) 
+        }
+        return this //因为需要链式调用必须要返回当前的实例 就算不链式调用这样也很好
+      }
+    }
+
+    class TaskQueue3 {//个人认为最优
+      constructor() {
+        this._tasks = [] 
+        this._running = false 
+        this._nextThis = () => {//使用箭头函数,它里面的this一定是指向箭头外面
+          if (this._tasks.length == 0) {
+          this._running = false
+        }else{
+          let task = this._tasks.shift()
+          task(this._nextThis) //递归继续,将_next的this强行绑定为自己前面的this而不是窗口
+        }
+        }
+      }
+
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {
+        if (this._running) {
+          this._tasks.push(task)          
+        }else{
+          this._running = true
+          task(this._nextThis) 
+        }
+        return this //因为需要链式调用必须要返回当前的实例 就算不链式调用这样也很好
+      }
+    }
+
+    class TaskQueue4 {//class fields
+      _tasks = [] 
+      _running = false 
+      _nextThis = () => {//使用箭头函数,它里面的this一定是指向箭头外面,相当于this上的属性.如果使用普通函数的话this指向的是调用的obj
+          if (this._tasks.length == 0) {
+          this._running = false
+        }else{
+          let task = this._tasks.shift()
+          task(this._nextThis) //递归继续,将_next的this强行绑定为自己前面的this而不是窗口
+        }
+        }
+
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {
+        if (this._running) {
+          this._tasks.push(task)          
+        }else{
+          this._running = true
+          task(this._nextThis) 
+        }
+        return this //因为需要链式调用必须要返回当前的实例 就算不链式调用这样也很好
+      }
+    }
+
+                                                                                     
+
+      var tq = new TaskQueue()
+
+      tq.addTask(function task(next) {//callback
+        
+      }).addTask(function task(next) {
+        
+      }).addTask(function task(next) {
+        
+      })
+
+      // var tq = new TaskQueue()
+      // tq.addTask(next => {
+      //     console.log(1)
+      //     setTimeout(next,1000)
+      // })
+      // tq.addTask(next => {
+      //     console.log(2)
+      //     next()
+      // })
+
+      class TaskQueue3ParalleLimit {//个人认为最优
+      constructor(paralleLimit = 1) {
+        this.paralleLimit = paralleLimit//存储限制几次
+        this._tasks = [] 
+        this._running = 0 //进行的任务数量
+        this._nextThis = () => {//使用箭头函数,它里面的this一定是指向箭头外面
+          if (this._tasks.length == 0) {
+          this._running-- //这里不能=0 因为没有任务可以启动不代表所有任务完成了,而是因为没有添加新的任务 每执行一次就减少正在执行的running
+        }else{
+          let task = this._tasks.shift()
+          task(this._nextThis) //递归继续,将_next的this强行绑定为自己前面的this而不是窗口
+        }
+        }
+      }
+
+      //任务添加到待执行列表,存储不能同时进行的任务
+      addTask(task) {
+        if (this._running == this.paralleLimit) {//this.paralleLimit里面的
+          this._tasks.push(task)          
+        }else{
+          this._running++
+          task(this._nextThis) 
+        }
+        return this //因为需要链式调用必须要返回当前的实例 就算不链式调用这样也很好
+      }
+    }
+      var tq = new TaskQueue3ParalleLimit(2)//paralleLimit //123
+      tq.addTask(next => {
+          console.log(1)
+          setTimeout(next,1000)
+      }).addTask(next => {
+          console.log(2)
+          setTimeout(next,2000)
+      }).addTask(next => {
+          console.log(3)
+          setTimeout(next,3000)
+      }).addTask(next => {
+          console.log(4)
+          setTimeout(next,1000)
+      }).addTask(next => {
+          console.log(5)
+          next()
+      })
+
+    // 串行执行给定的任务，所有任务执行完成后调用allDone
+function series(tasks, allDone) {
+  var i = -1
+  NextTask()
+
+  function NextTask() {
+    i++
+    if (i <= tasks.length) {
+      tasks[i](NextTask)
+    } else {
+      allDone()
+    }
+  }
+}
+
+
+function parallel(tasks, allDone) {//并行
+  var completedTaskCount = 0
+
+  if (tasks.length == 0) {
+    allDone()
+  }
+
+  for (var task of tasks) {
+    task(() => {
+      completedTaskCount++
+      if (completedTaskCount == tasks.length) {
+        allDone()
+      }
+    })
+  }
+}
+
+  //要清楚传递参数的类型是一个值还是一个函数,递归调用,回调逻辑
+  function parallelLimit(tasks,limit,allDone) {
+    let j = 0 //运行到哪里了
+    let completedTaskCount = 0  //有几个任务已经完成
+
+      if (tasks.length == 0) {
+      allDone()
+    }
+
+    for (let i = 0; i < limit; i++) {
+      tasks[j](next)  //当运行到limit次数后,就会一个一个运行而不是两个一起
+      j++
+    }
+
+    function next() {
+      completedTaskCount++ //会在调用tasks[j](next)的时候执行
+      if (j < tasks.length) {//j以0为基准正好相等j <= tasks.length,tasks[j] 就会undefind
+        tasks[j](next) 
+        j++       
+      }else{
+        if (completedTaskCount == tasks.length) {
+          allDone()
+        }
+      }
+    }
+  }
+
+
+  </script>
+</body>
+</html>

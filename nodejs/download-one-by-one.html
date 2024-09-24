@@ -1,0 +1,192 @@
+
+<!-- saved from url=(0071)https://class.damiaoedu.com:44313/codes/nodejs/download-one-by-one.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="imgsss.js"></script>
+<script>
+  //还有TwoByTwo没写
+  // https://xieranmaya.github.io/images/cats/cats.json
+  // 图片请请求这个地址获取。
+  // 自行查看json结构
+
+  // imgsss = imgsss.slice(0, 18)
+
+  // 下载给定url的图片，下载完成后调用callback
+  
+  //异步下载器,获取url
+  function get(url,callback) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET',url)
+    xhr.send()
+    xhr.onload=()=>{
+      callback(JSON.parse(xhr.responseText))//返回的是JSON格式的responseText
+    }
+  }
+  //图片下载器
+  function downloadImg(url, callback) {
+    var img = new Image()//document.create('img')
+    img.onload = function(){
+      callback(img)
+    }
+    img.onerror = function(){
+      callback(img)
+    }
+    img.src = url
+  }
+
+  function downloadOneByOne(callback) {
+    let tq = new TaskQueue()
+    get('https://xieranmaya.github.io/images/cats/cats.json',imags => {
+      imags.forEach(img => {
+        tq.addTask(next => {
+          downloadImg(img.fullUrl,() => {
+            next()
+          })
+        }
+        )
+      })
+    }
+  )
+}
+
+  //两个一组，都下载完以后，下载下一组
+  function downloadTwoByTwo(callback) {}
+
+
+  //最多同时下载4张，有任何一张下载完，就开始一张新的下载
+  function downloadMax3(callback) {
+    get('https://xieranmaya.github.io/images/cats/cats.json',imags =>{//imags获得的是JSON格式的responseText数组
+      parallelLimit(imags.map(img => {
+        return (next) => {//next函数在任务完成后被调用
+          downloadImg(img.fullUrl,() => {
+            next()//任务结束,继续下一个 next()是next的回调函数
+          })
+        }
+      }),3,() => {
+        console.log("所有图片下载完成");       
+      }) 
+    })
+  }
+
+  function series(tasks, allDone) {
+  var i = -1
+  NextTask()
+
+  function NextTask() {
+    i++
+    if (i <= tasks.length) {
+      tasks[i](NextTask)
+    } else {
+      allDone()
+    }
+  }
+}
+
+
+function parallel(tasks, allDone) {//并行
+  var completedTaskCount = 0
+
+  if (tasks.length == 0) {
+    allDone()
+  }
+
+  for (var task of tasks) {
+    task(() => {
+      completedTaskCount++
+      if (completedTaskCount == tasks.length) {
+        allDone()
+      }
+    })
+  }
+}
+
+function parallelLimit(tasks,limit,allDone) {
+  let j = 0 //执行到了哪一个任务
+  let completedTaskCount = 0 //完成了多少任务
+  if (tasks.length == 0) {
+    allDone()//立即返回
+  }
+  //并行
+  for (let i = 0; i < limit; i++) {
+    tasks[j](next)
+    j++
+  }
+
+  function next() {
+    completedTaskCount++//放在外层计数
+    if(completedTaskCount == tasks.length ){//等于tasks长度
+    allDone()//立即执行
+  }else if (j < tasks.length) {   
+    tasks[j](next)
+    j++
+  }
+  }
+}
+
+class TaskQueue {
+    constructor() {
+      this._tasks = []
+      this._running = false
+    }
+
+    _nextStart(){
+      if (this._tasks.length == 0) {
+        this._running = false
+      }else{
+        let task = this._tasks.shift()
+        task(this._nextStart.bind(this))//this._nextStart引用此方法,传递给回调函数
+      }
+    }
+
+    addTask(task) {
+      if (this._running) {  
+        this._tasks.push(task)        
+      }else{
+        this._running = true
+        task(this._nextStart.bind(this))//this._nextStart引用此方法,传递给回调函数
+      }
+    }
+  }
+
+
+  // var tq = new TaskQueue()
+  //     tq.addTask(next => {//next是回调函数
+  //         console.log(1)
+  //         setTimeout(next,1000)
+  //     })
+  //     tq.addTask(next => {
+  //         console.log(2)
+  //         next()
+  //     })  
+let p = Promise.resolve(2)
+  function foo() {
+    p.then(function zzzzzz() {
+      console.log(1);
+    })
+    debugger
+    console.log(2);
+  }
+  function bar() {
+    foo()
+  }
+  function baz() {
+    bar()
+  }
+  function bab() {
+    baz()
+  }
+  function bad() {
+    bab()
+  }
+  function baq() {
+    bad()
+  }
+
+</script>
+
+
+</head><body>
+
+
+  
+
+</body>
