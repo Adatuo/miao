@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>regexp-rail-graph</title>
+
+  <style>
+
+    div{
+      border: 2px solid;
+      position:relative;
+
+    }  
+    svg{
+      position:relative;
+      border: 2px solid;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%);    
+    }
+    
+
+  </style>
+</head>
+<body>
+  <div id = 'input'>
+    <input  name="正则表达式"  type="text" id="regexpInput"><!--onkeyup按键弹起来的时候用--> 
+    <button  onclick="run()">绘制</button><!-- onclick点击的时候执行""里的 -->
+  </div>
+  <!-- <div id="tips"></div>一个提示 暂时还未想到能抱什么错误-->
+  <div>
+     <svg id = "canvas" width="800" height="800" xmlns="http://www.w3.org/2000/svg"></svg><!-- 如果图形过大会无法显示完全 -->
+  </div>
+
+
+
+  <script>
+    let re = /foo|(bar|(ba+z{2,5})[aeiou])/ //测试用例
+    let graphPadding = 10 //框边距方便修改
+    let canvasClear = document.getElementById('canvas')
+
+    function parseRegularExpression(input) {//输入的正则表达式      
+      let i = 0//正则表达式的下标
+      let groupIndex = 1 //分组的编号从1开始
+
+      let branches = parseBranches()
+      return {
+        type:"RegularExpression",
+        start: 0,
+        end: i, //解析完成后一定会在最后
+        branches,
+      }
+
+      function parseOnePart() {//正则表达式类型
+        if (input[i] == '[') {
+          return parseCharacterClass()
+        }
+        if (input[i] == '(') {
+          return parseCaptureGroup()
+        }
+        if (input[i] == '?' || input[i] == '*' || input[i] == '+' || input[i] == '{') {//遇见量词
+          return parseQuantity()
+        }
+        if (input[i] == '\\') {
+          return parseEscape()
+        }
+        return parseCharacter() //什么都没遇到
+      }
+
+      function parseEscape() {  //解析反斜杠开始的转义符,在字符串中两个反斜杠代表转义字符  暂时只考虑一个反斜杠后面跟一个字符
+        let node = {
+          type: 'Escape',  
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', //原始内容
+          escape:'',  //转义字符符号
+        }
+        i++ //skip '\'  跳过反斜杠'\\'
+        node.escape = input[i] //获取转义的符号
+        i++ //跳过被转义的符号
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树
+      }
+
+      function parseCharacter() { //解析单个字符
+        let node = {  //构建语法树
+          type: 'Character',  //单个字符的类型是Character
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', //源代码的值
+          character: input[i] //单个字符的字符
+        }
+        i++ //向后走
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树
+      }
+
+      function parseCharacterClass() { //解析中括号括起来的字符组
+        let node = {
+          type: 'CharacterClass', 
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', //源代码的值
+          invert:false, //是否取反 //$d
+          characterClasses: [] //中括号括起来的字符组的字符
+        }
+        i++ //skip [
+        if (input[i] == '^') { //是取反的话
+          node.invert == true
+          i++ //skip '^'
+        }
+
+        //[^abca-z0-9\d]
+        while (input[i] !== ']') {
+          let part = parseOneClass()
+          node.characterClasses.push(part)
+        }
+        i++ //skip ']'
+       
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树 
+
+        //解析中括号的一部分
+        function parseOneClass() { //暂时没有解决a-z0-9的情况 paresRange
+          if (input[i] == '\\') { // \\反斜杠加两个
+            return parseEscape()
+          } else {
+            return parseCharacter()
+          }
+        }
+
+      }
+
+      function parseQuantity() {  //解析量词,关心的应该是量词的范围 * + = ? {2,5}
+        let node = {  //构建语法树
+          type: 'Quantity',  
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', 
+          min:0,  
+          max:Infinity, //无穷大
+          greedy:true,  //贪婪匹配
+          // quantifier: '{2,5}',
+          repeatElement:null, //重复的是哪一个字符
+        }
+        if (input[i] == '?') {
+          node.max = 1
+          i++ //skip '?'
+        }else if (input[i] == '+') {
+          node.min = 1
+          i++ //skip '+'
+        }else if (input[i] == "*") {
+          i++ //skip '*'
+        }else if (input[i] == '{') {
+          i++ //skip '{'
+          node.min = parseInteger()
+          i++ //skip ','
+            if (input[i] == '}') {
+              //开放式量词{2,}  无限大
+              i++ //skip '}' 跳过
+            }else{
+              node.max = parseInteger()
+              i++ //skip '}'
+            }         
+        }
+        if (input[i] == '?') {
+          i++ //skip '?'
+          node.greedy = false //非贪婪匹配
+        }
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end) //全部正则字符
+        return node //返回DOM树
+      }
+
+      function parseInteger() {
+        let start = i
+        while (input[i] >= '0' && input[i] <= '9') {
+          i++
+        }
+        return Number(input.slice(start,i)) //slice的类型是什么返回的就是什么
+      }
+
+      function parseBranches() {  //解析整个正则表达式内的所有分支的集合
+        let branches = []
+        while (input[i] !== ')' && i < input.length) {//或者没有括号,整个就是一个分支
+          let branch = parseBranch() //解析的每一个分支 
+          branches.push(branch) //将分支的解析结果放入 branches 数组,一个一组
+          if (input[i] == "|") {  //暂时未解决/foo|/
+            i++ //skip '|'
+            continue
+          }
+        }
+        return branches
+      }
+
+      //解析一个由|分隔的一个分支("或"分支),但也可能只有一个分支,则不存在|
+      //一个分支代表顺序匹配的若干部分
+      function parseBranch() {  //解析每一个分支的所有部分
+        let node = {
+          type: 'Branch', 
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', 
+          elements: []  //存储parseOnePart()解析后的元素
+        }
+        while (input[i] !== '|' && input[i] !== ')' && i < input.length) {
+          let element = parseOnePart() //解析分支的元素,类型可能各不相同
+          if (element.type == 'Quantity') { //belike 'a +''
+            if (node.elements.length == 0) {//没有重复的,只有一个量词 /+/
+              throw new SyntaxError("Quantity: Nothing to repeat");   
+            }
+            //合并量词
+            let prevElement = node.elements.pop()
+            element.repeatElement = prevElement
+            element.start = prevElement.start
+            element.raw = input.slice(element.start, element.end)
+          }
+          node.elements.push(element)         
+        }       
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end)
+        return node
+
+        //如果想让语法树看起来简单一点可以用下面这个
+        // if (node.elements.length == 1) {
+        //   return node.elements[0]
+        // }else{
+        //   return node
+        // }
+
+      }
+
+      function parseCaptureGroup() {  //解析捕获分组
+        let node = {
+          type:'CaptureGroup', 
+          start: i, //起始位置
+          end: 0, //终止位置
+          raw:'', 
+          groupIndex:groupIndex, //分组编号
+          capture: true, //是否为捕获分组 非捕获分组(!:)
+          zeroAssertion: false, //是否为零宽断言
+          positive: true, //true匹配|false排除  零宽断言(也有正向往回看的正向后发断言?<=)
+          lookahead: true,  //true向右 false向左
+          groupName: null,  //具名分组的名字
+          branches:[],  //每一个括号的不同解析
+        }
+
+        i++ //skip '('
+
+        if (input[i] == '?') {
+          i++ //skip '?'
+          if (input[i] == ':') {  //非捕获分组
+            i++ //skip ':'
+            node.capture = false  //后面就不需要解析了,直接跳出
+          }
+          else if (input[i] == '=') {//匹配向右零宽断言
+            i++ //skip '='
+            zeroAssertion = true
+            positive = true
+            lookahead = true  
+          }else if (input[i] == '!') {//排除向右零宽断言
+            i++ //skip '!'
+            zeroAssertion = true
+            positive = false
+            lookahead = true
+          }else if (input[i] == '<') {//具名分组或者零宽断言
+            i++ //skip '<'
+            if (input[i] == '=') {//匹配向左零宽断言
+            i++ //skip '='
+            zeroAssertion = true
+            positive = true
+            lookahead = false
+            } else if (input[i] == '!') {//?<!排除向左零宽断言
+            i++ //skip '!'
+            zeroAssertion = true
+            positive = false
+            lookahead = false
+            }else{  //什么都不是就是具名分组
+              node.groupName = parseGroupName() //写完看看这里是数组还是什么
+              i++ //skip '>' (?<xxx>
+            }
+          }
+        }
+
+        //到这里终于解析完了括号自身的属性
+        //接下来解析括号里的内容
+        //分组编号
+        if (node.zeroAssertion == false && node.capture == true) {//既不是零宽断言也不是非捕获分组
+          groupIndex++  //分组编号++
+        }else{//非捕获,零宽断言不需要编号
+          node.groupIndex = undefined
+        }
+
+        node.branches = parseBranches() 
+        i++ //skip ')'
+
+
+
+        node.end = i
+        node.raw = input.slice(node.start,node.end)
+        return node //返回DOM
+
+        //具名分组名称
+        function parseGroupName() {
+          let start = i
+          while (input[i] != '>') {
+            i++
+          }
+          //(?<foooo>xx)
+          //    i   i
+          return input.slice(start,i) //slice[)
+        }
+      }
+    }
+  
+    function drawRegularExpresionGraph(reTree) {//画出正则表达式图形  
+      let branchesGraph = drawBranchesGraph(reTree.branches)
+      // let branchesSize = branchesGraph.getBBox()
+
+      let width = branchesGraph.width + graphPadding * 4
+      let height = branchesGraph.height + graphPadding * 2
+
+      let g = elt('g')
+      let bg = elt('rect',{ //解决g靠不到边的问题,因为g标签还要成为别人的子元素,21:33(很重要)
+        fill:"none",
+        width,
+        height,
+      })
+      g.append(bg)
+
+      //圆居中
+      let translateX = (800 - width)/2
+      let translateY = (800 - height)/2
+      g.setAttribute('transform',`translate(${translateX},${translateY})`)
+
+          let circleStart = elt('circle',{
+          cx:graphPadding + graphPadding/4 + graphPadding/8,
+          cy:height/2,
+          r:graphPadding/2,
+          stroke:'black',
+          'stroke-width':'2',
+          fill:'#6b6659',
+      })
+      g.append(circleStart)
+
+      let circleEnd = elt('circle',{
+          cx:width - (graphPadding + graphPadding/4 + graphPadding/8),
+          cy:height/2,
+          r:graphPadding/2,
+          stroke:'black',
+          'stroke-width':'2',
+          fill:'#6b6659',
+      })
+      g.append(circleEnd)
+
+
+    }
+
+    var svg = document.querySelector('svg')
+
+    //创建svg元素树以及属性 方便DOM和创建
+    function elt(tagName,attrs = {}, ...childern) {//标签,属性集合,子元素
+      let el = document.createElementNS("http://www.w3.org/2000/svg",tagName)
+      if (attrs) {//attrs存在
+        for (let key in attrs) {
+          el.setAttribute(key,attrs[key])//设置每一个属性
+        }
+      }
+        for (let child of childern) {//遍历DOM树并将想要的元素添加到语法树节点
+          if (typeof child === "string") {   
+            child = document.createTextNode(child)  //只有文本节点需要这样  
+          }
+          el.append(child)
+      }   
+      svg.append(el)  //放入svg已画出来,才能getBBox()
+      return el
+    }
+
+    function drawCharacterGraph(node) {//画单个字符的图形
+      
+      let g = elt('g')
+      
+      let text =  elt('text',{
+        'alignment-baseline' : 'text-before-edge', //似乎alignment-baseline定位不了 hanging的居中位置有问题 svg文本定位到左上角 如果键名包含特殊字符（如连字符、空格等），就必须用引号包裹它
+        x:graphPadding,
+        y:graphPadding,
+      },'"' + node.character + '"' )//图里的文字  加上引号
+      let size = text.getBBox()//确认元素的最小矩形,比getBoundingClientRect()更简洁
+
+      let bg = elt('rect',{//要画了才会有最小矩形
+        fill:'#dae9e5', //背景色
+        rx:'3', //圆弧
+        ry:'3', //圆弧
+        width:size.width + graphPadding * 2,//留白(px)四周都多出了10个像素 
+        height:size.height + graphPadding * 2,//留白
+      })//背景
+ 
+      g.append(bg,text)//放到g里边去
+
+      let bbox = g.getBBox()//简化最小矩形拿取
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      }
+    }
+    function drawCharacterClassGraph(node) {//画出中括号匹配任意字符的图形
+      let g = elt('g')
+      let characterGraphs = node.characterClasses.map(drawGraph)//画出每一个图,参数隐式传递
+      // let size = text.getBBox()
+      let width = Math.max(...characterGraphs.map(it => it.width)) + graphPadding * 2//最宽的 it.getBBox()调用的是<g>的最小矩形,既然要把这个块包在里面那么就要这样
+      let height = characterGraphs.map(it => it.height).reduce((a,b) => a + b) + graphPadding * (characterGraphs.length + 1)
+      let bg = elt('rect',{
+        fill:'#cbcbba', 
+        rx:3, //圆弧
+        ry:3, //圆弧
+        width,
+        height,
+      })//背景色外框
+
+      g.append(bg)//外框背景色放到g里边去
+      let h = graphPadding 
+
+      for (let graph of characterGraphs) { //一个个放入背景色外框 graph是对象了
+        // <g>没有xy属性
+        graph.g.setAttribute('transform',`translate(${(width - graph.width)/2},${h})`)
+        g.append(graph.g)
+        h += graph.height + graphPadding 
+      }
+
+      let bbox = g.getBBox()//简化最小矩形拿取
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      }
+    }
+    function drawEscapeGraph(node) {//画出转义字符的图形  
+      let g = elt('g')
+      
+      //转义字符ASCLL
+      let escapeAscllHex = ''
+      if (node.escape == 'n') {
+        escapeAscllHex ='New Line' +' ' + '(' + '0xOA' + ')'
+      }else if (node.escape == 'r') {
+        escapeAscllHex ='Carriage Return' +' ' + '(' + '0xOD' + ')'
+      }else if (node.escape == 't') {
+        escapeAscllHex ='Horizontal Tab' +' ' + '(' + '0x09' + ')'
+      }else if (node.escape == 'd') {
+        escapeAscllHex ='Digit'
+      }else if (node.escape == 'D') {
+        escapeAscllHex ='Non-Digit'
+      }else if (node.escape == 'w') {
+        escapeAscllHex ='Word Character'
+      }else if (node.escape == 'W') {
+        escapeAscllHex ='Non-Word Character'
+      }else if (node.escape == 's') {
+        escapeAscllHex ='Whitespace'
+      }else if (node.escape == 'S') {
+        escapeAscllHex ='Non-Whitespace'
+      }else if (node.escape == 'b') {
+        escapeAscllHex ='Word Boundary'+' ' + '(' + '0x08' + ')'
+      }else if (node.escape == 'B') {
+        escapeAscllHex ='Non-Word Boundary'
+      }
+
+      let text =  elt('text',{
+        'alignment-baseline' : 'text-before-edge', 
+        x:graphPadding,
+        y:graphPadding,
+      },'"' + escapeAscllHex + '"' )//图里的文字  加上引号
+      let size = text.getBBox()
+      
+      let bg = elt('rect',{//要画了才会有最小矩形
+        fill:'#bada55', //背景色
+        rx:'3', //圆弧
+        ry:'3', //圆弧
+        width:size.width + graphPadding * 2,//留白(px)四周都多出了10个像素 
+        height:size.height + graphPadding * 2,//留白
+      })//背景
+ 
+      g.append(bg,text)//放到g里边去
+
+      let bbox = g.getBBox()//简化最小矩形拿取
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      }
+    }
+    function drawCaptureGroupGraph(node) {//画出捕获分组的框
+      
+      let branchesGraphs = drawBranchesGraph(node.branches) //分组就是包含了分支图形  分支图形
+      let width = branchesGraphs.width + graphPadding * 2 //框进整个元素
+      let height = branchesGraphs.height + graphPadding * 2
+
+      let g = elt('g')
+      let bg = elt('rect',{ //解决g靠不到边的问题
+        fill:"none",
+        width,
+        height,
+      })      
+      g.append(bg)
+
+      //虚线框
+      let dashedBorder = elt('rect',{ 
+        'stroke':"#908c83",
+        'stroke-width':2,
+        'stroke-dasharray':'5,5',
+        rx:"3",
+        ry:"3",
+        width,
+        height,
+        fill:"none",
+      })
+
+      branchesGraphs.g.setAttribute('transform',`translate(${graphPadding},${graphPadding})`)//希望整个分支图形(以及分子中的每一个小图形)放在虚线框里面
+
+      g.append(dashedBorder)//虚框放入
+      g.append(branchesGraphs.g)//把画出来的g放入带虚框的g中
+     
+      //因为虚线框的缘故连接处被断开,再次加上去
+      let paddingLine = elt('path',{
+        d:`M 0 ${height/2}
+           L ${graphPadding} ${height/2}
+           M ${width} ${height/2}
+           L ${width - graphPadding} ${height/2} `,
+        stroke:"black",//颜色填充
+        'stroke-width':'2',   
+        fill:'none'
+      })
+      g.append(paddingLine)
+
+      //group #num 文字
+      let groupNumber = elt('text',{
+        y:-graphPadding
+      }," group #" + node.groupIndex)
+      
+      g.append(groupNumber)
+
+      let bbox = g.getBBox()//简化最小矩形拿取
+      let groupNumberBbox = groupNumber.getBBox()//简化group最小矩形拿取
+      let dashedBorderBbox=dashedBorder.getBBox()//虚线框
+      
+      let groupNumberBboxHeightCranny = (bbox.height-dashedBorderBbox.height-groupNumberBbox.height)/2
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height - groupNumberBbox.height - groupNumberBboxHeightCranny - 3,
+      }
+    }
+    function drawBranchGraph(node) {//画出每一个顺序图形,并添加横线横向链接起来
+      //只是改变了字符内容,但是没有改变绘图方式let continueString = node.elements.map(it => it.type == 'Character' ? it:'').reduce((a,b) => a + b)
+      let continueString = ''
+      let continueCharacter = []
+      node.elements.forEach(it => {
+        if (it.type == 'Character') {
+          continueString += it.character
+        }else{
+        if (continueString.length > 0) {//a+b情况
+          continueCharacter.push({
+            type:'Character',
+            character:continueString
+          }) 
+          continueString = ''//ab+c情况
+        }
+        continueCharacter.push(it)//如果不是连续的如ab+c情况,就直接将这个DOM加进去
+      } 
+      });
+
+      if (continueString.length > 0) {//ab+cde情况,cde是后面的,但是已经结束没有被push所以要写这个函数
+      continueCharacter.push({
+        type: 'Character',
+        character: continueString
+      });
+    }
+
+      let graphs = continueCharacter.map(drawGraph)//由于每个元素的结点类型不确定，所以是调用drawGraph函数// 隐式传递了当前元素作为参数
+
+      let g = elt('g')
+
+      let width = graphs.map(it => it.width).reduce((a,b) => a + b) + graphPadding * (graphs.length + 1)
+      let height = Math.max(...graphs.map(it => it.height)) + graphPadding * 2  //元素的最大高度
+
+      let bg = elt('rect',{ //解决g靠不到边的问题,因为g标签还要成为别人的子元素,21:33(很重要)
+        fill:"none",
+        width,
+        height,
+      })
+      g.append(bg)
+
+      let line = elt('line',{ //两点确定一条线
+        x1:0,
+        y1:height/2,
+        x2:graphPadding,
+        y2:height/2,
+        stroke:"black",//颜色
+        'stroke-width':2,//粗细
+      })
+      g.append(line)//要是位置偏移就对不上了
+
+      let w = graphPadding   
+      for (let graph of graphs) {//一个个画出来
+        graph.g.setAttribute('transform',`translate(${w},${(height - graph.height)/2})`)//画出来<g>摆在哪个位置
+        g.append(graph.g)
+        w += graph.width + graphPadding 
+        
+        let line = elt('line',{ //两点确定一条线 
+        x1:w,
+        y1:height/2,
+        x2:w-graphPadding,//位于起点反向画 
+        y2:height/2,
+        stroke:"black",//颜色
+        'stroke-width':2,//外轮廓的宽度 
+      })  
+        g.append(line)
+      }
+      
+      let bbox = g.getBBox()//简化最小矩形拿取
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      }
+    }
+    function drawBranchesGraph(nodes) {//有分支画出分支图形,但是它返回的是DOM节点组成的数组(分支的不同顺序),可能会有不同的处理      
+      let graphs = nodes.map(drawGraph) //每一个元素的DOM
+      //整个元素图形的宽高
+      let width = Math.max(...graphs.map(it => it.width)) + graphPadding * 4 //+ graphPadding * 4给左右弧线留白  
+      let height = graphs.map(it => it.height).reduce((a,b) => a + b) + graphPadding * (graphs.length - 1) //顶上一般不需要留白
+      
+      let g = elt('g')
+      let bg = elt('rect',{ //解决g靠不到边的问题,因为g标签还要成为别人的子元素,21:33(很重要)
+        fill:"none",
+        width,
+        height,
+      })
+      g.append(bg)
+
+      //图形居中
+      let translateX = (800 - width)/2
+      let translateY = (800 - height)/2
+      g.setAttribute('transform',`translate(${translateX},${translateY})`)
+
+      let h = 0 //不需要留白 这是首个元素在SVG中的起始位置
+
+      for (let graph of graphs) {
+        let line = elt('path',{ //path是从线的连接点开始('{'的尖尖),不会主动延长除非前面没有元素
+           d:  `M 0 ${height/2} 
+          C ${graphPadding} ${height / 2} 
+            ${graphPadding} ${h + graph.height / 2} 
+            ${graphPadding * 2} ${h + graph.height / 2}
+          L ${(width - graph.width)/2} ${h + graph.height / 2}
+
+          M ${width} ${height/2} 
+          C ${width - graphPadding} ${height / 2} 
+            ${width - graphPadding} ${h + graph.height / 2} 
+            ${width - graphPadding * 2} ${h + graph.height / 2}
+          L ${width - (width - graph.width)/2} ${h + graph.height / 2}`, 
+            
+          stroke:"black",//颜色
+          'stroke-width':2,//外轮廓的宽度
+          fill: 'none',//无填充看起来更细
+      }) 
+        graph.g.setAttribute('transform',`translate(${(width - graph.width)/2},${h})`)//画出来每一个<g>摆在哪个位置
+        g.append(graph.g)
+        g.append(line)
+        h += graph.height + graphPadding   
+        } 
+       
+      let bbox = g.getBBox()
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      } 
+    }
+    function drawQuantityGraph(node) {//画出量词图形
+      let graph = drawGraph(node.repeatElement)//量词图形是用重复的元素画的,然后node.repeatElement是那种类型就画哪一种图
+      let  width = graph.width + graphPadding * 4
+      let height = graph.height + graphPadding * 2
+
+      let bg = elt('rect',{ //解决g靠不到边的问题,撑大图形
+        fill:"none",
+        width,
+        height,
+      })
+      let g = elt('g',null,bg)
+
+      graph.g.setAttribute('transform',`translate(${graphPadding * 2},${graphPadding})`)//希望整个图形(以及中的每一个小图形)放在框中间
+      
+      g.append(graph.g)//每一个画好的放入画布
+
+      let line = elt('path',{
+        d:`M 0 ${height/2} L ${graphPadding * 2} ${height/2}
+          M ${width} ${height/2} L ${width - graphPadding * 2} ${height/2}`, 
+        stroke:"black",
+        "stroke-width":'2',
+        fill:'none',             
+      })//没有这个的话,就没有连接线,线也不够长
+      g.append(line)//要加到里面去,不然就会在原地
+
+      if (node.min == 0) {//重复次数是0就画上半部分
+        let upline = elt('path',{
+          //a的dx dy是相当于当前标签的偏移位置
+          d:`
+          M 0 ${height/2} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${-graphPadding}
+          L ${graphPadding} ${graphPadding} a ${graphPadding} ${graphPadding} 0 0 1 ${graphPadding} ${-graphPadding}
+          L ${width - graphPadding * 2} 0 a ${graphPadding} ${graphPadding} 0 0 1 ${graphPadding} ${graphPadding}
+          L ${width - graphPadding} ${height/2 - graphPadding} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${graphPadding}
+          `,
+          stroke:"black",
+          "stroke-width":2,
+          fill:'none', 
+        })
+        g.append(upline)
+      }
+      if (node.max > 1) {//重复次数>1就画下半部分 箭头使用增量画出:y1 = x1 + length * sin(degree) y2 = y1 - length * cos(degree)
+        let downline = elt('path',{
+          d:`
+          M ${graphPadding * 2} ${height/2} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${graphPadding}
+          
+          L ${graphPadding} ${height/2 + graphPadding * 2} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${graphPadding}
+          
+          L ${width - graphPadding * 2} ${height/2 + graphPadding * 3} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${-graphPadding}
+
+          L ${width - graphPadding + graphPadding * Math.sqrt(2)/2} ${height/2 + graphPadding * 2 - graphPadding * Math.sqrt(2)/2}
+          M ${width - graphPadding} ${height/2 + graphPadding * 2}
+          L ${width - graphPadding - graphPadding * Math.sqrt(2)/2} ${height/2 + graphPadding * 2 - graphPadding * Math.sqrt(2)/2}
+
+          M ${width - graphPadding} ${height/2 + graphPadding * 2}
+          L ${width - graphPadding} ${height/2 + graphPadding} 
+          a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${-graphPadding}
+          `,
+          stroke:"black",
+          "stroke-width":2,
+          fill:'none', 
+        })
+        g.append(downline)
+      }
+      // if (node.max > 1) {//重复次数>1就画下半部分
+      //   let downline = elt('path',{
+      //     d:`
+      //     M ${graphPadding * 2} ${height/2} a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${graphPadding}
+      //     L ${graphPadding} ${height/2 + graphPadding * 2} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${graphPadding}
+      //     L ${width - graphPadding * 2} ${height/2 + graphPadding * 3} a ${graphPadding} ${graphPadding} 0 0 0 ${graphPadding} ${-graphPadding}
+      //     L ${width - graphPadding} ${height/2 + graphPadding} a ${graphPadding} ${graphPadding} 0 0 0 ${-graphPadding} ${-graphPadding}
+      //     `,
+      //     stroke:"black",
+      //     "stroke-width":2,
+      //     fill:'none', 
+      //   })
+      //   g.append(downline)
+      // }
+
+
+      let bbox = g.getBBox()//简化最小矩形拿取
+      return {
+        g,
+        width:bbox.width,
+        height:bbox.height,
+      }
+    }
+    //绘制任意节点图形的函数
+    function drawGraph(node) {
+      if (node.type == 'Character') {
+        return drawCharacterGraph(node)
+      }
+      if (node.type == 'CharacterClass') {
+        return drawCharacterClassGraph(node)
+      }
+      if (node.type == 'Escape') {
+        return drawEscapeGraph(node)
+      }
+      if (node.type == "CaptureGroup") {
+        return drawCaptureGroupGraph(node)
+      }
+      if (node.type == 'Branch') {
+        return drawBranchGraph(node)
+      }
+      if (node.type == 'Quantity') {
+        return drawQuantityGraph(node)
+      }
+    }
+
+    function run() {
+      canvasClear.innerHTML=''
+      let reString = regexpInput.value
+      if (reString == '') {//正则表达式是空直接返回
+      return
+    }
+    try {
+      let tree = parseRegularExpression(reString)
+      drawRegularExpresionGraph(tree)
+    } catch (error) {
+      if (error instanceof SyntaxError) {
+        tips.innerHTML = error.message
+        return //语法错误停止执行
+      }else{//不是这个错误就抛出
+        throw error       
+      }
+    }
+    }
+  </script>
+</body>
+</html>

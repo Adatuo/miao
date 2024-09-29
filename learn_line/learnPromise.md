@@ -58,3 +58,10 @@
 21：58  promise工厂
 22：03  需要两个promise结果 放在外面或者在里面.then
 22:07 pizzle
+9-23
+20:58 promise.finally(f)是不一样的,无promise无论成功与失败f都会执行
+f不接参数finally返回一个新的promise2
+如果f返回promise3，则promise2会等待promise,
+但不会取它的结果,而是取promise结果.即一个promise的结果会穿透它的finally调用到finally返回的promise对象上
+21:13 Promise.prototype.finally手搓
+21:18 polyfill  shim

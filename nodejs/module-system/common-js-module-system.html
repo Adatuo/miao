@@ -1,0 +1,77 @@
+<script>
+  function readFile(filename) {
+    let xhr = new XMLHttpRequest()
+    xhr.open('get',filename,false)
+    xhr.send()
+    return xhr.responseText
+  }
+
+  function require(filename) {//缓存单个对象版本
+    if (filename in require.cache) {//检测是否已经被调用,是就直接返回被调用模块
+      return require.cache[filename].exports//因为需要的是模块里的东西exports
+    }
+    let code = readFile(filename)
+    let modFunc = new Function('exports,module',code)//函数生成
+    //模块文件夹
+    let module = {
+      id:filename,
+      path:filename,
+      baseDir:'模块文件夹',
+      loaded:true,//加载
+      pasths:[],
+      exports:{},//导出模块里的东西
+    }
+    
+    modFunc(module.exports,module)//newF可以传递多个参数
+    require.cache[filename] = module
+    return module.exports
+  }
+  require.cache = {}
+
+  /*function require(filename) {//缓存单个对象default版本
+    if (filename in require.cache) {//检测是否已经被调用,是就直接返回被调用模块
+      return require.cache[filename]
+    }
+    let code = readFile(filename)
+    let modFunc = new Function('exports',code)
+    let exports = {}
+    modFunc(exports)
+    if (exports.default) {//如果exports.default存在
+      return require.cache[filename] = exports.default
+    } else {
+      return require.cache[filename] = exports
+    }
+    return exports
+  }
+  require.cache = {}*/
+
+  /* function require(filename) {//缓存版本
+  //   if (filename in require.cache) {//检测是否已经被调用,是就直接返回被调用模块
+  //     return require.cache[filename]
+  //   }
+  //   let code = readFile(filename)
+  //   let modFunc = new Function('exports',code)
+  //   let exports = {}
+  //   modFunc(exports)
+  //   require.cache[filename] = exports//添加已经被调用的模块
+  //   return exports
+  // }
+  // require.cache = {}*/
+
+  /* function require(filename) {
+  //   let code = readFile(filename)
+  //   let modFunc = new Function('exports',code);
+  //   let exports = {}
+  //   modFunc(exports)
+  //   return exports
+  // }*/
+
+  /* function require(filename) {
+  //   let code = readFile(filename)
+  //   let modFunc = new Function(code);
+  //   return modFunc
+  // }*/
+
+
+  
+</script>

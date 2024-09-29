@@ -1313,7 +1313,7 @@ SYN握手包 ACK recet
 22:17 状态图
 22:33 tcp不是面向数据包的协议基于字节流的,只能保证数据按照顺序到达目的地
 22:36 push有可能上层都不看  沾包拆包(面试)22:38简单解决方式websocket就可以解决以消息为单位发一次接收一次
-22:41 队头阻塞 ?
+22:41 队头阻塞 ,对头数据没有收到,就算是后面的收到了也无法交付
 22:45 TCP与UDP区别(面试)
 
 9-14
@@ -1391,9 +1391,10 @@ console.log(xhr.responseText)
 ## 异步
 9-18
 20:14 错误抛给了控制台
-20:16 errocllback
+20:17 不用promise的抛错
+20:16 errocllback 异步放在了里面
 20:20 异步调用抛错
-20"24 详细解释,已经结束就不会抛出
+20:24 详细解释,已经结束就不会抛出 就是被抛出到了浏览器的代码里面,并没有被捕获
 20:30 火焰图解释
 20:36 get removeLoading
 20:39 try catch的好处
@@ -1474,7 +1475,7 @@ console.log(xhr.responseText)
 22:11 与promise有关的函数
 22:27 面试实现promise.xxx
 
-
+9-23
 20:06 all
 20:15 为什么instanceof Promise不可以?因为有其它符合标准的实现 解决用resolve包一层就总会是promise了
 20:37 promise any(面试)
@@ -1492,3 +1493,110 @@ console.log(xhr.responseText)
 22:25 RESTful/RESTAPI
 22:30 HTTp安全
 22:31 钥匙验证流程
+22:34 虽然公私钥很安全,但是效率太低,一般是先验证好再设置一个密码
+
+9-24
+20:04 HTTP各种常用头的意思(面试)
+20:08 HTTP压缩一般是为了节省流量
+20:14 一般是请求头有压缩,请求体小不用压缩
+20:18 用逗号分割不同语言比分号强,q是兴趣度
+20:24 host  (requ)
+20:29 referer 有隐私泄露可能referrer 可以设置referrer-Policy 不发送完整url到referer头中 (requ)
+20:37 content-type:image/jpeg 常见文件格式类型  (resp)
+20:40 date (resp)
+20:42 Content-Length (resp)(requ)
+20:43 transfer-encoding:chunked 不知道body有多长
+20:56 last-modified (requ)
+20"59 if-modified-since (requ)
+21:03 ETag:hashcode (resp)if-None-Match:hashcode  (requ)
+21:09 expires
+21:11 一大片不连续单词不是常用头
+21:13 user-agent 现在只有大版本号 (requ)
+21:15 浏览器指纹
+21:19 server 服务器(resp)
+21:22 防盗链(面试) 不能反爬虫
+21:27 referrer Policy
+21:30 content-security-policy
+21:34 iframe祖先
+
+21:52 cache-control 控制缓存,相对复杂,有rfc文档 为什么用不到?体量小,除非(直播)
+21:58 connection:keep-alive
+22:03 cors相关头  跨域请求
+22:06 为什么简单请求不发送预检请求
+22:12 预检请求流程
+22:14 预检请求不能带自定义请求,除了规定的那几个
+22:20 预检请求模型
+
+##  异步yeid
+9-25
+20:08 生成器函数运行回顾
+20:09 yeid return
+20"10 yeid throw 右边抛出错误左边没有赋值成功
+20:14 生成器函数与结合promise结合
+20:18 yeid如何拿到promise的value值
+20:20 接住yeid的next()
+20:23 接住yeid的next()的流程
+21:11 没有try回到哪里捕获 从谁调用yied
+21:16 抛出错误就可以失败了,reject
+21:19 最终的co函数
+21:33 协程 coroutine 不是真正的多线程
+21:46 async function
+21:51 为何async要会promise
+21:55 async function *
+22:04 for await of 异步生成器不能迭代
+22:09 await在控制台可以直接使用
+
+9-26
+20:03 async在ES2017之前怎么用的(面试)
+20:10 面试题
+20:18 面试,yield之前的写法regeneratorRuntime
+20:36 不能用let怎么办
+20:51 pizza
+21:09 安排不同效率不一样  合理安排异步的时间
+21:36 模块
+21:48 多打几个断点可以很清楚看
+21:58 重用
+22:17 供应商投毒
+
+9-27
+20:00 调用import
+20:08 解耦
+20:12 版本号  主要版本号.功能.补丁
+20:22 在线编辑器
+20:25 命名空间
+20:30 IIFE立即执行函数表达式
+20:33 中气十足的(面试)
+20:36 函数语句
+20:58 () => {} 不能在后面加括号
+21:01 (() => {})立即执行箭头函数21:07 exports导出模块写法
+21:14 模块系统
+21:24 模块的一些引用区别
+21:47 js的模块系统  es module语法
+21:55 导入
+22:00 在html使用 但是不能在文件网址发生,可以使用http-server来调用该文件
+22:17 动态导入
+22:27 importmap
+
+9-28
+21:00 浏览器缓存问题
+21:10 
+21:14 lexcial 但是eval可以读到
+21:23 字符串当作代码执行  eval ,new Function, dom ,settimeout
+21:26 require
+21"38 exports
+21:56 reuqire3
+22:05 reuqire4
+22:07 模块导出单个的时候
+
+9-29
+20:02 懒加载
+20:12 本机上跑大概3ms以内(除非电脑硬盘都很差),但是网络上跑就不一定了,所以不能串行
+20:17 同步require不能接收的原因 
+20:23 异步require
+20:27 保存到映射
+21:28 构建对象解决
+21:42 打包
+21:55 打包
+21:59 即将webpack
+22:17 模块相互依赖是可能存在的
+22:19 循环依赖解决(面试,不一定会问)
