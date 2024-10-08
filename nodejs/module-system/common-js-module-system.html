@@ -1,4 +1,7 @@
 <script>
+/*目前的同步require不能接受，有两个原因：
+  一个原因是所有的模块都是串行加载的，需要的时间太久
+  二是加载过程中（由于是同步加载）页面还是无响应（阻塞）的*/
   function readFile(filename) {
     let xhr = new XMLHttpRequest()
     xhr.open('get',filename,false)

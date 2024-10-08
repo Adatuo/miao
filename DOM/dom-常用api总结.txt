@@ -55,7 +55,7 @@ getAttributeNames（）
 scrollBy/To
   设置元素内容的滚动位置
 querySelectorAll('')
-  会把每个'',都找出来,返回一个数组  .fire #fire  
+  会把每个'',都找出来,返回一个数组  .fire(class) #fire(ID)  
 
 getBoundingClientRect()
   获得元素相对于视口的位置.返回值是一个 DOMRect 对象，是包含整个元素的最小矩形（包括 padding 和 border-width）
@@ -89,3 +89,9 @@ setInterval()
     console.log(a);
     console.log(b);
   }
+
+parentElement 获得文档DOM的前一个元素
+
+removeChild() 用于从某个父节点中移除它的子节点。限制：你必须通过父元素来调用这个方法，并且需要明确指出要删除的子节点。
+
+remove() 直接从 DOM 中移除当前元素。由于不用找父节点,会直接从 DOM 中移除当前所有元素。

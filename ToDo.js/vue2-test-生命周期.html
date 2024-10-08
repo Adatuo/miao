@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini-yodo</title>
+</head>
+<body>
+  <div id="app">
+    <div>
+      <input type="checkbox" @click ='toggleAll()' :checked="todos.every(todo => todo.completed == true)"> <!--全部完成自动勾选-->
+      <input type="text" @keydown = 'addTodo($event)' placeholder="What needs to be done?"><!--监听keydown事件-->
+    </div>
+    
+    <ul :class="'visible-' + activeCategory">
+      <li v-for="(todo,index) of todos"><!--vue用法 -->
+        <input type="checkbox" v-model = 'todo.completed'>
+        <span>{{todo.text}}</span>
+        <button @click = 'deleteTodo(index)'>&times;</button>
+      </li>
+    </ul>
+    <div>
+      <span>{{completedLength()}} item{{completedLength() > 1 ? 's':''}} left</span>
+      <div>
+        <label><input type="radio" v-model="activeCategory" value="All"></label>
+        <label><input type="radio" v-model="activeCategory" value="Active"></label>
+        <label><input type="radio" v-model="activeCategory" value="Completed"></label>
+      </div>
+      <button v-show="show" @click = 'clearCompleted()'>clear Completed</button>
+    </div>
+  </div>
+  <script src = "./vue-2.7.16-global.js"></script>
+  <script>
+    var app = new Vue({
+      beforeCreate(){
+        debugger
+      },
+      created(){
+        debugger
+      },
+      mounted(){
+        debugger
+      },
+      el:'#app',  //绑定
+      data(){//响应式机制在 data() 函数返回的对象之后才应用
+        debugger
+        var x = {
+          todos:[
+            {text:'aaa',completed:false},
+            {text:'bbb',completed:true},
+          ],
+          activeCategory:'all',
+        }
+        return x
+      },
+      computed:{
+        // completedLength(){
+        //   return this.todos.filter(it => it.completed == false).length
+        //   }
+        show(){
+          return this.todos.some(it => it.completed == true)
+        }            
+        },
+      methods:{
+        toggleAll(){
+          if (this.todos.every(it => it .completed == true)) {
+            this.todos.forEach(todo => {
+              todo.completed = false
+            });
+          }else{
+            this.todos.forEach(todo => {
+              todo.completed = true
+            });
+          }
+        },
+        deleteTodo(index){
+          this.todos.splice(index,1) //从todos移除,相当于删除了元素 this指的是 new Vue({...}) 实例
+        },
+        addTodo(e){//事件
+          if (e.key == "Enter") {
+            let text = e.target.value.trim()
+            if (text) {
+              this.todos.push({//加进去
+              text,//同text:text
+              completed:false,  
+            })
+            }
+            e.target.value = ''
+          }
+        },
+        clearCompleted(){//清除已完成的
+          this.todos = this.todos.filter(todo => todo.completed == false)//筛选更简洁,只保留未为完成的
+          // this.todos.forEach((todo,index) => {
+          //   if (todo.completed == true) {
+          //     this.todos.splice(index,1)
+          //   }         
+          // })
+        },
+        completedLength(){
+          return this.todos.filter(it => it.completed == false).length
+        },
+      }
+    
+    })
+  </script>
+</body>
+</html>

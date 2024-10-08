@@ -1,0 +1,80 @@
+<script>
+/*   使用先异步加载所有依赖再从入口开始执行的办法依然存在性能问题：
+     最长依赖链决定了整个加载所需的时间
+    （并且使用es module同样存在这个问题）*/
+  //文件名到文件内容的映射
+  var fileCache = Object.create(null)
+  //模块名到模块对象的映射
+  var moduleCache = Object.create(null)
+
+  function require(filename) {//如果filename不存在就无法做到同步,所以要用use()
+    if (filename in moduleCache) {
+      return moduleCache[filename].exports
+    }
+    let code = fileCache[filename]
+    let modFunc = new Function('exports,module',code)
+    let module = {
+      id:filename,
+      exports:{}
+    }
+    modFunc(module.exports,module)
+    moduleCache[filename] = module
+    return module.exports
+  }
+
+  function use(filename) {
+    if (filename in fileCache) {//说明filename依赖的所有模块都已经存在
+      require(filename)
+    } else {
+      loadFileAndAllDeps(filename,()=>{
+        require(filename)
+      })
+    }
+  }
+
+  //加载并缓存filename及其所有的依赖
+  function loadFileAndAllDeps(filename,callback) {
+    readFile(filename,content => {//xhr.responseText
+      fileCache[filename] = content
+      //接下来,加载file所依赖的所有其它文件
+
+      //先由内容获取它所有的依赖
+      var deps = getDeps(content)
+      if (deps.length == 0) {//如果没有依赖函数执行完毕
+        callback()//回调只能执行一次
+      }else{
+        var count = 0//记录完成数量
+        deps.forEach(dep => {//所有依赖的所有依赖
+          loadFileAndAllDeps(dep,()=>{
+            count++
+            if (count == deps.length) {//完成后执行回调函数
+              callback()
+            }
+          })
+        });
+      }
+    })
+  }
+
+  function getDeps(fileContent) {//获得文件里面每一个依赖名称
+    let requireCalls = fileContent.match(/require\s*\(\s*(['"])[^'"]+\1\s*\)/g)//筛选出require路径
+    if (requireCalls == null) {//为空返回空数组
+      return []
+    }else{
+      return requireCalls.map(call => {//筛出.js
+        return call.match(/require\s*\(\s*(['"])([^'"]+)\1\s*\)/)[2]//不能加g 筛选出.js路径
+      })//  /require\s*\(\s*(['"])([^'"])+\1\s*\)g/错误的正则表达式
+    }
+  }
+
+  //基于回调的异步文件读取
+  function readFile(filename,callback) {
+    var xhr = new XMLHttpRequest()
+    xhr.open('get',filename)
+    xhr.onload = () => {
+      callback(xhr.responseText)
+    }
+    xhr.send()
+  }
+  
+</script>

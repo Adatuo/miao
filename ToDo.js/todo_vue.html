@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini-ToDo</title>
+  
+</head>
+<body>
+  <div id = "app">
+    <div>
+      <input type="checkbox" @click="toggleAll()" :checked="todos.every(it => it.completed == true)">
+      <input type="text" @keydown = 'addTodo($event)' placeholder="What needs to be done?"><!--事件对象全局存在-->
+    </div>
+    <ul :class="'visible-' + activeCategory"><!--与{{}}基本等价-->
+      <li v-for="(todo,idx) of todos" ><!-- 循环Vue里面的todos -->
+        <input type="checkbox" v-model="todo.completed"><!--双向绑定 绑定到当前的表单控件或输入元素<input>、<textarea>、<select> 等-->
+        <span>{{todo.text}}</span>
+        <button @click="deleteTodo(idx)">&times;</button>
+      </li>
+    </ul>
+    <div>
+      <span>{{todos.filter(it=>it.completed == false).length}} item{{todos.filter(it=>it.completed == false).length > 1 ? 's':''}} left!</span>
+      <div>
+        <label><input type="radio" v-model="activeCategory" value="All"></label>
+        <label><input type="radio" v-model="activeCategory" value="Active"></label>
+        <label><input type="radio" v-model="activeCategory" value="Completed"></label>
+      </div>
+      <button v-show="todos.some(it => it.completed == true)" @click="clearCompleted()">clear completed</button> <!--v-if不渲染不在DOM里面 v-show藏起来,但是在DOM里面 -->
+    </div>
+  </div>
+
+
+
+  <script src = "./vue-2.7.16-global.js"></script>
+  <script>
+    let app = new Vue({
+      el:'#app',//绑定id app
+      //这里放程序的数据或状态数据
+      data(){
+        return{
+          todos:[
+            {
+              text:'eat',
+              completed:true,
+            },{
+              text:'drink',
+              completed:false,
+            },{
+              text:'sleep',
+              completed:true,
+            }
+          ],
+          activeCategory:'all',    
+        }
+      },
+      methods:{//不要写箭头函数,不然就不知道是谁调用
+        toggleAll(){
+          if (this.todos.every(it => it.completed == true)) {
+            this.todos.forEach(it => {
+              it.completed = false
+            });
+          }else{
+            this.todos.forEach(it => {
+              it.completed = true
+            })
+          }
+        },
+        addTodo(e){
+          if (e.key == 'Enter') {
+            let text = e.target.value.trim()
+            if (text) {
+              let todo = {
+                text,
+                completed:false,
+              }
+              this.todos.push(todo)
+              e.target.value = ''
+            }
+          }
+        },
+        deleteTodo(idx){
+          this.todos.splice(idx,1)
+        },
+        toggleTodo(){
+
+        },
+        clearCompleted(){
+          this.todos = this.todos.filter(it => it.completed == false)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

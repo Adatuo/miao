@@ -1,0 +1,84 @@
+<div>
+  see console
+</div>
+<script>
+  // 文件名到文件内容的映射
+  var fileCache = Object.create(null)
+
+  // 模块名到模块对象的映射
+  var moduleCache = Object.create(null)
+
+  function require(filename) {
+    if (filename in moduleCache) {
+      return moduleCache[filename].exports
+    }
+    var code = fileCache[filename]
+    var modFunc = new Function('exports, module', code)
+    var module = {
+      id: filename,
+      exports: {}
+    }
+    modFunc(module.exports, module)
+    moduleCache[filename] = module
+    return module.exports
+  }
+
+  // 把某个文件做为入口加载其所有依赖并运行
+  function use(filename) {
+    if (filename in fileCache) {
+      // 说明filename依赖的所有模块都已经存在
+      require(filename)
+    } else {
+      loadFileAndAllDeps(filename, () => {
+        require(filename)
+      })
+    }
+  }
+
+  // 加载并缓存filename及其所有的依赖
+  function loadFileAndAllDeps(filename, callback) {
+    readFile(filename, content => {
+      fileCache[filename] = content
+
+      // 接下来，加载file所依赖的所有其它文件
+
+      // 先由内容获取它所有的依赖
+      var deps = getDeps(content)
+      if (deps.length == 0) { // 如果当前文件已经没有依赖了，则函数运行完毕
+        callback()
+      } else {
+        var count = 0
+        deps.forEach(dep => {
+          loadFileAndAllDeps(dep, () => {
+            // 当这个回调被运行时，就是某一个依赖加载完成的时候
+            count++ // 记录完成的数量
+            if (count == deps.length) {
+              callback()
+            }
+          })
+        })
+      }
+    })
+  }
+
+  function getDeps(fileContent) {
+    var requireCalls = fileContent.match(/require\s*\(\s*(['"])[^'"]+\1\s*\)/g)
+    if (requireCalls == null) {
+      return []
+    } else {
+      return requireCalls.map(call => {
+        return call.match(/require\s*\(\s*(['"])([^'"]+)\1\s*\)/)[2]
+      })
+    }
+  }
+
+  // 基于回调的异步文件读取
+  function readFile(filename, callback) {
+    var xhr = new XMLHttpRequest()
+    xhr.open('get', filename)
+    xhr.onload = () => {
+      callback(xhr.responseText)
+    }
+    xhr.send()
+  }
+</script>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mini-ToDo</title>
+  <script src="https://cdn.tailwindcss.com/"></script>
+</head>
+<body>
+  <div class="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/4">
+    <input name=""  id="inputBox" class="border-solid border-2 border-black  w-[300px] h-[40px]" placeholder="What needs to be done?">
+    <ul id="dropDown" class="" > 
+    </ul>   
+    <footer id="dropDownFooter" class="hidden">
+
+    </footer> 
+  </div>
+
+
+  <script>
+    let inputBox = document.getElementById('inputBox')
+    let dropDown = document.getElementById('dropDown')
+    let dropDownFooter = document.getElementById('dropDownFooter') //底部
+    let taskNumber = 0
+
+      let addString = inputBox.value  //输入任务
+      inputBox.addEventListener('keydown', (e) => {
+        if (e.key == "Enter") { 
+          let addString = inputBox.value.trim(); //trim()去除前后空格,返回一个新的字符串
+          if (addString) {//为空就什么也不做
+            let Li = document.createElement('li')  //li
+
+            let newSpan = document.createElement('span') 
+            newSpan.textContent = addString //给span添加任务
+
+            let newInputCheckbox = document.createElement('input') 
+            newInputCheckbox.type='checkbox' //设置InputCheck
+            newInputCheckbox.classList.add('mr-2') //内边距
+
+            let newButton = document.createElement('button')
+            newButton.textContent = 'X' //给按钮加上X
+            newButton.classList.add('flexd');
+            newButton.classList.add('ml-[217px]'); // 距离还有问题
+
+            Li.append(newInputCheckbox) //li添加Checkbox
+            
+            Li.append(newSpan) //li添加span
+            Li.append(newButton)
+
+            dropDown.append(Li)  
+            taskNumber++ //任务+1         
+            inputBox.value = ''    
+
+            newInputCheckbox.addEventListener('change', (e) => {//作用域 //InputCheckbox
+              if (e.target.checked) {//e.target 是事件监听器捕获到的事件目标元素
+                newSpan.classList.add('line-through'); // 给文本添加删除线
+                taskNumber--
+                upFooter()
+              } else {
+                newSpan.classList.remove('line-through'); // 移除文本的删除线
+                taskNumber++
+                upFooter()                
+              }
+            });
+
+            newButton.addEventListener('click', (e) => {  //delete buttom 'x'
+            let parentLi = e.target.parentElement; // 获取按钮的父元素 li
+            dropDown.removeChild(parentLi); // 只删除当前点击按钮对应的 li 用remove的话会删除所有
+            if (e.target.previousElementSibling.previousElementSibling.checked) {
+              taskNumber //不增加也不减少
+            }else{
+              taskNumber--
+            }           
+            upFooter()
+          });
+          upFooter()
+          }            
+        }
+      });  
+
+      function upFooter(help) { //每一个都要用写成函数
+        dropDownFooter.textContent = '' //clear footer
+        if (taskNumber != 0) {
+            dropDownFooter.classList.remove('hidden')//显示底部      
+            let FooterSpan = document.createElement('span')
+            FooterSpan.textContent = `${taskNumber} item left!`
+            dropDownFooter.append(FooterSpan)//add span        
+          }else if (taskNumber == 0) {
+            dropDownFooter.classList.remove('hidden')//显示底部      
+            let FooterSpan = document.createElement('span')//没有单数复数
+            FooterSpan.textContent = `0 item left!`
+            dropDownFooter.append(FooterSpan)//add span 
+          }   
+
+        let footerButton = document.createElement('button') 
+        dropDownFooter.append(footerButton) //不能在span里面加   先插入DOM才能添加ID
+         
+        active(help)
+        
+        function active(help) {
+          footerButton.id = 'Active'
+          let activeButton = document.getElementById('Active')     
+              
+          activeButton.textContent = 'Active'
+          activeButton.classList.add('ml-4')
+          // 监听 Active 按钮点击,
+          activeButton.addEventListener('click',()=>{
+            let allCheckboxed = document.querySelectorAll('#dropDown li')//检查每一个的li下input checkbox状态
+            allCheckboxed.forEach(li => {
+              let inputCheckbox = li.querySelector('input[type ="checkbox"]') //获取input checkbox
+              if (inputCheckbox && inputCheckbox.checked) {//input checkbox 状态 且不为空
+                li.classList.add('hidden')
+              }
+            });
+          })
+        }
+      }
+  </script>
+</body>
+</html>
