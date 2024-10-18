@@ -1,0 +1,80 @@
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div id="app"></div>
+  
+<script>
+  const { createApp } = Vue
+
+  let app = createApp({
+    template:`
+      <div>
+        <comp5></comp5>
+      </div>
+    `,
+
+    data() {   
+        
+      let x = {
+        todos:[
+            {
+              text:'eat',
+              completed:true,
+            },{
+              text:'drink',
+              completed:false,
+            },{
+              text:'sleep',
+              completed:true,
+            }
+          ],
+      }
+      return x
+    },
+    methods: {
+
+    }
+  })
+
+
+  let {ref,onMounted,onBeforeUnmount,watchEffect}=Vue //组合式 API
+  app.component('comp5',{
+    props:{//能透传到根元素
+      slides:{
+        type:Array,
+        required:true,//必须传递
+      },
+    },
+    setup(){//不能使用this
+      let x = ref(slides)
+      function onkeyinput(e) {//js不能监控变量的变化
+        
+      }
+    },
+    template:`
+       <div>
+        <h1>todos</h1>
+        <div>
+          <input type="checkbox"/>
+          <input />
+        </div>
+        <ul>
+          <li v-for="(todo,idx) of todos">
+            <input type="checkbox" v-model="todo.completed" />
+            <span>{{todo.text}}</span>
+            <button @click="deleteTodo(idx)">&times;</button>
+          </li>
+        </ul>
+        <div>
+          <span>{{ Count }} items left</span>
+          <div>
+
+          </div>
+          <button>clear completed</button>
+        </div>
+      </div>
+    `
+  })
+
+  mountedApp = app.mount('#app')
+</script>

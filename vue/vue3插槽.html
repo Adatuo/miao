@@ -1,0 +1,146 @@
+
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div id="app"></div>
+  
+<script>
+  const { createApp } = Vue
+
+  let app = createApp({
+    //最好写在组件定义的对象上,谁的模板用谁的数据
+    //组件根元素,可以不止一个根元素<div>但最好不要这样使用
+    template:`
+      <div id="app">
+        <FancyButton>Click ME!</FancyButton>  <!--<slot>替换-->
+        <FancyButton></FancyButton>  <!--没写就是默认值-->
+        <FancyButton>Click {{message}}</FancyButton> <!--只能拿到父组件的数据-->
+
+        <BaseLayout>
+          <template #header> 
+            <div>aaa</div>  
+          </template>
+
+          <div>bbb</div> <!--#default 会插入所有没有名字的slot里面 而且可以删去template-->
+
+          <template v-slot:footer>
+             <div>ccc</div>
+          </template>
+        </BaseLayout>
+        
+        <FancyList></FancyList>
+
+        <MouseTracker v-slot='pos'>
+          {{pos.x}},{{pos.y}}
+        </MouseTracker>
+      </div>
+    `,
+    data() {     
+      let x = {
+        fruits:['apple','banana'],
+        showXiaomi:true,
+        message: 'Hello Vue! <em>aaa</em> ',
+        numbers: [1,2,3,4],
+        火车图片们:[{//在总的这里修改
+          link:'https://www.jd.com',
+          imgUrl:'https://www.12306.cn/index/images/abanner02.jpg',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://www.12306.cn/index/images/abanner06.jpg',
+        }],
+        小米产品图片们:[{//在总的这里修改
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202208121605_89f90ee66b37506fdae89fef03e16962.png',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8dede2520f8dfff9c9b690af498cafe8.jpg?w=632&h=340',
+        },{
+          link:'https://www.mi.com/xiaomi-tvs/s-pro-85',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/b16339167ac548f07334116f0ab80907.png?thumb=1&w=160&h=110&f=webp&q=90',
+        }],
+        tabsInfos:[{
+          key:'1',
+          label:'Tab 1',
+          children:'Content of Tab Pane 1',
+        },
+        {
+          key:'2',
+          label:'Tab 2',
+          children:'Content of Tab Pane 2',
+        },        {
+          key:'3',
+          label:'Tab 3',
+          children:'Content of Tab Pane 3',
+        },]
+      }
+      return x
+    },
+    methods: {
+      log(...args){
+        console.log(...args);       
+      }
+    }
+  })
+
+  app.component('FancyButton',{
+    template:`
+      <button class='p-2 rounded bg-slate-500 hover:bg-rose-500 text-white'>
+         <slot>Click YOU!</slot> <!--没写就是默认值-->
+      </button>  
+    `,
+  })
+
+  app.component('BaseLayout',{
+    template:`
+      <div class="flex flex-col border m-5 border-black">
+        <div v-if="$slots.header" class="h-10 border-b border-black"> <!--$slots.header 父组件没有使用的话就不渲染 -->
+          <slot name='header'></slot>
+        </div>
+        <div class="flex flex-row border-black">
+          <div class='w-1/5 border-r border-black'>
+            <slot></slot> <!--#default 会插入所有没有名字的slot里面 而且可以删去template-->
+          </div>
+          <div class='w-3/5'>
+            <slot name='footer'></slot>
+          </div>
+          <div class='w-2/5 border-l border-black'>
+            <slot></slot> <!--#default 会插入所有没有名字的slot里面 而且可以删去template-->
+          </div>
+        </div>
+      </div>  
+    `,
+  })
+
+  //古板的90s霓虹灯列表 未完成 作用域插槽
+  app.component("FancyList",{
+    props:['list'],
+    template:`
+      <ul class="flex flex-col m-1 border border-dotted border-rose-300 rounded border-2 p-1 gap-1">
+        <li v-for='item of list' class='border border-dotted border-rose-300 rounded border-2'>
+          {{item}}
+        </li>   
+      </ul>
+    `,
+  })
+
+  //MouseTracker
+  app.component("MouseTracker",{
+    template:`
+      <slot :x='x' :y="y"></slot>
+    `,
+    data(){
+      return{
+        x:0,
+        y:0,
+      }
+    },
+    mounted(){
+      window.addEventListener('mousemove',e=>{
+        this.x = e.clientX
+        this.y = e.clientY
+      })
+    }
+  })
+
+  mountedApp = app.mount('#app') //已挂载正在运行的mountedApp proxy 与app(Creatapp)不一样
+</script>

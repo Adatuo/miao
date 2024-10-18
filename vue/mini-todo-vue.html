@@ -9,11 +9,11 @@
   <div id="app">
     <div>
       <input type="checkbox" @click ='toggleAll()' :checked="todos.every(todo => todo.completed == true)"> <!--全部完成自动勾选-->
-      <input type="text" @keydown = 'addTodo($event)' placeholder="What needs to be done?"><!--监听keydown事件-->
+      <input type="text" ref="inputBox" @keydown = 'addTodo($event)' placeholder="What needs to be done?"><!--监听keydown事件-->
     </div>
     
     <ul :class="'visible-' + activeCategory">
-      <li v-for="(todo,index) of todos"><!--vue用法 -->
+      <li :key="todo.id" v-for="(todo,index) of todos"><!--vue用法 key用法,可以自定义一个:xkey="todo.id"来看见 少了ref用法-->
         <input type="checkbox" v-model = 'todo.completed'>
         <span>{{todo.text}}</span>
         <button @click = 'deleteTodo(index)'>&times;</button>
@@ -29,18 +29,34 @@
       <button v-show="show" @click = 'clearCompleted()'>clear Completed</button>
     </div>
   </div>
-  <script src = "./vue-2.7.16.js"></script>
+  <script src = "./vue-2.7.16-global.js"></script>
   <script>
     let app = new Vue({
       el:'#app',  //绑定
       data(){
         return{
           todos:[
-            {text:'aaa',completed:false},
-            {text:'bbb',completed:true},
+            {
+              id:'dc',
+              text:'aaa',
+              completed:false
+            },
+            {
+              id:'es',
+              text:'bbb',
+              completed:true
+            },
+            {
+              id:'ev',
+              text:'ccc',
+              completed:true
+            },
           ],
           activeCategory:'all',
         }
+      },
+      mounted(){//挂在mounted可以持续focus
+        this.$refs.inputBox.focus()
       },
       computed:{
         // completedLength(){

@@ -1,0 +1,35 @@
+ <script src="./v3.5.11-global.js"></script>
+
+<div id="app">
+  价格: <input type="number" v-model="price">
+  <br>
+  数量: <input type="number" v-model="amount">
+  <br>
+  总价: <input type="number" v-model="total">
+</div>
+
+<script>
+  const {createApp} = Vue
+  let app = createApp({
+    data(){
+      let x = {
+        price:0,
+        amount:0,
+        total:0,
+      }
+      return x
+    },
+    watch:{
+      price(){//价格发生变化
+        this.total =  this.price * this.amount
+      },
+      amount(){
+        this.total =  this.price * this.amount
+      },
+      total(){
+        this.amount = this.total / this.price
+      }
+    }
+  })    //.moutn('#app')
+  app.mount('#app')//很可能有多个组件要挂载
+</script>

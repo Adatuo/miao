@@ -1,0 +1,344 @@
+
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- 根组件 -->
+<!-- <div id="app">
+  <counter :start="10" :step="2"></counter>
+  <counter :step="-1"></counter>
+  <counter></counter>
+
+  <carousel :slides="火车图片们"></carousel>
+  <carousel :slides="小米产品图片们"></carousel>
+
+  {{ message }}
+  {{ numbers }}
+  
+</div> -->
+<div id="app"></div>
+
+<script>
+  // import { createApp } from 'https://esm.sh/vue/dist/vue.esm-browser.js'
+  const { createApp } = Vue
+
+  let app = createApp({
+    //最好写在组件定义的对象上,谁的模板用谁的数据
+    //组件根元素,可以不止一个根元素<div>但最好不要这样使用
+    template:`
+      <div id="app">
+        <counter :start="10" :step="2"></counter>
+        <counter :step="-1"></counter>
+        <counter ></counter>
+
+        <date-input v-model='birthday'></date-input>
+        <list-input v-model='fruits'></list-input>        
+
+        <carousel @change="(e)=> console.log(e)" ref='lunbotu1' style="color:green" :slides="火车图片们" class='会透传与模板的class合并' 自定义属性='以传入的自定义属性位置为准,style以根元素为准不会透传'></carousel>
+        <carousel @change="log($event)" ref='lunbotu2' v-if='showXiaomi' :slides="小米产品图片们" :autoplay='0'></carousel>
+
+        <tabs defaultActiveKey='2' :items='tabsInfos' @change="log($event)"></tabs>
+
+        {{ message }}
+        {{ numbers }}        
+      </div>
+    `,
+    data() {     
+      let x = {
+        birthday:new Date(),
+        fruits:['apple','banana'],
+        showXiaomi:true,
+        message: 'Hello Vue! <em>aaa</em> ',
+        numbers: [1,2,3,4],
+        火车图片们:[{//在总的这里修改
+          link:'https://www.jd.com',
+          imgUrl:'https://www.12306.cn/index/images/abanner02.jpg',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://www.12306.cn/index/images/abanner06.jpg',
+        }],
+        小米产品图片们:[{//在总的这里修改
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202208121605_89f90ee66b37506fdae89fef03e16962.png',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8dede2520f8dfff9c9b690af498cafe8.jpg?w=632&h=340',
+        },{
+          link:'https://www.mi.com/xiaomi-tvs/s-pro-85',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/b16339167ac548f07334116f0ab80907.png?thumb=1&w=160&h=110&f=webp&q=90',
+        }],
+        tabsInfos:[{
+          key:'1',
+          label:'Tab 1',
+          children:'Content of Tab Pane 1',
+        },
+        {
+          key:'2',
+          label:'Tab 2',
+          children:'Content of Tab Pane 2',
+        },        {
+          key:'3',
+          label:'Tab 3',
+          children:'Content of Tab Pane 3',
+        },]
+      }
+      return x
+    },
+    methods: {
+      log(...args){
+        console.log(...args);       
+      }
+    }
+  })
+
+  app.component('counter',{
+    //声明这个组件将会接收什么属性(类似函数的参数)
+    //声明参数后可以直接通过this访问
+    //props:['step','start'],//相当于组件的属性
+    props:{//默认值添加
+      step:{
+        type:Number,
+        default:1,
+      },
+      start:{
+        type:Number,
+        default:0,
+      },
+    },
+    template:`
+    <div>
+      <button @click="del">-{{this.step}}</button>
+        {{currentCount}}
+      <button @click="ins">+{{this.step}}</button>
+    </div>
+    `,
+    data(){
+      return {
+        currentCount:this.start,
+      }
+    },
+    methods:{
+      ins(){
+        this.currentCount += this.step
+      },
+      del(){
+        this.currentCount -= this.step
+      }
+    }
+  })
+
+  app.component('carousel',{
+    emits:{
+      change:null, 
+    },
+    props:{//能透传到根元素
+      slides:{
+        type:Array,
+        required:true,//必须传递
+      },
+      autoplay:{//轮播图时间参数
+        type:Number,
+        default:0,
+      },
+    },
+    beforeUpdate(){//似乎是没有添加ref从而导致在push没有触发更新
+      console.log('轮播图组件更新');     
+    },
+    template:`
+      <div style="color:red" 自定义属性='123456' class="relative border-2 border-slate-500 w-[300px] h-[200px]">
+        <a class='block w-full h-full' :href='slides[i].link' target='_blank'>
+          <img class='w-full h-full' :src='slides[i].imgUrl'/>
+        </a>       
+        <ul class='flex absolute bottom-0 z-10'><li class='w-1 h-1 rounded-full m-1' :class="{'bg-slate-600':index == i,'bg-slate-300':index !== i}" v-for='(slide,index) of slides'></li></ul> 
+        <button class="absolute w-10 h-10 top-0 bottom-0 m-auto rounded bg-pink-500 hover:bg-cyan-300" @click="prev">prev</button>
+        <button class="absolute w-10 h-10 top-0 bottom-0 m-auto right-0 rounded bg-pink-500 hover:bg-cyan-300" @click="next">next</button>
+      </div>  
+    `,
+    watch:{
+      'slides.length'(newLength){//没有的话在删除最后一个组件的时候会触发错误 在读取:src='slides[i].imgUrl最后一个组件的数组会变成在读取空
+        if (this.i >= newLength) {
+          this.i = 0
+        }
+      }
+    },
+    data(){
+      return{
+        //图片们:[] 不能放在这里,作用域分开
+        i:0,
+        intervalId:0,//存储定时器ID
+      }
+    },
+    methods:{ 
+      prev(){
+        this.i--
+        if (this.i == -1) {
+          this.i = this.slides.length - 1
+        }
+        this.$emit('change',this.i)
+      },
+      next(){
+        this.i++
+        if (this.i == this.slides.length) {
+          this.i = 0
+        }
+        this.$emit('change',this.i)
+      },
+    },
+    /**mounted与beforeUnmount
+     * mounted与beforeUnmount其实就对应于组件的资源分配与释放
+      类似于程序在启动后建立网络连接，在关闭前（或使用完连接后）
+      关闭网络连接
+      在一个class构造时分配存储空间，在这个class需要被销毁时，释
+      放之前分配的存储空间
+    */
+    mounted(){//应该挂在到生命周期的这里,组件已经渲染完成并出现 需要放到根层级 
+        if (this.autoplay > 0) {//生命周期是不会知道有一个定时器,需要主动关闭                   
+          this.intervalId = setInterval(()=>{
+            console.log('go next...'); 
+            this.next()
+          },this.autoplay)
+        }
+      },
+    beforeUnmount(){//上层资源隐藏了,组件也就跟着隐藏了 生命周期移除定时器 不会再打印go next...
+      clearInterval(this.intervalId)
+    }  
+  })
+
+  app.component('list-input',{
+    props:{
+      modelValue:Array,
+    },
+    emits:{
+      'update:model-value':null,
+    },
+    template:`
+      <input :value="textInBox" @input='onInput'/>
+    `,
+    watch:{
+      modelValue(newValue){//监视,否则会因为外层组件更新而无法输入
+        this.textInBox = newValue.join(', ')
+      }
+    },
+    data(){
+      return{//组件接收的数据不要修改
+        textInBox:this.modelValue.join(', ')
+      }
+    },
+    methods:{
+      onInput(e){
+        let text = e.target.value
+        if (!text.endWith(',')) {//最后一个不是逗号才更新
+          let list = text.split(',').map(it => it.trim())
+          this.$emit('update:model-value',list)
+        }
+      }
+    }
+  })
+
+  app.component('tabs',{
+    emits:{//声明触发事件 一般是用别人的才这么写
+      change(payload){
+        return typeof payload === 'string'
+      }
+    },
+    props:{
+      items:{
+        type:Array,
+        require:true,
+      },
+      defaultActiveKey:{
+        type:String,
+        //default:this.items[0].key,  不能这样写这里的this指向window,主要看this读到的是什么
+        // default(){ //这样也不行,因为是作为函数调用的而不是方法
+        //   return this.items[0].key
+        // }
+      }
+    },
+    template:`
+      <div class="border m-2 border-black">
+        <div calss="border-b border-black">
+          <button @click="switchTo(item.key)" v-for="item of items" :class="item.key == activeKey ? 'bg-rose-500':'bg-slate-500' " class="text-xs rounded m-1 p-1">
+            {{item.label}}
+          </button>
+        </div>
+        <div>
+          {{items.find(it => it.key == this.activeKey).children}}
+        </div>
+      </div>
+    `,
+    data(){
+      return{
+        activeKey: this.defaultActiveKey ?? this.items[0].key,
+      }
+    },
+    methods:{
+      switchTo(targetKey){
+        if (this.activeKey != targetKey) {//不一样说明选项卡变化
+          this.activeKey = targetKey
+          //通过事件告知组件的使用者选中的选项卡发生了变化
+          //事件对象可以不是一个对象，而是任何一个值，它会不经转换就传给事件的监听者 不需要构建事件对象
+          this.$emit('change',this.activeKey)//$emit,第二个参数就是事件对象告知事件详情 没有冒泡机制 可以接多个参数,但是最好用一个
+        }
+      }
+    },
+  })
+  
+  // app.component('map-input',{
+  //   props:{
+  //     modelValue:{
+  //       type:Object,
+  //       require:true,
+  //     }
+  //   },
+  //   emits:{
+  //     'update:modelValue':null,
+  //   },
+  //   template:`
+  //     <div>
+  //       <dvi v-for="(val,key) in modelValue">
+  //         <input :value='key'/>:  <input :value='value'/>
+  //         <button>-</button>
+  //       </div>  
+  //     </div>
+  //   `,
+  //   data(){
+  //     return{
+  //       entries:Object.entries(this.modelValue)//entries返回可迭代数组
+  //     }
+  //   },
+  //   methods:{
+
+  //   }
+  // })
+
+  app.component('date-input',{  
+    emits: ['update:modelValue'],//关联父组件
+    props: {
+      modelValue:{
+        type:Date,
+        require:true,
+      }
+    },
+    template:`
+      <input type="date" v-model='date'>
+    `,
+    watch:{
+      date(newDate){
+        let date = new Date(newDate)
+        this.$emit('update:modelValue',date)
+      },
+      modelValue(newModelValue){
+        this.date = this.modelValue.toISOString().slice(0,10)
+      }
+    },
+    data(){
+      return{
+        date:this.modelValue.toISOString().slice(0,10)
+      }
+    },
+    methods:{
+
+    }
+  })  
+
+  mountedApp = app.mount('#app') //已挂载正在运行的mountedApp proxy 与app(Creatapp)不一样
+</script>

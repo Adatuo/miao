@@ -1,0 +1,102 @@
+
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div id="app"></div>
+  
+<script>
+  const { createApp } = Vue
+
+  let app = createApp({
+    // provide:{
+    //   x:8,
+    // },
+    provide(){//下层实时拿到数据
+      return {
+        x: () => this.numbers
+      }
+    },
+    template:`
+      <div id="app">
+        <CompA></CompA>
+      </div>
+    `,
+    data() {     
+      let x = {
+        fruits:['apple','banana'],
+        showXiaomi:true,
+        message: 'Hello Vue! <em>aaa</em> ',
+        numbers: [1,2,3,4],
+        火车图片们:[{//在总的这里修改
+          link:'https://www.jd.com',
+          imgUrl:'https://www.12306.cn/index/images/abanner02.jpg',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://www.12306.cn/index/images/abanner06.jpg',
+        }],
+        小米产品图片们:[{//在总的这里修改
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202208121605_89f90ee66b37506fdae89fef03e16962.png',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8dede2520f8dfff9c9b690af498cafe8.jpg?w=632&h=340',
+        },{
+          link:'https://www.mi.com/xiaomi-tvs/s-pro-85',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/b16339167ac548f07334116f0ab80907.png?thumb=1&w=160&h=110&f=webp&q=90',
+        }],
+        tabsInfos:[{
+          key:'1',
+          label:'Tab 1',
+          children:'Content of Tab Pane 1',
+        },
+        {
+          key:'2',
+          label:'Tab 2',
+          children:'Content of Tab Pane 2',
+        },        {
+          key:'3',
+          label:'Tab 3',
+          children:'Content of Tab Pane 3',
+        },]
+      }
+      return x
+    },
+    methods: {
+      log(...args){
+        console.log(...args);       
+      }
+    }
+  })
+
+  app.component('CompA',{
+    props:['x'],
+    template:`
+      <div>
+        <CompB/>
+      </div>
+    `,
+  })
+
+  app.component('CompB',{
+    // inject:['x'],
+    inject:{//object传递依赖 上层组件provide是函数的时候更新下层使用的组件也会更新,但是A并不更新
+      艾克斯:{
+        from:'x',
+        default:0,//默认值
+      }
+    },
+    props:['a'],
+    template:`
+      <div>
+        I'm Comp B :: {{艾克斯()}}
+      </div>
+    `,
+  })
+
+  //响应式注入
+  let a = Vue.ref(2)
+  let b = Vue.computed(() => a.value *2) //延迟计算,就算a改变,去读b才计算
+
+
+  mountedApp = app.mount('#app') //已挂载正在运行的mountedApp proxy 与app(Creatapp)不一样
+</script>

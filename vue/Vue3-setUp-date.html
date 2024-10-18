@@ -1,0 +1,62 @@
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div id="app"></div>
+<script>
+  const { createApp } = Vue
+
+  
+
+  let app = createApp({
+    template:`
+      <div id="app">
+        <date-input v-model="birthday" />
+      </div>
+    `,
+
+    data() {   
+        
+      let x = {
+        birthday: new Date(),
+      }
+      return x
+    },
+    methods: {
+
+    }
+  })
+
+
+  
+  let {ref, computed, watch, reactive, watchEffect, onMounted, onBeforeUnmount } = Vue //必须引入
+  app.component('date-input', {
+    emits: ['update:modelValue'],
+    props: {
+      modelValue: {
+        type: Date,
+        require: true,
+      }
+    },
+    template: `
+      <input type="date" v-model="date" />
+    `,
+    setup(props, context) {
+      console.log(props)
+
+      var date = ref(props.modelValue.toISOString().slice(0, 10))
+
+      watch(date, () => {
+        context.emit('update:modelValue', new Date(date.value))
+      })
+
+      watch(() => props.modelValue, (newModelValue) => {
+        date.value = newModelValue.toISOString().slice(0, 10)
+      })
+
+      return {
+        date,
+      }
+    }
+  })
+  mountedApp = app.mount('#app')
+</script>

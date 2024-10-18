@@ -1,0 +1,169 @@
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+有些功能没有完成,不过不重要了
+<div id="app">
+</div>
+<script>
+  // import { createApp } from 'https://esm.sh/vue/dist/vue.esm-browser.js'
+  const { createApp } = Vue
+  var {ref, computed, watch, reactive, watchEffect ,provide,inject} = Vue
+  var app = createApp({
+    template: `
+      <TodoApp/>
+    `,
+    setup(){
+      let todos = reactive(
+        [
+          {
+            id: 'dc',
+            text: 'eat',
+            completed: true,
+          }, {
+            id: 'es',
+            text: 'drink',
+            completed: false,
+          }, {
+            id: 'ev',
+            text: 'sleep',
+            completed: true,
+          }
+        ]
+      )
+      provide('todos',todos)  
+      return {
+        todos
+      }
+    }
+  })
+  
+  app.component('TodoApp', {
+    template: `
+      <div>
+        <h1>todos</h1>
+        <TodoInput/>
+        <TodoList/>
+        <TodoFooter/>
+      </div>
+    `,
+  })
+
+  app.component('TodoInput',{
+    template:`
+      <input type='checkbox' @click='toggleAll()'/>
+      <input type='text' class='border border-black' @keydown.enter='addTodo' placeholder="What needs to be done?" '/>
+    `,
+    setup(){
+      let todos = inject('todos')
+
+      function addTodo(e) {               
+        
+          let text = e.target.value.trim()
+          if (text) { //非空
+              todos.push({            
+              text,
+              completed:false,          
+            })
+          }
+          e.target.value='' //清空输入框
+      }
+
+      function toggleAll() {
+        if(todos.every(todo => todo.completed == true)){
+            todos.forEach(todo => {
+            todo.completed = false
+          });
+        }else{
+            todos.forEach(todo => {
+            todo.completed = true
+          });
+        }
+
+      }
+
+      return {
+          todos,
+          addTodo,
+          toggleAll,
+        }
+    }
+  })
+
+  app.component('TodoList', {
+    template: `
+      <ul :class="'visible-' + visibleType">
+        <TodoItem v-for="(todo,index) of todos" :todo='todo' :index='todo.index' :key='todo.id'/>
+      </ul>
+    `,
+    setup(){
+      let todos = inject('todos')
+      return {
+        todos,
+      }
+    }
+  })
+
+  app.component('TodoItem',{
+    props:['todo','index','key'],
+    template:`
+      <li>
+        <input type='checkbox' v-model="todo.completed"/>
+        <span>{{todo.text}}</span>
+        <button @click=deleteTodo()>&times;</button>
+      </li>
+    `,
+    setup(props,context){
+      let todos = inject('todos') //共享,但是似乎并不符合vue理念,一般用事件传递
+      function deleteTodo(index) {
+        todos.splice(index,1)
+      }
+
+
+      return{
+        deleteTodo,
+        todos
+      }
+    }
+  })
+ 
+  app.component('TodoFooter', {
+    template: `
+      <div>
+        <TodoLeftCount/>
+        <TodoVisibleSelect/>
+        <TodoClear/>
+      </div>
+    `,
+  })
+
+  app.component('TodoLeftCount',{
+    template:`
+    <div>
+      <span>{{leftCount}} items left</span>
+    </div>  
+    `,
+    setup(){     
+      let todos = inject('todos')
+      let visibleType = ref('all')
+      let leftCount = computed(()=>{
+        return todos.filter(todo=>todo.completed == false).length
+      })//length
+
+      return {
+        todos,
+        leftCount,
+      }
+    }
+  })
+  
+  app.component('TodoVisibleSelect',{
+    template:`
+      <div>
+        <label><input type="radio" v-model="visibleType" value="All"></label>
+        <label><input type="radio" v-model="visibleType" value="Active"></label>
+        <label><input type="radio" v-model="visibleType" value="Completed"></label>
+      </div>
+    `,
+  })
+ 
+  var mountedApp = app.mount('#app')
+</script>

@@ -1,0 +1,89 @@
+<script src="./v3.5.11-global.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div id="app"></div>
+  
+<script>
+  const { createApp } = Vue
+
+  let app = createApp({
+    template:`
+      <div>
+        <comp5></comp5>
+        <comp5></comp5>
+      </div>
+    `,
+    data() {     
+      let x = {
+        obj:{
+          a:1,
+          b:2,
+          c:3,
+        },
+        birthday:new Date(),
+        fruits:['apple','banana'],
+        showXiaomi:true,
+        message: 'Hello Vue! <em>aaa</em> ',
+        numbers: [1,2,3,4],
+      }
+      return x
+    },
+    methods: {
+      log(...args){
+        console.log(...args);       
+      }
+    }
+  })
+
+
+  let {ref,onMounted,onBeforeUnmount,watchEffect}=Vue //组合式 API
+  app.component('comp5',{
+    setup(){//不能使用this
+      let x = ref(0)//js能监控对象的变化 ref的值指向x.value
+      let y = ref(0)
+      function onMouseMove(e) {//js不能监控变量的变化
+        x.value = e.clientX
+        y.value = e.clientY
+      }
+      onMounted(()=>{//能感知到自己在哪一个组件实例调用
+        window.addEventListener('mousemove',onMouseMove)
+      })
+      onBeforeUnmount(()=>{//能感知到自己在哪一个组件实例调用
+        window.removeEventListener('mousemove',onMouseMove)
+      })
+
+      let time = ref(new Date())
+      let id = null
+      onMounted(()=>{
+          id = setInterval(() => {
+          time.value = new Date()
+        }, 1000);
+      })
+      
+      onBeforeUnmount(()=>{
+        clearInterval(id)
+      })
+
+      function xpp() {//可以直接放函数
+        x.value++
+      }
+
+      return{//js不能监控变量的变化,所以会返回0
+        xpp,
+        x,
+        y,
+        time,
+      }
+    },
+    template:`
+      <div>
+        <button @click="xpp" class="border">x++</button>
+        Comp 5 {{x}}
+        {{time}}  
+        {{x}} {{y}}
+      </div>
+    `
+  })
+
+  mountedApp = app.mount('#app')
+</script>
