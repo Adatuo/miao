@@ -1930,15 +1930,398 @@ console.log(xhr.responseText)
 21:16 界面并没有刷新
 21:18 大致的路由router写法
 21:27 路由模型 地址的不同看的页面不同
+21:33 SPA single page app
 21:36 安装路由
 21:40 router渲染过程
+21:44 views 可复用页面组件
 21:47 入门
 21:49 memoryhistroy createWebhistory 
 21:54 createWebHashHistory
-22:00 vite极简工作原理 面试
+21:55 22:00 vite极简工作原理 面试 会转换成能被浏览器运行的js
 22:19 vite关键原理 不打包,直接在浏览器运行js
+22:20 createWebHashHistory是将页面放在/#/后面
 22:29 vite 可以配置baseurl
+22:37 createWebhistory 应用入口
 22:43 22:49入门访问当前路由$router $route
 22:55 params 不知道里面是什么log出来看看
 22:58 动态路由
+23:02 捕获所有路由或者404 路由
 23:07 嵌套路由
+
+## 10-18
+20:05 微信简易界面
+20:13 =>import 异步模块还没有运行节省流量
+20:26 实现整个界面朋友圈
+20:40 文档没有说的路径写法
+20:48 编程式导航
+21:05 命名路由
+21:08 location assign replace
+21:12 编程式导航
+21:16 router.go
+21:18 命名视图
+21:21 嵌套命名视图
+21:25 重定向
+21:28 别名 alias
+21:31 props 路由组件传参
+21:43 RouterView
+21:44 匹配当前路由器链接
+22:10 不同历史记录模式的区别
+22:21 推荐使用memory 模式
+22:23 导航守卫
+22:24 befoeEach
+22:26 全局解析守卫
+22:27 路由更新时机
+22:28 数据获取
+22:34 组合式API
+22:34 useLink 自定义标签
+22:39 RouterView插槽
+22:43 transation做动画的时机
+22:47 滚动行为
+22:52扩展RouterLink
+22:56 导航故障
+22:57 动态路由
+
+## 10-19
+20:02 TypeScript
+20:04 变量
+20:06 静态类型与动态类型 强,弱类型
+20:17 静态类型的好处
+20:34 开始TS介绍
+20:39 js的运行
+20:41 静态类型检查
+20:42 Non-exceptionFailures
+20:50 types for tooling
+21:00 tsc
+21:04 Explicit Types
+21:06 Date() new Date() 是不一样的
+21:09 什么时候写类型声明
+21:11 Erased Types
+21:13 Downleveling
+21:15 Everyday Types
+21:20 静态语言里的数组类型 Arrays
+21:23 any 可以使用noImplicitAny禁止
+21:30 函数返回值类型
+21:32 Promise的返回方式
+21:35 Contextual··typing·for·function 一般不能在后续使用反向推到之前变量的类型
+21:37 Object Types
+21:40 Object Types 可选属性
+21:44 Union Types 联合类型
+21:50 类型别名 Type Aliases
+21:53 interfacePoint 接口声明类型 
+21:55 type跟interface有什么区别 ts面试 type可以直接声明联合类型
+22:08 Interfaces
+22:12 Interfaces的添加与扩充
+22:14 八股面试TS Interfaces不能起别名
+22:18 TypeAssertions
+22:21 as类型提示
+22:26 面试 as只能向类型更大转或者更小转
+22:29 Literal Types 直接量类型
+22:30 类型值的集合 小本本
+22:33 alignment 常量联合类型 一般用于多个值 限定填写哪一个 ?
+22:37 Literal Inference
+22:43 将整个对象转换为类型
+22:45 null and undefined 可以开关
+22:47 x! x一定不为null
+22:49 bigint
+22:49 symbol
+22:50 typeof 在js ts是不一样的 
+
+## 10-20
+20:21 Narrowing
+20:26 type guard 类型守卫
+20:31 Truthiness narrowing 根据真假收窄
+20:35 Equality narrowing 相同收窄 ===
+20:39 in 运算符 :() => 描述函数类型
+20:41 instanceof narrowing
+20:42 Assignment 重新赋值之前类型不会改变 await似乎检查不出来
+20:46 Control flow analysis
+能判断if流else不同的值的属性 控制流分析
+20:48 Using type predicates isExtensionable
+20:57 Discriminated unions
+21:02 TS非空提示符
+21:08 freshness 新创建的对象必须对应指定接口
+21:22 never type 一般用来提示类型的增加
+21:23 Exhaustiveness checking
+21:27 function Type 函数类型标注 (a:string) => void
+21:33 调用签名 Call Signatures
+21:36 当对象是函数的时候写法不一样
+21:39 没有缩进的提示可能会感到眩晕
+21:43 Construct Signatures
+21:44 泛形Generic 面试高频
+21:54 模板类型 <T,U,V> 可以接多个
+22:11 never类型空集
+22:28 为什么是never类型空集 never是更好的选择
+22:34 any unknown never 的区分
+任何类型都可以赋给any
+unknown可以赋给任何类型（加个as之后）
+22:36 输入与输出类型
+22:38 Constraint extends继承类型
+22:43 47 常见错误 return{length:·nminimum} 可以传入,但是不能直接返回
+22;52 直接写类型与extend类型不一样 extend不能反向推断是什么类型,再返回之前已经被推断
+22:59 类型参数 有多个地方是同于一个类型,但是类型不去确定
+23:02 函数重载Function Overloads
+23:07 TS如何写重载
+23:11 ?表达式不能作为属性赋予 因为是一个可以改的变量 解决:直接声明类型即可
+23:15 this在函数的时候 DeclaringthisinaFunction
+23:17 Other Types to Know About (void,object,unknown,never,Function)
+23:21 Object type object 可能会不一样 最好只用大写Object
+23:23 不能对unknown做任何事情
+23:25 never
+23:35 Function 只代表有这些bind\call\apply 不如用()=>void运算符
+23:27 Parameter Destructuring 解构类型 参数解构
+
+## 10-21
+20:01 AssignabilityofFunctions
+20:05 不关心返回值的函数void,可以赋给他一个有返回值的函数 return type void
+20:09 forEach
+20:12 //@ts-expect-error不会报错
+20:14 属性修饰符 PropertyNModifiers
+20:18 let {a:A,b:B}=obj let A = obj.a let B = obj.b 被JS占用的语法
+20:19 readonly 只读 可以通过不是只读的来修改
+20:21 object.seal
+20:24 Index Signatures [index:number]:number|string unknown(任何属性)
+20:23 ExcessProperty Checks 不能只给unknown加属性
+20:35 新对象就是不能加属性
+20:43 Extending Types
+20:45 Intersection Types
+21:03 接口继承与扩展的区别
+21:06 并集,交集
+21:08 泛形 interface 面试 什么支持泛形 小本本
+21:16 嵌套 泛形 interface
+21:21 类型体操 Generic Object tTypes
+21:28 Array<type> 数组专属语法
+21:33 class 泛形
+21:40 Promise<number>
+21:45 Tuple type 长度固定的不可变数组 元组类型
+22:02 Creating Types from Types 一个类型生成另一个类型
+22:05 keyof
+22:17 keyof限定类型 function getProperty<Type,Key extends keyof Type>(obj: Type, key: Key){return obj[key] }
+22::23 create
+22:25 class type
+22:33 泛形参数的默认值
+22:35 in out
+22:42 类型运算符 Thetype of type operaton
+22:45 returntype 面试
+22:47 Indexed Access Types
+
+## 10-22
+20:06 extend可以作为类型约束或类型比较
+20:07 Conditional Types 三个重载例子xx extend xx ? xx : xx
+20:16 单类型不能直接分配联合类型
+20:20 因为类型窄话带来的改变
+20:27 联合类型的extend继承 T extend number|string 是右边所有联合类型组成的集合的任意子集组成的联合类型
+20:30 never是由一个原本由类型组成的集合在空集时的状态
+20:35 Conditional TypeeConstraints条件类型的限制
+type·MessageOf<T·extends·{·message:·unknown·}> = T["message"] 若不能确定T有没有message需要这样写
+20:47 传入一个promise的类型，返回promise内部包裹的类型 可以简化为infer 可能会面试
+20:55 infer的具体含义 
+infer的意思是，如果传入T类型能让inferU位置填入某种类型后让条件判断成立.那么请把应该填入inferU位置的类型赋值给u类型，然后该类型可以问号右边使用.
+21:00 ...args: infer
+21:13 infer可以有多个 ~21:29
+21:16 函数可以继承函数的类型
+21:22 如何使函数的参数类型匹配传来的任何一个函数
+21:25 函数\对象\参数\联合类型中不同的extends
+21:28 容易混淆的参数extends匹配
+21:32 容易混淆的函数extends匹配
+21:35 对于函数的A·extends·B来说
+满足A类型约束的函数一定可以以B类型的约束来调用工这种时候extends才成立 
+对于参数来说,A的参数类型可以比B的参数类型丰富,对于返回值来说,B的返回值类型可以比A的返回值类型丰富. 小本本
+21:38 ReturnType 面试手搓
+21:39 Distributive ConditionalI Types
+21:41 传入的联合类型作为整体来处理
+21:42 Mapped Types
+21:49 -readonly -?
+21:54 Key Remapping via as
+21:56 ` ` 反引号里面的类型是有限制的
+22:01 infer字符串分割
+22:21 手搓去出一个值的属性
+22:32 Further Exploration
+22:33 模板常量类型处理字符串 Type Manipulation
+22:45 class不怎么用
+22:53 pick
+22:56 Myomit
+23:00 NonNullable
+
+## 10-23
+20:02 promise手搓TS
+20:27~21:02 on方法,TemplateLiteralTypes ??
+21:02 react
+21:09 babel是JS语言编译器,把新版本的js编译到旧版本运行
+21:11 ract会编译一些JXS和elt
+21:23 Vue在不同ES环境下怎样调用
+21:26 react里面是没有类型标识的,用一个朴素对象保存
+21:33 内置组件加引号,外置不加引号 传递组件的函数,而不是名字
+哪一个编译更快??21:37
+21:37 react与reactDOM的区别 面试21:47 react之所以有两个包是因为react用于创建和管理react组件,但是不负责渲染他.reactDOM用于将组件渲染到DOM.ReactNative,可以将react组件用操作系统原生（native)ui渲染，以达到更高的性能.vue叫veex但是没怎么用
+ReactCanvas(非官方).ReactConsole(非官方).
+21:56 不同组件跨端开发的好处
+22:02 uni-app
+22:16 组件库可能是不一样的,定义新标准,最终渲染是一样的 面试
+22:21 react link
+22:23 react的两种写法 fuction class(比较少用)
+22:23 react class
+22:31 jsx都是表达式
+22:34 一般jsx要打括号
+22:35 逗号表达式(1,1)返回最后一个
+22:38 jsx用逗号的注意事项 <div></div>
+22:42 jsx {}模板
+22:47 函数取出来后就与之前的上下文脱离关系 react this 在调取函数时候无法确定this是谁需要bind
+22:54 push的返回值是数组长度
+23:01 react map数组的使用
+
+## 10-24
+20:03 为什么要bind绑定 ~20:10
+20:06 或者写成箭头函数
+20:10 bind,箭头可能浪费空间
+20;13 可以存储到构造函数里面去,不用每一次都创建
+20:16 或者在构造函数里接收一个箭头函数 = () => {} 然后写到外面20:20
+20:18 class字段复习 fields #p 私有
+20:26 为什么这里的foo需要bind ??
+20:43 createClass 挖坟的用法
+21:02 todo
+21:04 htmlFor 是for class是classname
+21:07 ul里面多个li写上多个数组{map}
+21:14 onchange为什么需要添加 最重要的是保持UI与数据是一致的
+21:20 非受控组件 checked
+21:28 改数据必须通过setState
+21:33 forceUpdate() 强制更新
+21:39 不能修改原始对象!!!
+21:46 如何文本插值实现v-if
+21:50 error boundary
+22:07 写defaultValue是不会受到没有change无法编辑的影响
+22:15 visible-type
+22:21 clsx
+22:24 parent state
+22:26 用tailwind group写ul的classname并隐藏li
+22:34 太大直接写在DOM
+22:37 即使添加也不能修改任何原始值
+22:38 编辑功能 onDoubleClick
+22:49 autoFocus 自动获取焦点,不用再点击一下
+
+## 10-25
+20:02 class组件的剩余部分
+20:11 编译结果造成的_this,就是给this换了个名字 ~20:15 而且是必须要在运行过程中才会这样,运行完成后会变回this
+20:15 如果是inc()这样声明而不是这样inc=()=> this不会改变名称
+20:17 sourceMappingURL 编译后代码与源码之间的关系 面试20:17~27 放在head的sourceMappingURL里面
+20:19 什么是token?程序里面拆开没有含义的词语
+20:21 任何一个文件可以直接转换为dataUrl,记录源代码的所有内容,源代码与目标代码的关系   解析
+20:24 mappings映射,name对应源代码的哪一个名字
+20:25 sourcemap
+20:27 可以通过调试来隐藏dataurl 代码太多了
+20:31 面试参考的一些关于sourcemap的问题
+20:36 babel的一些使用指南
+20:40 babel如何做到编译代码
+20:42 一组babel插件的集合presets
+20:44 babel data-presets的使用 env判断当前环境认识的语法(也可以指定版本) react 相当于设置需要编译的东西
+20:48 stage
+21:04 setState的运行逻辑
+21:09 assign
+21:16 setState其实会重新存储一个
+21:20 setState不能假定它是同步还是异步
+21:25~21:3 setState(state =>{}) setState(state =>{})
+两个什么时候异步调用(可以累加),什么时候修改状态
+21:45 setState里面会有一个实行异步的函数
+21:46 调用栈里面出现一些粗体表示存在调用栈清空 异步
+21:50 证明之前版本中也是异步操作 但是旧版本queMic没有
+21:56 旧版本react的setState是同步更新的
+21:57~22:20 如何回答setState的面试问题? 同步还是异步(16有时候同步有时候异步同步会立即合并并立即更新dom;最新18始终异步)?什么时候同步什么时候异步?setState做了什么? 小本本
+22:21 react类组件的生命周期
+22:25 生命周期图
+22:30 无法在jsx渲染滚动条
+22:33 static getDerivedStateFromProps 静态类,不在链上
+22:35 与直接写在this.state上面的区别 如果更新后不需要状态就可以写到getDerivedStateFromProps里面,二者在使用的时候会合起来 似乎有错误这种说法
+22:39 那些情况下需要更新后不需要状态 输入框
+22:43 过时的生命周期方法 因为不安全会造成bug
+
+## 10-26
+20:03 生命周期继续 如果外层使内层更新会调用should ??前
+20:05 不写构造函数的class生成方式 
+20:11 标签之间的属性都是children
+20:14 shouldComponentUpdate
+20:24 preact轻量化react
+20:25 函数组件 funcion component
+20:27 函数组件的一些特征完全去this
+20:39 vue3 和 react都忽略前后的空白
+20:41 JSX将对象属性传给一个元素
+20:49 函数组件也叫无状态组件
+21:05 函数组件添加状态
+21:13~21:32 useState的运行过程
+21:17 会把set改变的存储在useState的内部由react自己维护每一个组建的状态
+21:22 名字相同的组件状态也是不同的
+21:24 useState(Hook)简要运行逻辑,运行会检查状态,检查运行一次,更新运行一次
+21:28 能感知到在哪一个里面调用
+21:36 useState并不知道状态是干什么的只知道值
+21:41 useState知道自己为哪一个组件运行也知道组件函数里面调用的顺序
+21:45 组件之外调用(比如控制台)会出错
+21:48 或者在同一个组件实例调用顺序,次数改变会出错 面试必问 为什么react hook函数不能改变调用顺序
+21:53 useState 必须对应顺序
+22:03 调试hook
+22:08 useState(()=>2)的区别useState({a:1,b:2})对象较大节省空间
+22:13~22:18 hook函数不能改变调用顺序的错误归因,与存储的方法(数组,链表)无关,只是跟调用顺序有关 面试 小本本 
+22:19 面试小窍门
+22:20 hook的调试(需要首次挂载运行)
+22:35 fiberNode就是记录了组件的状态 16.7之前是没有的
+
+## 10-27
+20:04 传统函数与react hooks函数(useState)的区别 小本本
+20:10 什么是否函数会用到全局变量  记录函数自己调用了几次 记录递归层次
+20:13~20:46 react-hook函数api模拟
+20:46 再次证明与背后怎么存储没有关系
+21:00 useState的调用声明不能写到if或者for里面
+21:01 function轮播图
+21:07 在set外修改变量i , 会重新生成一个作用域,但是最好不要修改
+21:26 useState的set函数在18版本中都是异步的 面试
+21:33 js的label 为代码起名字 小本本
+21:36 label一般用来标注循环的名字
+21:42 consle.dir 作用域链查看
+21:45 setI(i => i+1) setI(i+1) 基本是一样的但是setI(i => i+1)的i+1访问的是箭头函数的i
+22:00 react闭包陷阱
+22:23 如何在按钮不变的情况下不更新 class 的shouldComponentUpdate
+22:28 函数组件如何实现 在按钮不变的情况下不更新
+22:31 memo 被React。memo包裹的组件，如果新传入的props没有发生变化则不更新组件
+22:35 PureComponent纯组件方法
+22;40 给组件取名字的好处,不然不好debugger 也可以displayname设置名字
+22:50 只要不是卡的不能用无脑写就ok
+
+## 10-28
+20:02 react其它常用hooks函数
+20:05 函数组件根本就没有生命周期,但是可以近乎完美的模仿出来
+20:07 memo就相当于shouldComponentUpdate
+20:14 不需要 static
+20:19 很少在组件函数里面调用useState set调用props修改状态
+20:32 函数组件需要的生命周期图
+20:34 deps 昨天也有提到
+20:35 useEffect
+20:38 useEffect的运行示意图
+20:40 useEffect闭包陷阱
+20:44 清除useEffect副作用
+20:46 如果给deps传递了函数会清除副作用
+20:48~20:51 生命周期模拟 deps给值就是更新 正好负载了三个生命周期
+21:03 给deps加上props即可更新
+21:05~21:12 useEffect debugger更新时机
+21:12 setTimeout 与 setInterval
+21:16 可以写多个useEffect精确更新
+21:18 轮播图运作时间线
+21:21 手写自动播放轮播图
+21:31 一加载就在检测到鼠标在轮播图里，停止自动播放
+21:37 react ref 存储指向的元素 
+21:40 能够查询变量更改的语言的原理\
+21:45 js如何解决的查询变量更改{value:1}
+21:47 currnt此时此刻指向谁
+21:50 需要使用useRef() 使得ref在生命周期内指向同一个对象
+21:53 current的使用
+22:04 验证ref在vue是一样用的,但是vue里面不能用:
+22:10 面试问到ref怎么答 小本本 不同位置共享数据
+22:13 给标签添加ref属性指向(字符串ref),class里面可以用,但是不推荐
+22:14 为什么不推荐使用字符串ref 面试 小本本
+22:15 太复杂
+22:19 再次样式为什么复杂 因为需要创建真实jsx元素
+22:23 为什么对象,函数ref更简单
+2227 class使用对象,函数ref
+22:31 为什么class可以接ref,函数不可以 面试 小本本
+22:34 函数不可以接字符串ref 
+22:39 class里面creatRef不会更新,因为是在this上修改没有通过setState 小本本
+22:42 函数组件在哪里存储ref
+22:43 为什么以var变量生成全局ref只能用一次 更新后是上一次的ref
+22:48 useRef新旧作用域指向的ref都是同一个
+22:56 hover不更新?? ref可以放在不变的地方

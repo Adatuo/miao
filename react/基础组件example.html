@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+      function MyApp() {
+        return <div>
+          <Counter />
+          <Counter start={2} />
+          <Counter start={3} step={3} />
+        </div>
+      }
+
+      class Counter extends React.Component {
+        // 初始化组件
+        constructor(props) {
+          super(props) // 组件的接收到参数
+          
+          // 组件的内部状态，类似vue的data
+          this.state = {
+            x: 1,
+            y: 2,
+            count: props.start ?? 0
+          }
+        }
+        inc() {
+          this.setState({
+            count: this.state.count + (this.props.step ?? 1)
+          })
+        }
+        // 返回组件的结构
+        render() {
+          return (
+            <div>
+              <span>{ this.state.count }</span>
+              <button onClick={ this.inc.bind(this) }>+</button>
+              {/*
+                [1,2,3,4].map(it => {
+                  return <span>{it}</span>
+                })
+              */}
+              {/*
+                expr ? '' : <button></button>
+              */}
+            </div>
+          )
+        }
+      }
+
+
+
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      root.render(<MyApp />)
+
+    </script>
+  </body>
+</html>

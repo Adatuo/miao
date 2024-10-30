@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react">
+
+      function Button(props) {
+        var {children, ...restProps} = props
+        return <button {...restProps} className="border p-1 rounded text-white bg-slate-500">{children}</button>
+      }
+
+      class MyApp extends React.Component {
+        state = {
+          i: 1,
+        }
+        inc = () => {
+          this.setState({
+            i: this.state.i + 1
+          })
+        }
+        render() {
+          return (
+            <div>
+              {this.state.i} <Button onClick={this.inc}>i++</Button>
+              <Counter />
+            </div>
+          )
+        }
+      }
+
+      class Counter extends React.Component {
+        // 初始化组件
+        constructor(props) {
+          super() // 组件的接收到参数
+          
+          // 组件的内部状态，类似vue的data
+          this.state = {
+            x: 1,
+            y: 2,
+          }
+
+        }
+        // Counter.getDerivedStateFromProps()
+        static getDerivedStateFromProps(props) {
+          return {
+            count: props.start ?? 0
+          }
+        }
+
+        // UNSAFE_componentWillReceiveProps() {} // getDerivedStateFromProps
+        // UNSAFE_componentWillMount() {} // constructor
+        // UNSAFE_componentWillUpdate() {}
+        
+        // componentDidMount() {}
+        // componentWillUnmount() {}
+        // componentDidUpdate() {}
+        shouldComponentUpdate(newProps, newState) {
+          console.log('counter shouldUpdate')
+          return true
+        }
+        getSnapshotBeforeUpdate(prevProps, prevState) {
+          console.log('getSnapshotBeforeUpdate')
+          return {a:1,b:2}
+        }
+        componentDidUpdate(prevProps, prevState, snapshot) {
+          console.log(snapshot)
+        }
+
+
+        inc = () => {
+          this.setState({
+            count: this.state.count + (this.props.step ?? 1)
+          })
+        }
+        // 返回组件的结构
+        render() {
+          console.log('counter render')
+          return (
+            <div>
+              <span>{ this.state.count }</span>
+              <button onClick={ this.inc }>+</button>
+              {/*
+                [1,2,3,4].map(it => {
+                  return <span>{it}</span>
+                })
+              */}
+              {/*
+                expr ? '' : <button></button>
+              */}
+            </div>
+          )
+        }
+      }
+
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      root.render(<MyApp />)
+
+    </script>
+  </body>
+</html>

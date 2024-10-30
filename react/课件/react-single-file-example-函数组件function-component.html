@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react">
+
+      function Button(props) {
+        var {children, ...restProps} = props
+        return <button {...restProps} className="border p-1 rounded text-white bg-slate-500">{children}</button>
+      }
+
+      var map = {
+        heart: '💕',
+        star: '⭐',
+        smile: '😊'
+      }
+      function Icon({ iconName }) {
+        return <i className="font-normal">{map[iconName] ?? 'error'}</i>
+      }
+
+window.a = true
+
+
+      function Counter({ start = 0 }) {
+        debugger
+        if (window.a) {
+          var [count, setCount] = React.useState(start)
+          var [age, setAge] =     React.useState(18)
+        } else {
+          var [age, setAge] =     React.useState(18)
+          var [count, setCount] = React.useState(start)
+        }
+
+        function inc() {
+          debugger
+          setCount(count + 1)
+        }
+
+        function grow() {
+          setAge(age + 1)
+        }
+
+        return (
+          <div>
+            <button onClick={inc}>{ count }</button>
+            |
+            <button onClick={grow}>{ age }</button>
+          </div>
+        )
+      }
+
+
+      /**
+       * 函数组件的每个组件就是一个函数
+       * 但这个函数不是当构造函数调用的，就是当普通函数调用的
+       * 里面的this是undefined或window，也就是说完全去this化了
+       * 
+       * 函数组件会接收一个参数props，其表示该组件在被使用时传入的参数
+       * 
+       * 函数组件以前是没有状态的，所以曾经叫stateless functional component
+       */
+      function MyApp() {
+        return (
+          <div>
+            <Counter />
+            <Counter start={5}/>
+
+            
+            <Icon name="smile" />
+            <Icon name="heart" />
+
+            <Button id="foo" title="owe" onClick={ () => console.log(1) }>
+              hello
+              <span>we<i>i</i>jf</span>
+            </Button>
+          </div>
+        )
+      }
+
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      root.render(<MyApp />)
+
+    </script>
+  </body>
+</html>

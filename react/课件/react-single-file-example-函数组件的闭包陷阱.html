@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react">
+      var { useState, useCallback, useEffect, memo } = React
+
+      // 被React.memo包裹的组件，如果新传入的props没有发生变化
+      // 则不更新组件
+      var Button = memo(function Button(props) {
+        console.log('Button render')
+        var {children, className, ...restProps} = props
+        return <button {...restProps} className={`border p-1 rounded text-white bg-slate-500 ${className}`}>{children}</button>
+      })
+
+
+      function isEqual(obj1, obj2) {
+        for (var key in obj1) {
+          if (obj1[key] !== obj2[key]) {
+            return false
+          }
+        }
+        return true
+      }
+
+      // class Button extends React.PureComponent {
+      //   // shouldComponentUpdate(nextProps, nextState) {
+      //   //   if (isEqual(this.props, nextProps)) {
+      //   //     return false
+      //   //   }
+      //   //   return true
+      //   // }
+      //   render() {
+      //     console.log('Button render')
+      //     var {children, className, ...restProps} = this.props
+      //     return <button {...restProps} className={`border p-1 rounded text-white bg-slate-500 ${className}`}>{children}</button>
+      //   }
+      // }
+
+      var map = {
+        heart: '💕',
+        star: '⭐',
+        smile: '😊'
+      }
+      function Icon({ iconName }) {
+        return <i className="font-normal">{map[iconName] ?? 'error'}</i>
+      }
+
+      function Carousel({ imgs }) {
+        var [i, setI] = useState(0)
+        // console.log(setI)
+
+        const prev = useCallback(function prev() {
+          setI(i => {
+            var newI = i - 1
+            if (newI < 0) {
+              newI = imgs.length - 1
+            }
+            return newI
+          })
+        }, [])
+
+        // const next = useCallback(function next() {
+        //   setI(i + 1 >= imgs.length ? 0 : i + 1)
+        // }, [i])
+
+        function next() {
+          setI(i => i + 1 >= imgs.length ? 0 : i + 1)
+        }
+
+        return (
+          <div className="w-[200px] h-[150px] border relative">
+            <a className="absolute w-full h-full" target="_blank" href={imgs[i].link}>
+              <img className="block w-full h-full" src={imgs[i].imgUrl}/>
+            </a>
+            <button onClick={prev} className="absolute left-0 w-4 h-4 top-1/2" >prev</button>
+            <Button onClick={next} className="absolute right-0 w-4 h-4 top-1/2" >next</Button>
+          </div>
+        )
+      }
+
+
+      /**
+       * 函数组件的每个组件就是一个函数
+       * 但这个函数不是当构造函数调用的，就是当普通函数调用的
+       * 里面的this是undefined或window，也就是说完全去this化了
+       * 
+       * 函数组件会接收一个参数props，其表示该组件在被使用时传入的参数
+       * 
+       * 函数组件以前是没有状态的，所以曾经叫stateless functional component
+       */
+      function MyApp() {
+        return (
+          <div>
+
+            <Carousel imgs={
+              [
+                {
+                  imgUrl: 'https://dummyimage.com/600x400/000/fff',
+                  link: ''
+                },
+                {
+                  imgUrl: 'https://dummyimage.com/600x400/f0f/abc',
+                  link: '',
+                },
+              ]
+            } />
+
+
+            <Icon name="smile" />
+            <Icon name="heart" />
+
+            <Button id="foo" title="owe" onClick={ () => console.log(1) }>
+              hello
+              <span>we<i>i</i>jf</span>
+            </Button>
+          </div>
+        )
+      }
+
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      root.render(<MyApp />)
+
+    </script>
+  </body>
+</html>

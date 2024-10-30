@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <!-- 这里为什么有两个包
+     React是用于创建和管理react组件的，但不负责渲染它。
+      ReactDOM是用于将react组件渲染到DOM中的
+      实际上还存在
+      ReactCanvas（非官方）可以将react组件渲染到Canvas里
+      ReactConsole（非官方，实际名字叫Ink）可以将react组件渲染到控制台里
+      ReactNative（官方）可以将react组件用操作系统原生(native)ui渲染，以达到更高的性能
+
+      每个系统/编程环境中的组件库是不一样的
+      所以我们会定义一组通用的组件，这些组件在不同的环境实现方式不一样
+      但组件最终的渲染效果是一样的
+
+    -->
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+      function MyApp() {
+        return <h1><span>hello</span>, <strong>world!</strong></h1>
+      }
+
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      root.render(<MyApp />)
+
+    </script>
+  </body>
+</html>

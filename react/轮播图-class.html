@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轮播图</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+  <script src="babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+
+    function MyApp() {
+      return <div>
+        <Counter x={1}/>
+        <Carousel />
+      </div>
+    }
+
+    class Counter extends React.Component {
+      // 初始化组件
+      constructor(props) { //把props挂到this上,不传也会挂上去?
+        super(props) // 组件的接收到参数
+        
+        // 组件的内部状态，类似vue的data
+        this.state = {
+          i: 0,
+          y: 2,
+          count: props.start ?? 0,
+        }
+      }
+      inc=()=> { //_this 
+        debugger;      
+        this.setState({
+          count: this.state.count + (this.props.step ?? 1),
+          // photo: this.state.photo[0].imgUrl  
+        })
+        console.log(this.state.count);       
+      }
+
+      // 返回组件的结构
+      render() {//任何一段JSX都是表达式
+
+        return ( 
+          <div>
+            <span>{ this.state.count }</span>
+            <button onClick={ this.inc }>+</button>
+          </div>
+        )
+      }
+    }
+
+     
+    class Carousel extends React.Component {
+      constructor(props) { //把props挂到this上,不传也会挂上去?
+        super(props) // 组件的接收到参数
+        
+        // 组件的内部状态，类似vue的data
+        this.state = {
+          i: 0,
+          photo:[{
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/nr-pub/202208121605_89f90ee66b37506fdae89fef03e16962.png',
+        },{
+          link:'https://www.mi.com',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8dede2520f8dfff9c9b690af498cafe8.jpg?w=632&h=340',
+        },{
+          link:'https://www.mi.com/xiaomi-tvs/s-pro-85',
+          imgUrl:'https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/b16339167ac548f07334116f0ab80907.png?thumb=1&w=160&h=110&f=webp&q=90',
+        }]
+        }
+      }
+
+      // preNext(){
+      //   this.setState(() =>(
+      //   {
+      //     i: (this.state.i + 1 + this.state.photo.length)%this.state.photo.length,
+      //   }))
+      // }
+
+      preNext = () => {
+        let index = this.state.i-1 //++如果是++的话会直接修改i,所以要加1
+        if (index == -1) {//长度一样就归0
+          index = this.state.photo.length - 1      
+        }
+        this.setState({//只能在这里修改
+          i: index
+        })
+      }
+
+      // Next(){
+      //   this.setState({
+      //     i: (this.state.i + 1)%this.state.photo.length,
+      //   })
+      // }
+
+      Next = () => {
+        let index = this.state.i+1 //++如果是++的话会直接修改i,不能在这里修改
+        if (index == this.state.photo.length) {//长度一样就归0
+          index = 0          
+        }
+        this.setState({//需要在这里修改
+          i: index
+        })
+      }
+
+      render() {//任何一段JSX都是表达式
+        let miPhoto = this.state.photo[this.state.i]
+        return ( 
+          <div>
+            <button onClick={this.preNext.bind(this)}>pre</button>
+            <img class='w-full h-full' src={miPhoto.imgUrl}/>
+            <button onClick={this.Next}>next</button>{/*点击时执行,不需要传参.//this.//Next()因为this不确定所以不能这样写*/}
+          </div>
+        )
+      }
+
+
+    }
+    const container = document.getElementById('root')
+    const root = ReactDOM.createRoot(container)
+    root.render(<MyApp />)
+
+  </script>
+</body>
+</html>
+
