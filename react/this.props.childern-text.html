@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Props Children Example</title>
+    <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        .wrapper {
+            border: 2px solid #333;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // Wrapper 组件
+        class Wrapper extends React.Component {
+            render() {
+                return (
+                    <div className="wrapper">
+                        <h2>Wrapper Component</h2>
+                        <div>{this.props.children}</div> {/* 渲染子元素 */}
+                    </div>
+                );
+            }
+        }
+
+        // App 组件
+        class App extends React.Component {
+            render() {
+                return (
+                    <Wrapper>
+                        <p>This is some content inside the wrapper!</p>
+                        <p>time to go</p>
+                    
+                    </Wrapper>
+                );
+            }
+        }
+
+        // 渲染 App 组件到页面
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

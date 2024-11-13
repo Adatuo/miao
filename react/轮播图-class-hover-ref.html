@@ -43,6 +43,8 @@
       function Icon({ iconName }) {
         return <i className="font-normal">{map[iconName] ?? 'error'}</i>
       }
+
+
       function Carousel({ imgs, autoPlay = false }) {
         var [i, setI] = useState(0)
         var [hover, setHover] = useState(false)
@@ -52,7 +54,7 @@
             if (autoPlay) {
               var id = setInterval(() => {
                 next()
-              }, 3000)
+              }, 1000)
             }
           }
 
@@ -60,7 +62,6 @@
             clearInterval(id)
           }
         }, [hover])
-
 
         var rootEl = useRef()
 
@@ -89,7 +90,7 @@
         function mouseEnter() {
           setHover(true)
         }
-        function mouseLeave() { 
+        function mouseLeave() {
           setHover(false)
         }
         
@@ -101,7 +102,7 @@
               <img className="block w-full h-full" src={imgs[i].imgUrl}/>
             </a>
             <button onClick={prev} className="absolute left-0 w-4 h-4 top-1/2" >prev</button>
-            <button onClick={next} className="absolute right-0 w-4 h-4 top-1/2" >next</button>
+            <Button onClick={next} className="absolute right-0 w-4 h-4 top-1/2" >next</Button>
           </div>
         )
       }
@@ -162,7 +163,80 @@
               <img className="block w-full h-full" src={imgs[i].imgUrl}/>
             </a>
             <button onClick={prev} className="absolute left-0 w-4 h-4 top-1/2" >prev</button>
-            <button onClick={next} className="absolute right-0 w-4 h-4 top-1/2" >next</button>
+            <Button onClick={next} className="absolute right-0 w-4 h-4 top-1/2" >next</Button>
+          </div>
+        )
+      }
+      function Carousel3({ imgs, autoPlay = false }) {
+        var [i, setI] = useState(0)
+
+        // var hover = useRef(false)
+        var intervalId = useRef()
+
+        var rootEl = useRef()
+
+        function startAutoPlay() {
+          intervalId.current = setInterval(() => {
+            next()
+          }, 2000)
+        }
+        function stopAutoPlay() {
+          clearInterval(intervalId.current)
+        }
+
+        useEffect(() => {
+          var hoveringElements = [...document.querySelectorAll(':hover')]
+          if (hoveringElements.includes(rootEl.current)) {
+            console.log('检测到鼠标在轮播图里，停止自动播放')
+            // hover.current = true
+            stopAutoPlay()
+          } else {
+            // hover.current = false
+            if (autoPlay) {
+              startAutoPlay()
+            }
+          }
+
+          return stopAutoPlay
+        }, [])
+
+        function mouseEnter() {
+          // hover.current = true
+          stopAutoPlay()
+        }
+        function mouseLeave() {
+          // hover.current = false
+          if (autoPlay) {
+            startAutoPlay()
+          }
+        }
+
+
+
+        function prev() {
+          setI(i => {
+            var newI = i - 1
+            if (newI < 0) {
+              newI = imgs.length - 1
+            }
+            return newI
+          })
+        }
+
+        function next() {
+          setI(i => i + 1 >= imgs.length ? 0 : i + 1)
+        }
+
+        
+
+
+        return (
+          <div ref={rootEl} onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} className="carousel w-[200px] h-[150px] border relative">
+            <a className="absolute w-full h-full" target="_blank" href={imgs[i].link}>
+              <img className="block w-full h-full" src={imgs[i].imgUrl}/>
+            </a>
+            <button onClick={prev} className="absolute left-0 w-4 h-4 top-1/2" >prev</button>
+            <Button onClick={next} className="absolute right-0 w-4 h-4 top-1/2" >next</Button>
           </div>
         )
       }
@@ -178,24 +252,12 @@
         return <button onClick={inc}>{count}</button>
       }
 
-      function Foo(props) {
-        var [a, setA] = useState(0)
-
-        var b = useRef()
-
-        function onClick() {
-          b.current++
-        }
-
-        return <div></div>
-      }
-
       function MyApp() {
         return (
           <div>
             <Counter start={0} step={1} />
 
-            <Carousel2 autoPlay imgs={
+            <Carousel autoPlay imgs={
               [
                 {
                   imgUrl: 'https://dummyimage.com/600x400/000/fff',
@@ -216,10 +278,10 @@
             <Icon name="smile" />
             <Icon name="heart" />
 
-            <button id="foo" title="owe" onClick={ () => console.log(1) }>
+            <Button  id="foo" title="owe" onClick={ () => console.log(1) }>
               hello
-              <span>we<i>i</i>jf</span>
-            </button>
+              <span >we<i>i</i>jf</span>
+            </Button>
           </div>
         )
       }

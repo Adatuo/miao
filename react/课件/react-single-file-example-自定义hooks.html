@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react">
+      var { useState, useCallback, useEffect, memo, useRef, useMemo, useId, useReducer, useLayoutEffect, useContext } = React
+
+      // 被React.memo包裹的组件，如果新传入的props没有发生变化
+      // 则不更新组件
+      var Button = memo(function Button(props) {
+        console.log('Button render')
+        var {children, className, ...restProps} = props
+        return <button {...restProps} className={`border p-1 rounded text-white bg-slate-500 ${className}`}>{children}</button>
+      })
+
+      var map = {
+        heart: '💕',
+        star: '⭐',
+        smile: '😊'
+      }
+      function Icon({ iconName }) {
+
+        return <i className="font-normal">{map[iconName] ?? 'error'}</i>
+      }
+
+      function useTime2() {
+        var [time, setTime] = useState(() => new Date())
+        
+        useEffect(() => {
+          var id = setInterval(() => {
+            setTime(new Date())
+          }, 1000)
+
+          return () => clearInterval(id)
+        }, [])
+
+        return time
+      }
+
+
+      function useTime() {
+        var [time, setTime] = useState(() => new Date())
+        
+        useEffect(() => {
+          var delay = 1000 - Date.now() % 1000
+          var id
+
+          var id2 = setTimeout(() => {
+
+            setTime(new Date())
+            console.log(Date.now())
+            id = setInterval(() => {
+              setTime(new Date())
+            }, 1000)
+
+          }, delay)
+
+          return () => {
+            clearInterval(id)
+            clearTimeout(id2)
+          }
+        }, [])
+
+        return time
+      }
+
+      function useMousePosition() {
+        var [mousePos, setMousePos] = useState(() => ({x:0,y:0}))
+
+        useEffect(() => {
+          function onMove(e) {
+            setMousePos({
+              x: e.clientX,
+              y: e.clientY
+            })
+          }
+          window.addEventListener('mousemove', onMove)
+
+          return () => {
+            window.removeEventListener('mousemove', onMove)
+          }
+        }, [])
+
+        return mousePos
+      }
+
+      function useVModel() {
+        var [model, setModel] = useState('')
+
+        var onChange = useCallback(function onChange(e) {
+          setModel(e.target.value)
+        }, [])
+
+        return {
+          value: model,
+          onChange,
+        }
+      }
+
+      function Test() {
+        var time = useTime()
+        var mouse = useMousePosition()
+
+        var name = useVModel()
+
+        return (
+          <div>
+            { mouse.x }, { mouse.y }
+            <hr />
+            { time.toString() }
+            <input type="text" {...name}/>
+          </div>
+        )
+      }
+
+      function useRequest(fetcher) {
+        var [loading, setLoading] = useState(true)
+        var [data, setData] = useState(null)
+        var [error, setError] = useState(null)
+
+        useEffect(() => {
+          fetcher().then(data => {
+            setLoading(false)
+            setData(data)
+          }, error => {
+            setLoading(false)
+            setError(error)
+          })
+        }, [])
+
+        return {
+          data,
+          error,
+          loading,
+        }
+      }
+
+      function useCountDown(dateString) {
+        
+        var date = useMemo(() => new Date(dateString), [dateString])
+        var [now, setNow] = useState(() => new Date())
+
+        useEffect(() => {
+          var id = setInterval(() => {
+            setNow(new Date())
+          }, 1000)
+
+          return () => clearInterval(id)
+        }, [])
+
+        console.log(date, now)
+
+        var seconds = useMemo(() => ((date - now) / 1000 ) | 0, [date, now])
+
+        return seconds
+      }
+
+      function MyApp() {
+        var time = useTime()
+
+        var countDown = useCountDown('2024-11-01')
+
+        var {data, loading} = useRequest(() => {
+          return fetch('https://jsonplaceholder.typicode.com/todos').then(it => it.json())
+        })
+
+        if (loading) {
+          return <div>loading...</div>
+        }
+
+
+        return (
+          <div>
+            距离11月1号还有{countDown}秒
+            ::::{time.toString()}::::
+            <Test />
+            {
+              data.map((todo,idx) => {
+                return <div key={todo.id}>
+                  <input type="checkbox" checked={todo.completed} onChange={() => {}}/>
+                  <span>{ todo.title }</span>
+                </div>
+              })
+            }
+          </div>
+        )
+      }
+
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      root.render(<MyApp />)
+
+    </script>
+  </body>
+</html>

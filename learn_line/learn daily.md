@@ -1182,7 +1182,7 @@ text 对其左上角定位
 21:38 DOM(canvas)画,但是不能清除,因为编程接口不能撤销,直接转成了像素 
 21:41 显存,屏幕画图原理 x*y*3
 
-9-7
+## 9-7
 通过解析的语法树画图
 20:16 各个画图的部分
 20:30 getBBOX
@@ -1196,9 +1196,9 @@ text 对其左上角定位
 22:07 为什么用贝塞尔曲线画 圆弧画可能空间不够
 22:22 ?
 
-9-8 解决g靠不到边的问题,因为g标签还要成为别人的子元素,21:33(很重要)
+## 9-8 解决g靠不到边的问题,因为g标签还要成为别人的子元素,21:33(很重要)
 
-9-9 
+## 9-9 
 # 网络
 20:06 拓扑结构
 20:07 分层结构ISO
@@ -1231,7 +1231,7 @@ text 对其左上角定位
 22:36 如何判断是否在同一个网段 子网掩码 
 把ip地址转换为一个uint32的整数
 
-9-10
+## 9-10
 20:21 路由器
 20:32 路由器与交换机数据包的传输过程
 20:36 IP地址是给到网卡的
@@ -1249,7 +1249,7 @@ text 对其左上角定位
 22:43 IP地址存在与分配
 22:46 DNS 让名字指向IP地址
 
-9-11
+## 9-11
 20:10 DNS服务图
 20:16 大公司才用不同区域的DNS解析
 20:20 DNS负载均衡?
@@ -1271,7 +1271,7 @@ text 对其左上角定位
 22:35 hosts
 22:39 动态DNS服务 DDNS 发现自己的IP被修改了,就自动修改指向
 
-9-12
+## 9-12
 20:01 NAT 网络地址转换
 20:05 网络层路由器与家用路由器(NAT路由器)是不一样的
 20:07 NAT路由器
@@ -1289,11 +1289,11 @@ text 对其左上角定位
 21:44 光猫
 21:49 如何知道自己是否在多层级连?查看能控制的所有设备IP,再看看是否一样
 22:09 TCP transmission control ptotocol 控制数据有序到达目的地 对数据进行编号
-22:42 TCP常见错误
+22:42 TCP常见错误CONNECTION_REFUSED和CONNECTION_TIME_OUT以及CONNECTION_RESET 
 22:10 TCP模型
 22:50 TCP模型
 
-9-13
+## 9-13
 ## TCP
 20:01 TCP模型
 20:08 TCP为什么确认数据包已收到
@@ -1316,7 +1316,7 @@ SYN握手包 ACK recet
 22:41 队头阻塞 ,对头数据没有收到,就算是后面的收到了也无法交付
 22:45 TCP与UDP区别(面试)
 
-9-14
+## 9-14
 ## 应用层
 20:08 为什么DHCP不需要使用TCP？　不需要传输大量数据
 ２０：１１　为什么DNS不需要使用TCP？  仅仅是地址解析，不需要传输大量数据
@@ -1346,7 +1346,7 @@ SYN握手包 ACK recet
 ２２：５２  TLS握手（面试，看文章）
 ２２：５４  SSL ｈｔｔｐｓ／ｆｔｐｓ 先建立TLS再继续原有和功能
 
-9-15
+## 9-15
 # HTTP
 20:05 二进制协议?开头要重新听听
 20:07 http 请求资源,响应资源
@@ -1359,7 +1359,7 @@ SYN握手包 ACK recet
 22:01 解码
 22:07 分割请求(面试) 为什么要分割
 
-9-16
+## 9-16
 # HTTP
 20:14 浏览器中的绝对地址
 20:16 没填地址读出来就是当前界面的地址
@@ -1389,7 +1389,7 @@ console.log(xhr.responseText)
 22:19 封装,callback
 
 ## 异步
-9-18
+## 9-18
 20:14 错误抛给了控制台
 20:17 不用promise的抛错
 20:16 errocllback 异步放在了里面
@@ -1412,7 +1412,7 @@ console.log(xhr.responseText)
 22:20 一单异步就不能通过返回给出结果,只能通过回调给出
 
 ## taskqueue promise
-9-19
+## 9-19
 20:05 taskqueue
 20:11 这不就是迅雷下载吗
 20:15 undefind问题
@@ -1431,7 +1431,7 @@ console.log(xhr.responseText)
 22:25 调用then会产生新的promises
 22:28 p2 = p.then(f1,f2) p2的结构由then的返回值决定
 
-9-20  
+## 9-20  
 ## then
 20:10 面试几乎不会出现这道题 |x+y|>2 
 20:13 p2 = p.then(f1,f2)
@@ -1452,7 +1452,7 @@ console.log(xhr.responseText)
 22:27 为什么要读出来then
 22:28 防呆
 
-9-22
+## 9-22
 20:04 不能预测链接
 20:11 根据数量变化处理
 20:15 then返回的不同的情况
@@ -1475,7 +1475,7 @@ console.log(xhr.responseText)
 22:11 与promise有关的函数
 22:27 面试实现promise.xxx
 
-9-23
+## 9-23
 20:06 all
 20:15 为什么instanceof Promise不可以?因为有其它符合标准的实现 解决用resolve包一层就总会是promise了
 20:37 promise any(面试)
@@ -1495,7 +1495,7 @@ console.log(xhr.responseText)
 22:31 钥匙验证流程
 22:34 虽然公私钥很安全,但是效率太低,一般是先验证好再设置一个密码
 
-9-24
+## 9-24
 20:04 HTTP各种常用头的意思(面试)
 20:08 HTTP压缩一般是为了节省流量
 20:14 一般是请求头有压缩,请求体小不用压缩
@@ -1528,7 +1528,7 @@ console.log(xhr.responseText)
 22:20 预检请求模型
 
 ##  异步yeid
-9-25
+## 9-25
 20:08 生成器函数运行回顾
 20:09 yeid return
 20"10 yeid throw 右边抛出错误左边没有赋值成功
@@ -1546,7 +1546,7 @@ console.log(xhr.responseText)
 22:04 for await of 异步生成器不能迭代
 22:09 await在控制台可以直接使用
 
-9-26
+## 9-26
 20:03 async在ES2017之前怎么用的(面试)
 20:10 面试题
 20:18 面试,yield之前的写法regeneratorRuntime
@@ -1558,7 +1558,7 @@ console.log(xhr.responseText)
 21:58 重用
 22:17 供应商投毒
 
-9-27
+## 9-27
 20:00 调用import
 20:08 解耦
 20:12 版本号  主要版本号.功能.补丁
@@ -1577,7 +1577,7 @@ console.log(xhr.responseText)
 22:17 动态导入
 22:27 importmap
 
-9-28
+## 9-28
 21:00 浏览器缓存问题
 21:10 
 21:14 lexcial 但是eval可以读到
@@ -1588,7 +1588,7 @@ console.log(xhr.responseText)
 22:05 reuqire4
 22:07 模块导出单个的时候
 
-9-29
+## 9-29
 20:02 懒加载
 20:12 本机上跑大概3ms以内(除非电脑硬盘都很差),但是网络上跑就不一定了,所以不能串行
 20:17 同步require不能接收的原因 
@@ -1601,7 +1601,7 @@ console.log(xhr.responseText)
 22:17 模块相互依赖是可能存在的
 22:19 循环依赖解决(面试,不一定会问)
 
-9-30
+## 9-30
 20:02 接口
 20:08 遇到ugly接口封装它,变得更好用
 20:30 适配器
@@ -1613,7 +1613,7 @@ console.log(xhr.responseText)
 21:42 matches
 22:10 bind
 
-10-3
+## 10-3
 20:04 todo
 20:07 无论写的多垃圾,要把基本的UI写出来
 20:15 除了丢弃的API,其它都可用
@@ -1625,7 +1625,7 @@ console.log(xhr.responseText)
 22:16 双向绑定
 22:20 全局event
 
-10-4
+## 10-4
 20:14 vue2/3
 20:21 渐进式框架
 20:24 UI/UX UI现在一般包含视觉和交互效果
@@ -1728,7 +1728,7 @@ console.log(xhr.responseText)
 22:01 封装的两个角度
 22:07 vue3框架里面的组件
 22:12 component
-22:28 各种属性的叫法
+22:28 各种属性的叫法 attribute property props 小本本
 22:32 组件版轮播图
 22:36 为什么图片写在里面 作用域问题
 
@@ -1815,7 +1815,7 @@ console.log(xhr.responseText)
 20:26 setup轮播图
 21:09 setup的函数用法
 21:15 e4x
-21:17 jsx
+21:17 jsx 只是一笔带过没细说
 21:18 toVaule
 21:20 toRefs
 21:22 isProxy
@@ -2275,7 +2275,7 @@ ReactCanvas(非官方).ReactConsole(非官方).
 21:36 label一般用来标注循环的名字
 21:42 consle.dir 作用域链查看
 21:45 setI(i => i+1) setI(i+1) 基本是一样的但是setI(i => i+1)的i+1访问的是箭头函数的i
-22:00 react闭包陷阱
+22:00 react闭包陷阱,useCallback包一层
 22:23 如何在按钮不变的情况下不更新 class 的shouldComponentUpdate
 22:28 函数组件如何实现 在按钮不变的情况下不更新
 22:31 memo 被React。memo包裹的组件，如果新传入的props没有发生变化则不更新组件
@@ -2289,17 +2289,19 @@ ReactCanvas(非官方).ReactConsole(非官方).
 20:07 memo就相当于shouldComponentUpdate
 20:14 不需要 static
 20:19 很少在组件函数里面调用useState set调用props修改状态
+20:23 useState里面的值只会用一次
 20:32 函数组件需要的生命周期图
 20:34 deps 昨天也有提到
-20:35 useEffect
+20:35 useEffect 只会在组件挂载和依赖项变化时执行，从而避免了无限重渲染的问题。
 20:38 useEffect的运行示意图
 20:40 useEffect闭包陷阱
 20:44 清除useEffect副作用
 20:46 如果给deps传递了函数会清除副作用
-20:48~20:51 生命周期模拟 deps给值就是更新 正好负载了三个生命周期
+20:48~20:51 useEffect生命周期模拟 deps给值就是更新 正好负载了三个生命周期
 21:03 给deps加上props即可更新
-21:05~21:12 useEffect debugger更新时机
+21:05~21:12 useEffect生命周期模拟
 21:12 setTimeout 与 setInterval
+21:17 一般都要把props写到[]里面
 21:16 可以写多个useEffect精确更新
 21:18 轮播图运作时间线
 21:21 手写自动播放轮播图
@@ -2317,6 +2319,7 @@ ReactCanvas(非官方).ReactConsole(非官方).
 22:15 太复杂
 22:19 再次样式为什么复杂 因为需要创建真实jsx元素
 22:23 为什么对象,函数ref更简单
+字符串:ref="xxx" 函数,ref{(el)=>this.foo=el},传入ref对象:ref={obj}
 2227 class使用对象,函数ref
 22:31 为什么class可以接ref,函数不可以 面试 小本本
 22:34 函数不可以接字符串ref 
@@ -2325,3 +2328,462 @@ ReactCanvas(非官方).ReactConsole(非官方).
 22:43 为什么以var变量生成全局ref只能用一次 更新后是上一次的ref
 22:48 useRef新旧作用域指向的ref都是同一个
 22:56 hover不更新?? ref可以放在不变的地方
+
+## 10-30
+20:02 轮播图部分ref状态
+20:19 不需要给函数组件写ref,给class组件写ref指向的是new出来的对象
+20:33 react的hook函数为什么不能更换顺序或者放到if里？vue的hook函数为什么不能更换顺序或者放到if里？(因为setup只运行一次) 小本本
+20:35 其它常用hook函数2
+20:36 useMemo 一般用来计算
+20:39 useMemo运行图 ref也可以写在deps里面
+20:42 usecallback等价useMemo的写法 小本本
+20:47 useID
+21:10 useReducer
+21:22 useReducer运行图
+21:29 useInsertionEffect
+21:29 useLayoutEffect 
+21:32~21:40 浏览器什么时候重绘 promise,queue安排的回调(MicTask)在运行之前浏览器是不会有其它操作的 但是setTimeout是会渲染的 
+21:42~21:46 useLayoutEffect 触发时机 重绘浏览器之前调用 面试
+21:50 重绘的回调时机 postMessage单词之前双次之后就 小本本
+22:07 不可预知宽度组件
+22:07~22:14 useEffect useLayoutEffect 触发时机
+22:14 useInsertionEffect什么时候触发
+22:17 css-vs-scc-in-js 很丑 22:18 jss 22:20 一些其他的css-in-js方案 这些都是tailwind之前的方案
+22:23 直接用tailwind即可
+22:31 useImperativeHandle 指令式
+22:29 虽然函数组件不需要ref,但是在实现一些需要focus的场景,可以用props暴露出去22:32~22:35
+22:37 useImperativeHandle运行逻辑 避免每一次都运行
+22:41 useImperativeHandle手动实现
+22:43 命令式 指令式 的区别
+22:44 ref当作props传递是空的
+22:45 设计失误
+22:46 forwardRef
+22:48 forwardRef返回的组件是一个专门用来转发ref的组件，所以叫forward（转发）ref
+22:51 react19删除了forwardRef,所有函数组件自动拥有转发ref的能力
+
+## 10-31
+20:03 hook函数继续
+20:04 useContext 解决数据的跨组件层级传递机制 小本本
+20:09 上下文机制
+20:10 jsbin讲解
+20:15~21:26 Context实现React.creatContext()
+20:17 ProVider Consumer(现在不怎么用了)
+20:19 ProVider value
+20:20 useContext用法
+20:22~45 传递两个以上不同的值,套两个ProVider(挨在一起),useContext 更新机制
+20:26 可以value接setState来改变状态
+20:30 量子纠缠更新
+20:33~22:40 验证中间一个组件即使不更新,也能跨越这个不更新的组件传递下去(memo) 以及组件不更新,并且嵌套的组件也不更新那么就都不会更新
+20:38:~20:42 为什么永远不要修改旧对象,传入新对象 因为程序不会检查变量是否改变
+20:45~20:51 Context更新机制2 .Consumer方式也可以嵌套多个组件
+21:05 组件返回函数 
+21:10~21:14 解决类组件使用Context更新机制2的丑陋问题 声明一个静态属性 但是不能写成数字,因此只能存储一个
+21:10 provider可以在class组件使用
+21:12 给class声明一个静态属性static 就会传递到this.Context
+21:16 Context 三种用法 小本本
+21:22 react组件库 Ant Design
+21:26~39 自定义hooks 根据现有的hooks组合成一个新的hooks,一般都要复用 面试高频
+21:30 object不能放里面{},需要toStrong 
+21:35 自定义hook的使用
+21:42~21:47 类似双向绑定
+21:43 受控组件没传参就是非受控的
+21:44 受控组件非受控组件 react官方文档里面有
+21:47 useVModel setModel简易双向绑定 只能在函数组件使用
+21;52 自定义hook返回的函数尽量不要变,免于更新 
+22:04 其它自定义hook
+22:05 ahooks
+22:05 useRequest
+22:14 useRequest轮询
+22:17 useRequest依赖刷新
+22:18 useCountDown 面试
+22:37~22:45 为什么组件的事件与系统不一样以及解决
+22:49 lifeCycle
+22:52 useSet 为什么不能useState对象
+22:58 useInterval useForceUpdate useToggle容易面试
+
+## 11-1
+面试可能写这些
+20:23 useForceUpdate()
+20:27 写自定义hook时的要点 最好返回固定函数
+20:30 useCounter
+20:51 useSet
+21:10 useInterval 超高频面试
+21:08 useInterval面试的要点 ref避免闭包陷阱
+21:24 useDebounce
+21:26~21:34 useDebounceFn 
+21:35 用lodash已经实现的来
+21;46 useLodashHOF 
+21:54 useDebounce
+22:00 内联样式传递对象
+22:11 useVirtualList
+22:17 useInfiniteScroll无线滚动
+22:30 react的不可变数据 基于旧的数据创建新的数据
+22:36 react深层次数据变化图 新的对象变化其余指向对应对象的属性
+22:38 这就是结构共享 
+22:43 git版本箭头指向前一个的原因 每一个版本与不可变数据的原理一样
+22:46 IMMUTABLE曾经火过,已过时
+22:58 很有用的url 
+22:59 不可变数据在软件开发其它方面的影子
+23:00 immer原生js实现不可变数据
+23:05 immer改变对象 produce ??用法
+23:11 immer todo
+23:14 immer变更函数首参 小本本
+23:19 传入对象不可能相等
+
+## 11-2
+20:04 函数组件里面的immer
+20:06 函数组件todo,不可变数据写法
+20:12 修改对象不会改变,创建才会改变
+20:20 immer简化 var {produce}= immer
+20:24 useImmer提取出来单独写一个变更函数
+20:28 可以直接使用的useImmer react immer文档
+20:30 这里的draft与immer一样 没变使用源对象,变了创建新对象
+20:33 produce接多个参数,只有第一个不是原来的对象
+20:37~20:48 produce不希望return
+20:44 produce可以返回filter 但是只能在顶层(非嵌套) 
+20:48 可以返回一个nothing
+20:48 Map set 都会被转换成draft
+20:49 Classes immerable
+20:51 Cuurent 原始对象副本
+20:52 Patches 补丁与反向补丁
+20:54 inversechange
+20:56 Auto freezing 冻结
+20:57 createDraft/finishDraft produce套的太深可以用
+21:09 一些其它的补充
+21:10 深入JSX
+21:14 UglifyJS minifier 代码难读化
+21:16 _jsx现在会自动引入了
+21:18 @jsx
+21:20 jsx不能写中括号表达式
+21:21 那jsx如何返回多个表达式
+21:21 props默认是true
+21:22 jsx会去掉行首和行尾的空格
+21:23 组件也可以直接返回数组 要加key
+21:26 &&
+21:27 错误边界,防止一个小组件坏掉从而整个界面挂掉,只能在class里面用 vue-errorCapture
+21:33 错误边界Test
+21:45 fragment jsx只能渲染一个组件,不然就包一层
+21:46 但是有些也不能包
+21:48 React.fragment 也可以简写成<> <> 对就是空的 
+21:51 React.fragment可以带key
+21:52 协调 vue会对比真实与虚拟的差异,然后修改差异
+21:53 react的各个部分 21:53
+21:58~22:02 react是如何找差异的 react的协调 面试
+22:02 key 关键 面试这个要说清楚
+22:05 现在的框架是怎么在对比差异的
+22:17 Render Props 函数作为渲染
+22:22 Render Props大致相当于作用域插槽
+22:23 横切关注点 => 逻辑复用
+22:26 thing-i-dont-know-as-of-2018
+22:38 严格模式
+22:41 StrictMode
+22:45 Portals  传送门
+22:54 渲染传送门 不会在组件中出现 但是会渲染body子元素 一般是出现在body最后一个元素
+22:57 ReactDOM.createPortal
+22:58 Teleport 弹窗放在body很合适
+
+## 11-3
+20:02 高阶函数定义回顾 高阶组件 小本本
+20:05 高阶组件一般以with开头命名 高阶组件一般格式
+20:06 一般来说高阶组件函数都会使用传入的组件
+20:12 react的多种逻辑利用机制 小本本
+20:14~20:21 大体的逻辑复用例子
+20:24 withSubscription
+20:28 手写withSubscription
+20:30 逻辑复用例子
+20:35 一般来说写高阶组件都会把新组件接收到的props原样或大部分传给原组件 小本本
+20:37 高阶组件有名字的时候需要改变在组件树中的名字 Comp.displayName Comp.name 
+20:39 非受控组件 可能会问 编辑
+20:41 defaltValue 只是提了一句
+20"43 Profiler
+20:45 Web Components 可以与 x-serach一起用 通常与命令式AIP(video)一起使用 声明式也可以 小本本
+21:01 PropTypes 以被TS取代,已很少使用
+21:06 静态属性与实例属性
+21:08 FLOW静态类型检查器
+21;10 codesandbox
+21:12 stacklitz TS静态类型检查
+21:24 TS 与 JSX
+21:26 性能优化 Create React App
+21:28 避免调停 vue会自动这样做
+21:30 shouldComponentUpdate的作用图 性能优化图  面试
+21:36 不可变数据的力量 新的创建 旧的不变 高效判断是否更新
+21:38 signal
+21:40 不同的性能优化面试 小本本
+21:43 第三方库协同 时间线 
+21:44 之前的一些组件库
+22:05 第三方库协同
+22:09~22:12 在react中使用高德地图大致代码 ??
+22:17 aria可访问的互联网应用 适配身障人士
+22:20 虚拟化列表/循环列表简单实现 常见面试题
+22:29 具体做法
+22:44 为什么只显示这些元素的方式 rowRender
+22:48 scroll scrollend
+22:57 healessUI ReactTable TanStack
+
+## 11-4
+20:03 useDebugValue
+20:12 useDebugValue一般用在自定义hook
+20:15 useDebugValue在调用的可能方案 new Error搜集调用了哪些
+20:18 useDeferredValue
+20:22 软件卡顿两种情况的简易解决 小本本
+20:26 useDeferredValue讲解 用在渲染慢
+20:32 会根据react的繁忙程度是否返回旧的值
+20:33 useDeferredValue-useTransition实例代码
+20:50 useDeferredValue运行逻辑图
+21:06 useDeferredValue运行火焰图 间歇性渲染
+21:22 useTransition 用在加载慢
+21:23 [isPending,startTransition] =useTransition()
+21:33 isPending
+21:31 Fiber
+21:39 useTransition router 不能异步
+21:43 lazy 第一次显示后运行 不是立刻
+21:44 react19 的hooks use 可以放到if里面 面试小概率会问  
+21:47 use原理 它只接收的对象，所以不根据自己的顺序来区分，而是根据自己的参数来区分需要返回的值
+21:48 use里面放promise的情况 一定要传不是现场创建的对象，而是之前已经创建好的对象 接promise的时候不要传新创建的，而要传在组件外面创建的
+21:54 Suspense fallback处理use lazy
+21:57 Suspense fallback嵌套加载时的顺序
+22:10 18.3.1文档里面的一些其它内容
+22:11 Suspense fallback可以传递组件
+22:16 fiber架构 build-your-own-react 面试可能会问fiber架构
+22:23 react是怎样渲染树的简易原理 没有使用递归 前序 可以间接性渲染
+22:29 requestIdleCallback 浏览器空闲时调用回调
+22:36 lazy 
+22:37 startTransition 可以直接用 没有pending 
+22:38 use 实例
+22:47 createPortal传送门
+22:50 children的函数 可以用于解决嵌套
+
+## 11-5
+20:02 Tabs 树形结构实现
+20:08 children只有一个的时候直接是对象而不是数组 小本本
+20:34 react流行的(全局状态管理库(类vues/pinia)) 小本本 
+20:36 zustand
+20:41 Jotai
+20:42 react数据放在哪里
+20:42 Jotai原子数据
+20:46 Jotai异步读原子
+20:59 Jotai核心API
+21:04 recoil 似乎没人用
+21:12 mobx 
+21:17 makeObservable
+21:21 Reactions
+21:22 mobx React integration
+21;32 订阅的是字段
+21:33 vue里面上层组件props发生变化,但是下层props没有变化会免于更新 react传过来不同的对象都要更新 如何理解??
+21:43 Local and rxternal state 组件的局部or外部状态 三种
+21:46 框架组件应该是用来查的
+21:49 更简便的更新方式useState(()=>new Timer()) 必须在oberver状态下
+21:51 不需要一开始就使用局部状态 不要把UI状态放进来
+21;56 有哪些情况下使用一般不合适的状态? 比较深的属性 计算属性 被多个组件共享的属性
+22:13 尽量晚点从对象中读取数据
+22:14 callback 回调组件可能需要包一层<Observer>
+22:17 observer极简手写
+22:19 建议使用尽量多的小组件(拆分组件)
+22:20 尽量晚的解引用 dereference (尽量晚的从对象中读取数据)
+22:21 valtio
+22:25 监控变量 一般都是监控朴素对象
+22:26 序列化与非序列化
+22:32 preat/signal
+22:34~22:39 preat初始化html
+22:41 signal信号
+22:50 深层次变化不可以
+22:56 signal全局状态 本地状态
+
+## 11-6
+20:02 react vite todo项目
+20:31 ESLint 代码检查工具,并不检查类型 不能使用var
+20:47 ?. !.前面的肯定不为空
+21:03 jotai-immer atomimmer atomWithImmer变更函数内给对象数据必须使用atomWithImmer
+21:07 有深度的数据atomimmer 原始值   数据atom
+21:12 vite简易架构运行图 浏览器与vite建立的是webSocket以消息为单位 有可能面试
+21:17 e事件会有隐含的any 写成e:KeyboardEvent<HTMLInputElement> <>可以指定类型 
+21:23 但是因为可能冒泡写成 e.currntTarget
+21:32 Immer变更函数内,做对比时只能拿原始类型(string,boolean,number等)做对比,拿对象做对比始终不会相等 或者套上original 
+21:41 const·setTodos·=useSetAtom(todosAtom) 只需要修改这个值的时候可以这样写
+21:42 不能监控变量,可以直接返回
+22:01 react router
+22:02 一般来说表单是提交到服务器 但是router可以实现完全在前端提交表单
+22:06 router不同版本的写法
+22:08 有自动404界面 也可以写在errorElement
+22:11 嵌套路由
+22:16 一般前端的路由实现 
+22:17 react router 前端的路由实现 数据会放在rootrouter里面
+22:22 form
+22:30 return redirect
+22:31 editaction
+22:37 edit
+22:38 outlet 子路由
+22:41 useParams地址栏接参数
+22:42 navigate前进后退
+22:44 memoryRouter Hash browser
+22:47 嵌套的组件是怎样展示的
+
+## 11-7
+20:03 react router写
+20:26 当子路由和路由同名时会显示哪一个 会显示顺序靠前的那一个
+20:33 url末尾加/ 与不加的区别 不过一般都是一样的
+20:37 服务器给界面发送的消息
+20:40 NavLink会给className加一个函数,返回值作为类名
+20:43 一般导航链接需要添加类名
+20:46 编程式导航,运行这个函数就跳到哪里去
+20:48 useNavigate -1 直接返回上一个界面
+20:51 其实叫做页面栈 小程序的页面栈有多深6 小本本 
+21:06 ssr
+21:07 ssr是什么 npm run build
+21:12 dist index请求图 react/vue网页请求到页面渲染图 有三个串行 重要
+21:18 页面刷新出带数据的UI是计算了每一个步骤的时间
+21:19 链接复用机制
+21:20 传统网页请求到页面渲染图 ssr
+21:22 网站越快越赚钱
+21:24 浏览器自带有检测网页加载速度的工具
+21:26 一般搜索都是流量最大的来源
+21:27 SEO做的好,搜索就会靠前
+21:28 Server side render服务端渲染
+21:32 什么叫"渲染",render 界面出现 
+21:33 更新dom也是渲染
+21:35 拼接HTML字符串也叫render
+21:36 什么是服务端渲染
+21:37 框架也能做到服务端渲染
+21:39 可以根据请求的地址提前在服务器渲染组件树
+21:42 提前渲染图
+21:46 服务端渲染页面里面已经存在的结构,框架渲染的时候就不用清除再重新渲染
+21:48 hydration 水合/激活
+21:50 会把框架的vnode事件绑定到html上 水合/激活
+22:02 服务端渲染演示
+22:11 react-dom会创建出字符串塞到服务端,实现服务端渲染
+22:14 vue SSR ue也支持将组件在服务端直接渲染成HTML字符串，作为
+服务端响应返回给浏览器，最后在浏览器端将静态的HTML“激活”（hydrate）为能够交
+互的客户端应用。
+22:16 为什么要用SSR 好处 SEO更好 更快加载 前后端同一语言 
+22:18 搜索引擎如何决定网页排在第几位? 小本本
+22:24 同步js索引
+22:27 但是一般来说 面向用户的SSR都是配置好了的 to C 快速,引流
+22:29 公司写一般都是面向后台写的 to B 无需SEO所以无需ssr 不追求很快的加载和运行速度
+22:31 to C 和 to B是什么?区别 小本本
+22:33 SSG 静态站点生成 预渲染 小本本
+22:37 vue就是SSG
+22:38 营销界面可以用SSG
+22:44 node.js是在js非浏览器的运行环境 next.js 是运行在nodejs之上的基于react的网站开发框架.它集成了react的有功能并增加了自己的功能如ssr以及ssg  小本本
+22:47 react server components 服务端组件
+22:49 一些react全栈框架 next.js
+22:51 一些vue全栈框架 nuxt
+22:56 服务端组件  没有交互 实现业务逻辑并返回结果 小本本
+
+## 11-8
+20:03 Node.js是什么不是什么 小本本
+20:12~20:24 一些其它类似node.js的环境 deno(可以运行TS),bun,mongodb(操作这个数据库的语言就是js),auto.js(用js脚本控制手机) 小本本
+20:25 node.js一般用来做什么 小本本
+20:28 Electron（将浏览器与Nodejs集成到一个环境中）
+20:32 前端构建、前端工程化 小本本
+20:53 什么是IO 数据不值直接存在内存里都算是IO
+21:04 js是由运行环境提供IO,本身没有IO
+21:14 thread_run 启动线程
+21:17 join 等待
+21:18 线程与浏览器woker的区别 小本本 线程可以使用同一份数据 woker是接收消息的复制数据
+21:22 join图解 等待的过程
+21:31 addEventListener 也是一种异步
+21:33 share AB 似乎已经被禁用 安全原因
+21:36 异步在系统中实现的简易过程 小本本 
+21:41 进程 线程
+21:43 标准输出流
+21:52 bash shell壳 terminal终端 console控制台 的细微区别 小本本
+22:14 argv
+22:18 figlet-cli #!/usr/bin/env node 蟹棒shebang 是linux命令行的专用语法，用来标识当前脚本文件需要哪个可以执行程序来执行它 让node命令变得和命令行一样
+22:18 factor2 如何将一个脚本加入bash
+22:28 linux,max下文件当作程序执行怎么办 小本本
+22:31 文件模式的组成 读,写,执行 小本本
+22:37 硬链接,两个文件对应同一个inode 软连接类似快捷方式
+22:41 硬链接创建ln [文件] [目标文件]如果复制粘贴,就失去了链接 只能在同一个磁盘同一个分区 小本本
+22:46 软连接ln -s [文件] [目标文件] 类似快捷方式
+
+## 11-9
+20:03 factor2 非递归写法
+20:06 无法访问的代码
+20:14 globlThis通用全局变量
+20:18 node现在已经能直接使用import
+20:23 require / 是请求的这个盘的顶层
+20:23 可以认为windows系统没有系统级顶层文件夹linux和mac系统的/目就是系统的顶层文件夹 小本本
+20:27 require内置模块
+20;31 import map 来实现import与require的结合
+20:33 garble
+20:34 module.export只导出一个模块 导出单个,多个可以放在一个对象中导出
+20:38 require现在的写法,require('node:fs')内置模块,第三方模块直接写名字
+20:41 node_modules 文件图 应该第三方模块都放到项目根目录的node_modules 没有的话会放到最顶层
+20:43 绝大部分时候 npm install根据文件夹中是否有package.json文来决定这个文件夹是否是项目的根目录 小本本
+20:46 package文件夹介绍 index默认是入口文件 
+21:03 require(lodash/chunk)可以多来几个斜杠引入更多文件
+21:04 node_modules not find 会一层一层向外找
+21:08 nodejs现在也直接支持import加载esmodules
+需要文件本身是模块文件，即扩展名为mjs
+21:11 传统js 与模块文件msj的区分 小本本
+21:13 在node的最新版本里，require可以引入esmodule
+反过来好像也能引，即import也能引入common js模块
+21:15 reguire, import的相对路径相对于那句路径所在文件,而其它的一些系统函数如fs.readFile(path)则是相对于工作目录 小本本 
+21:20 require 不等于 require
+21:31 figlet
+21:33 node中几乎所有回调风格的函数，回调函数都是接收两个参数，第一参数是可能的错误，第二参数是结果
+fs.readFile(aaa.txt',(etror, data) =>{}) 小本本
+21:41 dependencies依赖 npm装依赖
+22:02 yarn pnpm 快!
+22:07~22:40 pnmp为什么快?缓存已下载的包 很有可能面试 小本本
+22:10 用硬链接 软连接存储文件
+22:27 就算有要找的文件,但是没有node_modules也不行
+22:30~22:40 pnpm为什么节省空间 小本本
+22:33 .pnmp-store
+22:44 nodejs/js标准type的buffer 小本本 内存片段一个字节里面的字节
+22:50 fs 都是第一个参数error第二个是回调 也有同步版本
+22:55 同步需要捕获异常,否则直接抛到控制台
+22:57 异步IO的好处,等待的时候做其它事情
+
+## 11-10
+20:03 listRecursive找出文件名及其文件夹下的嵌套文件名的同步写法
+20:14 async版本
+20:15 comjs顶层是不能加await的
+20:17 回调版本
+20:32 Promise
+20:48 哪一个版本最快 包含解释
+20:59 为何在硬盘上同时发起请求比一次一次发起好 
+21:01 请求??
+21:12 HTTP module模块
+21:15 http-server.js 请求流程
+21:39 服务器也能发请求
+21:41 以AJEX为例解释xhr.send
+21:43 node已经自带fetch
+21:45 Axios
+21:51 现在直接用fetch发送
+22:02 http-static-server.js
+22:28 --watch 监控文件变化直接重启 小本本
+22:36 斜杠解决
+22:39 fs.readdirSync('.'{withFileTypes:true})
+
+## 11-11
+20:05 http-static-server.js剩余的(文件夹路径末尾没有斜杠，需要跳转到带斜杠的地址/url中带有querystring，qs是不能作为文件名的，需要去掉/如果url对应文件夹，这应该列出文件夹内容/列出内容时，应该区分文件与文件夹，最好能显示文件大小)
+20:18 一般多一个斜杠也没有问题// 电脑上的相对路径与网站的相对路径是不一样的
+20:22 require('node:path') 内置模块能直接在nodejs控制台能直接用
+20:30 PORT
+20:33 ../
+20:35 解决自动优先显示index.html
+20:40 index.html是文件夹怎么办
+20:41 只有一个res.write 可以直接在res.end()里面xie
+20:45 列出文件夹的size
+21:03 中文文件名需要解码
+21:10 utf8够用
+21:13 path.extname
+21:18 mime等直接返回扩展名的npm库
+21:24 mime-type 这个更好用
+21:31 浏览器会自动转译 ../ 如果没有化简../ 可能会导致安全漏洞访问外面的文件
+21:42 没有化简的根本解决方案,目标路径是不是在文件夹内 路径是不是在以这个开头的文件夹 (不过现在node似乎已经解决了这个安全问题)
+22:07 nodejs调试 小本本 node --inspect-brk [path] 默认9929端口,可以修改
+22:13 调试的话经常需要发送请求
+22:17 可以直接在vscode里面调试
+22:24 node API relative 
+22:28 posix 处理不同系统路径不一样的情况
+22:32  process
+22:35 process.cwd
+22:35 env
+22:39 process.argv  process.execArgv
+22:40 常用的process 小本本
+22:42 querystring 解析查询模块 几乎不用 已被URL替代 path/fs/http主要这几个 小本本
+22:46 error error.code错误代号
+22:51 _dirname _filename 在模块内全局 小本本 
+ 

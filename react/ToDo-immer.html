@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo-immer</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Don't use this in production: -->
+  <script src="babel.min.js"></script>
+  <script src="https://unpkg.com/immer@6.0.3/dist/immer.umd.production.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    var { useState, useCallback, useEffect, memo, useRef,useMemo} = React
+    function MyApp() {
+      return (
+        <div>
+          <ToDo />
+        </div>)
+    }
+
+    class ToDo extends React.Component {
+      constructor(props) {
+        super(props)
+
+        this.state = {
+          todos:[
+            {
+              id: 'dc',
+              text: 'eat',
+              completed: true,
+            }, {
+              id: 'es',
+              text: 'drink',
+              completed: false,
+            }, {
+              id: 'ev',
+              text: 'sleep',
+              completed: true,
+            }
+          ],
+          editingIdx:-1,//记录正在编辑的下标
+          visibleType:'all'//用于active completed
+        }
+      }
+      isAllCompleted(){
+        return this.state.todos.every(todo=>todo.completed == true)
+      }
+      //toggle切换
+      toggleAll=()=>{       
+        let targetCompleted //用来存储能是否全部执行的true false
+        if (this.isAllCompleted()) {
+          targetCompleted = false //如果全部任务执行完毕,就将全部任务变为未完成状态
+        }else{
+          targetCompleted = true
+        }
+
+        // let newState = immer.produce(this.state,state => {
+        //   state.todos.forEach(it => {
+        //     it.completed = targetCompleted
+        //   })
+        // })
+        // this.setState(newState)
+
+        /**
+         * 当你给immer.produce传入一个“变更函数”做为其首参时，其会返回一个
+            函数用于接收想要执行那种变更的对象，并在接收到对象后为其执行那种变
+            更，并返回应用变更后的新对象
+        */
+        this.setState(immer.produce(state => {
+          state.todos.forEach(it => {
+            it.completed = targetCompleted
+          })
+        }))
+
+        // this.setState(produce(state => {
+        //   state.todos.forEach(it => {
+        //     it.completed = targetCompleted
+        //   })
+        // }))
+
+        // this.setState({
+        //   todos: this.state.todos.map(todo => {
+        //     if (todo.completed == targetCompleted) {
+        //       return todo
+        //     }else{
+        //       return {
+        //         ...todo,// 将 `todo` 对象的所有属性展开到新对象中,用于复制原始对象的所有属性。
+        //         completed:targetCompleted,
+        //       }
+        //     }
+        //   })
+        // })
+
+        // this.state.todos.forEach(todo => {//对每一个进行修改
+        //   todo.completed = targetCompleted
+        // });
+
+        this.forceUpdate()//强制刷新
+      }
+      addTodo=(e)=>{
+        if (e.key == 'Enter') {
+          let text = e.target.value.trim()
+          if (text) {
+            let todo = {
+              id:Math.random().toString(),//随机ID
+              text,
+              completed:false
+            }
+            // this.setState({
+            //   todos:[...this.state.todos,todo] //只是增加,并没有改变旧数据
+            // })
+            this.setState(immer.produce(state=>{
+              state.todos.push(todo)
+            }))
+            e.target.value = '' //清空
+          }
+        }
+      }
+      toggleTodo(idx){//因为在li的onChange就已经直接调用了这个函数,所以不用这样toggleTodo=()=>{}
+        this.setState(immer.produce(state=>{
+          state.todos.forEach((todo,i)=>{
+            if (i == idx) {
+              todo.completed = !todo.completed
+            }
+          })
+        }))
+        //this.state.todos[idx].completed = !this.state.todos[idx].completed //取反布尔值,点击checked会更新todos里面的      
+        //this.forceUpdate()//强制更新
+
+        // this.setState({
+        //   todos:this.state.todos.map((todo,i)=>{
+        //     if (i == idx) {
+        //       return {//checked的话返回一个新的对象
+        //         ...todo,//展开
+        //         completed:!todo.completed
+        //       }
+        //     }else{//没有就直接返回(由map组成的新数组)
+        //       return todo
+        //     }
+        //   })
+        // })
+      }
+      handleEditKeyDown=(e)=>{
+        if (e.key == 'Escape') {
+          this.setState(immer.produce(state=>{state.editingIdx = -1})) //去除更改下标
+          //this.state.editingIdx = -1 //去除更改下标
+        }else if (e.key == 'Enter') {
+          this.setState(immer.produce(state=>{
+            state.todos[this.state.editingIdx].text = e.target.value.trim()
+            state.editingIdx = -1
+          }))        
+          // this.state.todos[this.state.editingIdx].text = e.target.value.trim()
+          // this.state.editingIdx = -1 //去除更改下标
+        }
+        // this.forceUpdate()//强制刷新
+      }
+      handleEditBlur = e =>{
+        this.setState(immer.produce(state=>{
+            state.todos[this.state.editingIdx].text = e.target.value.trim()
+            state.editingIdx = -1
+          }))           
+        // this.state.todos[this.state.editingIdx].text = e.target.value.trim()
+        // this.state.editingIdx = -1 //去除更改下标
+        // this.forceUpdate()//强制刷新
+      }
+      deleteTodo(idx){
+        this.setState(immer.produce(state => {
+            state.todos.splice(idx,1)
+          })
+        )
+        // this.state.todos.splice(idx,1) //但是这样不调用setState不会更新
+        // this.forceUpdate() //强制更新
+        // this.state({
+        //   todos:this.state.todos.filter((todo,i)=>{//filter会返回新数组
+        //     if (i == idx) {
+        //       return false //不保留删除
+        //     }else{
+        //       return true //保留
+        //     }
+        //   })
+        // })
+        // this.state({
+        //   todos:[...this.state.todos.slice(0,idx),...this.state.todos.slice(idx+1)]//去除index重新拼凑一个出来
+        // })
+      }
+      getLeftCount(){
+        return this.state.todos.filter(todo=>todo.completed==false).length
+      }
+      hasCompleted(){
+        return this.state.todos.some(todo=>todo.completed==true)
+      }
+      render(){
+        return(
+          <div>
+            <h1>Todos</h1>
+
+            <div>
+              <input type="checkbox" checked={this.isAllCompleted()} onChange={this.toggleAll}/>{/*checked并不是事件,不需要接一个函数,只接收增加即可.非受控组件,不算只读*/}
+              <input type="text" onKeyDown={this.addTodo} className="border outline-none focus:ring"/>
+            </div>
+
+            <ul className={'group visible-'+this.state.visibleType}>
+              {//没有'vfor'用map实现,加上{}会变得没有返回值,必须要有key用以在虚拟DOM对比减少差异数量,没有onChange就会是只读this.//state没有改变,数据驱动
+                this.state.todos.map((todo,idx)=>
+                  <li key={todo.id} className={(todo.completed ? 'completed' : 'active') + '  group-[.visible-active]:[&.completed]:hidden  group-[.visible-completed]:[&.active]:hidden'}> 
+                    <input type="checkbox" checked={todo.completed} onChange={()=>this.toggleTodo(idx)}/>
+                    {
+                      this.state.editingIdx == idx //说明正在编辑
+                        ? <input type="text" autoFocus defaultValue = {todo.text} onKeyDown={this.handleEditKeyDown} onBlur={this.handleEditBlur}/> //onBlur失去焦点 defaultValue非受控组件
+                        : <span onDoubleClick={()=>this.setState({editingIdx:idx})}>{todo.text}</span>
+                    }                    
+                    <button onClick={()=>this.deleteTodo(idx)}>&times;</button> {/*因为不能立即执行而是在点击时执行,且要传递idx,或者这个函数周围的作用域存在的变量所以需要箭头函数,会主动传递e*/}
+                  </li>
+                )
+              }
+            </ul>
+
+            <div>
+              <span>{this.getLeftCount()} items left</span> {/*虽然每一次都要重新计算,但几乎可以忽略不记*/}
+              
+              <div>{/*绑定在一组以单选*/}
+                <label><input type="radio" name='visibleType' checked={this.state.visibleType == 'all'} onChange={()=>{this.setState({visibleType:'all'})}}/>All</label>{/*为什么这里可以setState修改值,因为不是立刻运行的render已经结束后再调用的?*/}
+                <label><input type="radio" name='visibleType' checked={this.state.visibleType == 'active'} onChange={()=>{this.setState({visibleType:'active'})}}/>Active</label>
+                <label><input type="radio" name='visibleType' checked={this.state.visibleType == 'completed'} onChange={()=>{this.setState({visibleType:'completed'})}}/>Completed</label>
+              </div>
+                
+              {
+                this.hasCompleted()  //jsx的标签之间的插值如果是boolean,null，undefined，则会当成空，不显示任何内容
+                  ? <button>clear completed</button>
+                  : ''
+              }
+            </div>
+
+
+          </div>
+        )
+      }
+    }
+
+    const container = document.getElementById('root')
+    const root = ReactDOM.createRoot(container)  
+    root.render(<MyApp />)
+</script>
+</body>
+</html>

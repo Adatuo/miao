@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel-fuction-Component</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+  <!-- Don't use this in production: -->
+  <script src="babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+    var { useState, useCallback, useEffect, memo, useRef,useMemo } = React
+
+    //总思路,将要显示的元素,放在一个非常高的元素里面
+    function List({//接收props属性
+      width,//可视区域的宽度
+      height,//可视区域的高度
+      rowCount, //列表中总的行数
+      rowHeight,//每一行（或每个列表项）的高度
+      rowRenderer, //渲染函数
+      }) {
+
+      let innerHeight = rowCount * rowHeight //每一行的总高度  
+
+      ////滚动容器的顶部到可视区域顶部的像素距离
+      let [scrollTop,setScrollTop] = useState(0)
+      function handleScroll(e) {
+        setScrollTop(e.target.scrollTop)
+      }
+
+      let visibleItems = useMemo(()=>{//可见元素
+        let startIdx = Math.floor(scrollTop / rowHeight)//从顶部开始可见的第一行的索引 向下取整 
+        let endIdx = Math.ceil((scrollTop + height) / rowHeight)//底口位置的索引
+        if (endIdx > rowCount-1) {//到了最后一行的索引
+          endIdx = rowCount-1
+        }
+        let items = []//需要渲染的数组
+        for (let i = startIdx; i <= endIdx; i++) {
+          let item = rowRenderer({//每一个list的属性
+            key:i, 
+            index:i, 
+            isScrolling:false, 
+            isVisible:true, //??
+            style: {
+              position:'absolute',
+              top: i * rowHeight,
+              left: 0,
+              width:'100%'
+            }
+          })        
+          items.push(item)  
+        }
+        return items
+      },[scrollTop])
+
+      return(
+        <div onScroll={handleScroll} className={`w-[${width}px] h-[${height}px] border border-slate-500 overflow-auto`}>{/*外框*/}
+          <div className={`h-[${innerHeight}px] relative`}>{/*需要显示元素的总高度*/}
+            {visibleItems}
+          </div>
+        </div>
+      )
+    }
+
+    // List data as an array of strings
+    const list = Array(10000).fill(0).map(()=>Math.random())//使用map替换0为随机数,然后返回
+
+    function rowRenderer({
+      key, // Unique key within array of rows 每个元素的key
+      index, // Index of row within collection 每个元素的下标
+      isScrolling, // The List is currently being scrolled 页面是否当前正在滚动
+      isVisible, // This row is visible within the List (eg it is not an overscanned row) 是否可见
+      style, // Style object to be applied to row (to position it) 样式
+    }) {
+      return (
+        <div key={key} style={style}>
+          {list[index]}
+        </div>
+      );
+    }
+
+    // Render your list
+      function MyApp() {
+        return (
+          <List
+            width={300}
+            height={300}
+            rowCount={list.length}
+            rowHeight={20}
+            rowRenderer={rowRenderer}
+          />
+      )
+    }
+
+    const container = document.getElementById('root')
+    const root = ReactDOM.createRoot(container)
+    root.render(<MyApp />)//react组件名称在render时必须要大写
+  </script>
+</body>
+</html>

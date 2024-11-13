@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel-fuction-Component</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+  <!-- Don't use this in production: -->
+  <script src="babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+    var { useState, useCallback, useEffect, memo, useRef,useMemo ,Children} = React
+
+    function Tabs({children}) {//接收children <Tab name="User">woie42342jfowiejf</Tab>
+    //console.log(children);//不知道什么数据结构就打出来看看 children只有一个的时候直接是对象而不是数组
+    /**children只有一个的时候直接是对象而不是数组
+    children.forEach(it => {
+      console.log(it.props.name);
+    });*/
+    let childs = Children.toArray(children)//使用Children的方法全部转换成数组
+    let tabNames = childs.map(child=>child.props.name)//拿到名字
+
+    let [current,setCurrent]=useState(0)//childs index状态
+
+    return (
+        <div>
+          <div>
+            {
+              tabNames.map((tabName,idx)=>{
+                return <button key={idx} onClick={()=>setCurrent(idx)} className={`border p-1 m-1 [&.active]:text-red-500 ${idx == current ? 'text-red-500':"" }` }>{tabName}</button>
+              })
+            }
+          </div>
+          <div>
+            {
+              childs[current]
+            }
+          </div>
+        </div>
+      )
+    }
+
+    function Tab({name,children}) {//接收name,children
+      return (
+        <div>
+          {children}
+        </div>
+      )
+    }
+
+    // Render your list
+      function MyApp() {
+        return (
+          <Tabs>
+            <Tab name="Process">woiejfsdfwerowiejf</Tab>
+            <Tab name="Performance">woissdfejfowiejf</Tab>
+            <Tab name="StartUp">wo23423iejfowiejf</Tab>
+            <Tab name="User">woie42342jfowiejf</Tab>
+          </Tabs>
+      )
+    }
+
+    const container = document.getElementById('root')
+    const root = ReactDOM.createRoot(container)
+    root.render(<MyApp />)//react组件名称在render时必须要大写
+  </script>
+</body>
+</html>

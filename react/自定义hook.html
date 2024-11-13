@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel-fuction-Component</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+  <!-- Don't use this in production: -->
+  <script src="babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-presets="react">
+    var { useState, useCallback, useEffect, memo, useRef,useMemo } = React
+    
+    //倒计时
+    function useCountDown(dateString) { 
+      let date = useMemo(()=>new Date(dateString),[dateString])//起始时间
+      let [now,setNow] = useState(() => new Date())//当前时间
+
+      useEffect(()=>{
+        var id = setInterval(()=>{
+          setNow(new Date())
+        },1000)
+
+        return()=>clearInterval(id)//卸载触发
+      },[dateString])//不传数组的话每一次都会运行
+
+      let seconds = useMemo(()=>(date - now)/1000 | 0,[date,now])//剩余秒,如果date,now不变就不要重新计算
+      return seconds//必须的所需返回值
+    }   
+
+    function useTime2() {
+      let [time,setTime]=useState(() => new Date())
+      useEffect(()=>{
+        var id = setInterval(()=>{//因为与系统运行时间不在一个时机,虽然只有几毫秒但还是会慢
+          setTime(new Date())
+        },1000)
+
+        return()=>clearInterval(id)//卸载触发
+      },[])//不传数组的话每一次都会运行
+      return time
+    }
+
+    function UseTime1() {
+      /**为什么需要两个调用setTime(new Date())来更新时间
+       * 同步性：由于 setTimeout 的延迟，直接使用 setInterval 可能会导致第一次更新时间不准确，特别是当组件刚挂载时。如果只使用 setInterval 而不在 setTimeout 中调用 setTime(new Date())，那么 time 可能会在组件挂载后的一段时间内显示旧的时间（即未更新的时间）。
+       * 准确性：通过在 setTimeout 中立即更新一次时间，可以确保用户看到的时间是当前的，而不是挂载时的时间。
+      */
+      let [time,setTime]=useState(() => new Date())
+      useEffect(()=>{
+        let delay = 1000 - Date.now() % 1000 //计算当前时间到下一个整秒的延迟。这个计算确保了当你启动定时器时，第一次更新 time 是在下一个整秒时刻。
+        var id
+
+        var id2 = setTimeout(()=>{
+          setTime(new Date())//是为了确保在第一次定时器触发时，time 的值是当前的时间。因为 setTimeout 会在 delay 毫秒后执行，所以这个调用确保了 time 的初始值是准确的。
+          var id = setInterval(()=>{//为了每秒更新一次 time 的值。这个定时器会在 setTimeout 执行后启动，并且每隔一秒调用一次 setTime(new Date()) 来更新当前时间。
+            setTime(new Date())
+          },1000)
+        },[delay])
+
+        return()=>{
+          clearInterval(id)//清理定时器
+          clearTimeout(id2)//清理延迟定时器
+        }
+      },[])//不传数组的话每一次都会运行
+      return time
+    }
+    
+    function MyApp() {//react组件名称在render时必须要大写
+      let countDown = useCountDown('2024-11-03')//字符串方便对比,new date每次都是新对象
+      let time = useTime1()
+      return(
+        <div>
+          距离11月3号还有{countDown}秒
+          <hr/>
+          现在是{useTime1().toString()}{/*object不能作为react的child*/}
+        </div>
+      )
+    }
+
+    //强制更新
+    /**什么情况下会更新
+     * 状态变化
+     * props的变化
+     * 上层Context的变化(如果当前组件用到了上层的Context)
+    */
+    function forceUpdate() {
+      //状态
+      let [x,setX]=useState(0)
+      return useCallback (function() {
+        setX(x=>x+1) //9007199254740991 最多次数 Number.MAX_SAFE_INTEGER
+      },[x])
+    }
+
+    //大小对比与增加
+    function useCounter(init,{min,max}) {
+      let [count,setCount]=useState(()=>{
+        if (init > max) {
+          return max
+        }
+        if (init < min) {
+          return min
+        }
+        return init
+      })
+
+      //避免因为重新渲染导致的改变,ref是不会改变的
+      let minRef = useRef()
+      minRef.current = min 
+      let maxRef = useRef()
+      maxRef.current = max 
+      // useEffect(()=>{//不需要这样写,因为数据量并不大
+      //   minRef.current = min
+      // },[min])
+
+      let inc = useCallback((delta)=>{
+          setCount(count => {
+            count += delta
+            return count > maxRef.current ? maxRef.current : count
+            // if (count > maxRef.current) {
+            //   return maxRef.current
+            // }else{
+            //   return count
+            // }
+          })
+        },[])//从逻辑来讲确实只需要运行一次即可
+
+        let dec = useCallback((delta)=>{
+          setCount(count => {
+            count -= delta
+            return count < minRef.current ? minRef.current : count
+          })
+        },[])//从逻辑来讲确实只需要运行一次即可
+
+          let set = useCallback(()=>{//返回原始值
+            setCount(()=>{
+              if (init > max) {
+                return max
+              }
+              if (init < min) {
+                return min
+              }
+              return init
+            })
+        },[])
+
+          return [count,{inc,dec,set,reset}]
+      }
+    
+    const container = document.getElementById('root')
+    const root = ReactDOM.createRoot(container)
+    root.render(<MyApp />)//react组件名称在render时必须要大写
+  </script>
+</body>
+</html>
