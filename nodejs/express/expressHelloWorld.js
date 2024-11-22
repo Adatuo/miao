@@ -9,6 +9,10 @@ app.use((req, res, next) => {//use更多的是定义中间件
   next(); // 继续处理请求
 });
 
+//写在前面后面每一个都能受益
+app.use(express.json()) //如果请求体是json格式（根据请求头的content-type）则把它读取并解析，放到req.body上
+app.use(express.urlencoded()) //如果请求体是urlencoded格式(普通的表单提交 a=1&b=2这种)（根据请求头的content-type）则把它读取并解析，放到req.body上
+app.use(express.txt())//如果请求体是txt纯文本格式（根据请求头的content-type）则把它读取并转为字符串，放到req.body上
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -78,12 +82,6 @@ app.get('/router/cd', [cd0, cd1], (req, res, next) => {
     res.send(req.params)//返回的是json
   })
 
-app.get('/bar', (req, res) => {
-  res.json({
-    a:1,b:2
-  })
-})
-
   //app.route() 创建可链式路由处理程序
   app.route('/book')
   .get((req, res) => {
@@ -96,8 +94,25 @@ app.get('/bar', (req, res) => {
     res.send('Update the book')
   })
 
+  //Response methods 响应方法
+  app.get('/bar', (req, res) => {
+    res.json({
+      a:1,b:2
+    })
+  })
+  app.get('/down1', (req, res) => {
+    res.download('./package.json')
+  })
 
+//可以这样写中间件
+const myLogger = function (req, res, next) {
+  console.log('LOGGED')
+  next()
+}
+
+app.use(myLogger)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log('Example app listening on port', port)
 })
+

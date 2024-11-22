@@ -2,5 +2,15 @@
   "dependencies": {
     "express": "^4.21.1",
     "lodash": "^4.17.21"
-  }
+  },
+  "name": "gitpush",
+  "version": "1.0.0",
+  "main": "ancestry.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
 }

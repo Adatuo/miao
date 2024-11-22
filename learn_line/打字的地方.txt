@@ -2428,3 +2428,121 @@ app.use((req, res, next) => {
     next()
   }
 })
+
+
+19:58 11/21谢然=============================
+
+
+npm run xxx 是到package.json的script中的xxx字段中执行对应的命令
+特别的当xxx为start时，npm run start可以简单为npm start
+甚至于后来npm xxx只要xxx不是npm的子命令，它都会去package.json的scripts字段中找对应命令去执行
+
+
+
+https://www.npmjs.com/package/debug 周下载量3.5亿
+
+
+
+
+
+
+定制json的序列化与反序列化：
+console.log(   JSON.stringify({a:() => 2,b:2,c:[1,2,3]},  function(key, val){
+  if (typeof val == 'function') {
+    return '#FUNCTION ' + val.toString()
+  } else {
+    return val
+  }
+  
+}, 4)  )
+
+
+
+JSON.parse(text, (key, val) => {
+
+  if (typeof val == 'string' && val.startsWith('#FUNCTION')) {
+    return eval( val.slice(10) )
+  } else {
+    return val
+  }
+})
+
+
+
+
+
+断点续传是怎么实现的：
+通过http的range请求求头，只请求资源特定的部分
+
+
+
+
+
+
+
+
+jsonp：
+通过script标签可以跨域加载其它域的资源
+为什么？xhr、fetch有跨域限制，为什么script加载没有限制？
+xhr加载读到的是资源的内容，内容想怎么用就怎么用
+script的加载，是浏览器读到【代码】的内容，并且直接运行，期间不是我们的程序在加载并运行该代码
+
+加载其它地方的代码且直接运行，是有风险的，是我们信任服务器能给我们返回期望的代码。服务器发代码让浏览器在我们的页面运行它，对服务器来说除了流量以外没有任何风险，因为那个代码本身就是公开的。整个过程中我们从未看到过该代码的完整内容
+
+而xhr加载资源是服务器信任我们，愿意把资源的内容给到我们做任意的处理。这个过程我们是拿到了资源的完整内容的，资源完全由我们处置
+
+以上是两个不同的事情，所以一个有跨域限制一个没有，不具备可比性。
+
+
+
+
+
+
+
+var script = document.createElement('script')
+script.src = 'https://api.weather.com/310000.js'
+/**
+  var weatherForcase = {
+    city: 'hangzhou',
+    geolocation: {lat:  log: },
+    tem: { high:28, low: 15},
+    forcase: '下雨',
+  }
+
+*/
+document.body.append(script)
+
+script.onload = () => {
+  console.log(weatherForcase)
+  showWeatherInPage(weatherForcase)
+}
+
+
+
+
+jsonp与普通请求的区别：
+由于是跨域的，所以不能得到响应头的数据
+由于是通过script的src属性发起的请求，所以只能是get请求，参数只能带在url上，不能有请求体
+
+
+极简实现（没考虑出错，没考虑超时等问题，也没有写成promise风格的）：
+function jsonp(url, callback) {
+  var script = document.createElement('script')
+  var CALLBACK_NAME = 'jsonp_callback' + Math.random().toString().slice(2) + Date.now()
+  
+  window[CALLBACK_NAME] = (data) => {
+    callback(data)
+  }
+  
+  script.src = url + '&callback=' + CALLBACK_NAME
+  document.body.append(script)
+
+  script.onload = () => {
+    delete window[CALLBACK_NAME]
+    document.body.removeChild(script)
+  } 
+}
+
+jsonp('https://api.github.com/search/repositories?q=java', (data) => {
+  console.log(data)
+})

@@ -1217,7 +1217,7 @@ text 对其左上角定位
 21:28 从高跳到低,每个比特的跳变周期来确定1 0
 21:30 网卡会有识别 曼彻斯特编码
 21:33 速率一般就是1M bit 时延 RTT:发出去再收回来的时间
-21:35 链路层  
+21:35 链路层  以太帧网络图bing
 21:36 数据包R发出 S接收 DATA数据 ?
 21:42 前导码同步时钟
 21:44 以太帧 压缩包校验码CRC ,网线连接的地址
@@ -3118,8 +3118,9 @@ every map some toArray 返回的是promise,会在不同情况下返回
 21:52 两种get多个中间件的不同写法
 22:02 静态路由,数组中间件
 22:04 一个中间件处理不了用另一个
+22:06 静态文件中间件数组[]中间件的运用场景
 22:08 响应方法res
-22:11 触发浏览器下载对话框的响应头content-disposition: attachment;filename=["package.json"] 小本本 a标签的download的下载原理与这个是不一样的
+22:11 触发浏览器下载对话框的响应头attachment;filename=["package.json"] 小本本 a标签的download的下载原理与这个是不一样的
 22:14 route一个路径下多种请求方式
 22:16 router效果解释图(子路由更贴切)
 22:20 如何开发中间件
@@ -3127,17 +3128,18 @@ every map some toArray 返回的是promise,会在不同情况下返回
 22:23 路由的路径参数 req.params.ID读取路径参数
 22:26 都可以接多个中间件
 22:27 '/',router 以router开头,怎么走看router里面怎么写的了
-22:28 错误中间件一定是有四个参数 前面一个出错了会找到最近的一个
+22:28 Router-level middleware 路由级别中间件
+22:29 错误中间件一定是有四个参数 前面一个出错了会找到最近的一个
 22:30 express中如何算出错了?  小本本
 22:31 express.json
 22:33 req上的body是空的,需要通过on 和async,await循环解析读出来 22:36 使用use(express.json)来解决 如果请求体是json格式（根据请求头的content-type）则把它读取并解析，放到req.body上
 22:40 express.urlencoded() 如果请求体是url编码（普通的表单提交）（a=1&b=2这种形式）（根据请求头的content-type）则把它读取并解析
 22:41 express.text() 如果请求体是纯文本（根据请求头的content-type）则把它读取并转换为宇符串，放到reg.body上
 22"43 Overriding the Express APl
-22:45 异步错误处理不掉直接next()
-22:46 express5现在的函数也可以是异步的了
+22:45 异步错误处理不掉直接next()集中处理
+22:46 express5现在的中间件函数也可以是异步的了
 22:46 promise失败也算是中间件出错了 ??
-22:48 promise抛错
+22:48 try..catch写在setTimeout里面是可以的 promise抛错
 router导出
 ## 11-21
 20:01 express-generator
@@ -3148,8 +3150,8 @@ router导出
 20:26 set aaa=888 echo $888 linux添加环境变量 SET aaa=888 windows添加环境变量
 20:30~44 SET DEBUG=myapp:* & npm start 是给debugger看的
 20:31 npm run xxx 的运行逻辑 小本本
-20:35 debugger 
-20:38 debug的log标签调用 可以打印出不同的debug日志 会有颜色的区别 推荐阅读debug文档
+20:35 npm包debug
+20:38 debug的log标签调用简化版 可以打印出不同的debug日志 会有颜色的区别 推荐阅读debug文档
 20:48 说明APP就是一个函数
 21:03 express API 
 21:05 Methods
@@ -3205,3 +3207,5 @@ script是我们信任服务器,除了流量外没有风险;xhr、fetch是服务�
 22:47 jsonp的js扩展写法
 22:52 jsonp与普通请求的区别 小本本
 22:53 jsonp的函数实现 小本本 面试 cors AI??
+
+## 11-22
