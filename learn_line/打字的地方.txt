@@ -2041,3 +2041,390 @@ process.cwd()可以获取当前工作目录（不一定需要这个函数）
 这个函数写三个版本：同步的，回调的，promise的，async await的。
 
 
+
+21:24 11/10谢然======================
+
+
+http://[2409:8a4c:5286:e6cf:1b3:86a1:17ed:d9f2]:8082
+
+
+node --watch http-static-server.js
+--watch参数可以监控文件的变化，在文件变化的时候自动重启，注意这个参数一定要写在js文件之前，因为写在后面相当于传给我的js文件的参数
+
+
+20:22 11/11谢然=================
+
+内置模块在nodejs交互控制台可以直接用
+
+
+如何调试nodejs程序：
+--inspect-brk参数会让程序停在第一行等待调试
+node --inspect-brk  aaa.js
+node --inspect-brk=9922  aaa.js
+
+只用--inspect参数则不会让程序停在第一行
+node --inspect  aaa.js
+
+
+process.
+cwd()
+chdir()
+version
+argv
+nextTick()
+env
+exit()
+arch架构
+platform平台（操作系统）
+kill()
+
+
+url/querystring已废（用URL替代）
+path/fs/http
+
+__dirname
+__filename
+通过这两个变量可以读到当前模块文件的文件名和文件夹名。它们并不是全局统一的，而是在模块文件内是全局的。
+模块文件是一个函数内运行，它俩实际上是这个函数的参数之二。另外的三个参数是module, exports, require
+这个require是专门针对这个模块创建的，它总是以当前模块为相对路径
+
+
+
+
+20:04 11/13谢然===============
+在node里面，setTimeout等定时器函数返回的不是整数
+而是一个对象，不过它们的返回值还可以像浏览器一样传给clearTimeout等函数
+这个对象的unref方法将会让任务与进程的退出解除绑定关系
+
+
+作业：
+实现一个eventEmitter类
+class EventEmitter {
+  
+}
+
+
+字节序：
+一个占用多个字节的数据，其每个字节在内存的存放的顺序
+BE 大端序:
+直观易读：在查看内存内容时，数据的存储顺序与其书写顺序一致。
+一些网络协议（如 TCP/IP）使用大端序，因此在网络编程中经常需要使用大端序。
+LE 小端序:
+处理速度：在某些情况下，小端序可以简化硬件设计，尤其是在加法和乘法运算时。
+现代计算机架构（如 x86、x64）普遍采用小端序，因而在这些平台上进行编程时通常使用小端序。
+
+
+structuredClone结构化克隆算法的实现
+它并不能克隆任意数据，只有支持的数据可以被克隆
+worker之间传递数据时数据就是深度复制后传递到其它worker里的，这个过程的中深度复制就是用这个函数实现的
+
+
+linux系统中，一切皆文件：
+网络连接是文件
+进程是文件
+挂载上的usb硬盘是文件
+打印是文件
+
+
+Stats {
+  dev: 2114, // 设备编号
+  ino: 48064969, // inode结点编号
+  mode: 33188, // 文件权限/模式，需要转换成二进制来看
+  nlink: 1, // 硬连接数据
+  uid: 85,
+  gid: 100,
+  rdev: 0,
+  size: 527, // 文件大小
+  blksize: 4096, // 块大小
+  blocks: 8,
+  atimeMs: 1318289051000.1,
+  mtimeMs: 1318289051000.1,
+  ctimeMs: 1318289051000.1,
+  birthtimeMs: 1318289051000.1,
+  atime: Mon, 10 Oct 2011 23:24:11 GMT,
+  mtime: Mon, 10 Oct 2011 23:24:11 GMT,
+  ctime: Mon, 10 Oct 2011 23:24:11 GMT,
+  birthtime: Mon, 10 Oct 2011 23:24:11 GMT } 
+
+
+
+
+var fd = fs.open('venom2.mkv')
+fd：filedescriptor 文件描述符：整数
+文件句柄：由文件描述符构造的class，可以直接调用class的方法来实现对文件的操作，而不必每次调用函数时传入文件描述符
+
+
+glob
+文件名匹配语法
+
+22:28 11/14谢然=================
+
+做为流的使用者，应该关心：
+对于可读流：关心里面的数据是什么，如何从里面读出数据，读出的数据用来干啥
+对于可写流：关心往里面写入什么数据，将要写入的数据从哪里来
+
+--------------------膜
+
+做为流的实现者，应该关心：
+对于可读流的实现者：应该关心数据哪里来，最终让使用读到
+对于可写流的实现才：应该关心使用者写(write)进来的数据应该怎么被处理掉
+
+
+做为流的api的实现者：
+
+
+
+
+
+
+
+
+
+
+
+writable：
+event drain:
+使用者写给它的数据已经被它消耗光了或即将消耗光，请继续写入新的数据
+event pipe:当有可读数的数据通过pipe导向到这个可写
+流的时候触发
+event unpipe：当两个流之间的导向关系被取消的时候
+readable.unpipe(writable)的时候）
+
+
+
+20:28 11/15谢然================================
+
+
+
+var abc = new AbortController()
+
+fetch(url, {
+  signal: abc.signal
+})
+
+abc.signal.abort()
+
+
+
+
+
+
+流还用在进程间的通信中。
+  process.stdin  进程的标准输入流(可读流)
+    最简单的情况下，命令行里用键盘输入的内容就会成为该可读流的数据源
+  process.stdout 进程的标准输出流（可写流）
+    在最简单的情况下，write进这个流里的数据会显示到命令行控制台里
+  process.stderr 进程的标准错误流（可写流）
+    同上
+    如果以上两者都出现在控制台，数据可能会串起来。但是如果用程序分别接收到这两个流的数据，并且分别导向（pipe）到不同的文件或网络等地方，则可以区分开的
+
+  进程可以通过以上三个流跟其它进程进行通信
+  （当然，进程也可以通过网络跟其它进程通信）
+  （也可以通过返回码process.exit(code)向父进程传递一个单一的信息）
+  实际上它们是可以被视为 Socket 对象的一种实现
+  
+  20:46 11/17谢然====================
+
+npm i foo   包是安装在项目中，为了在项目中require，但也会带上命令行工具，如果某个包带有命令行工具，则会放在 node_modules/.bin/文件夹里
+
+npm run dev
+npm run build
+会去找package.json里的script字段里的dev/build字段，里面是一段命令，这段命令里的命令会先到node_modules/.bin/里面去找命令
+
+
+npm i -g foo
+
+-g是全局安装，一般是安装一个命令行工作时使用的
+安装在全局的包是不能被某个项目文件夹的代码require的
+
+
+在命令里请求用户输入
+bash:   read -p "prompt"  variable
+c： scanf("%d", &x);
+python:  input('提示')
+browser:  promit('') 但这个不是命令行
+
+
+
+
+22:03 11/18谢然===================
+https://eloquentjavascript.net/2nd_edition/code/file_server_promises.js
+
+
+作业：实现一个/author接口，根据请求头的accept返回不同格式的响应体
+
+
+
+
+21:39 11/19谢然==============================
+
+
+
+浏览器的事件循环：
+浏览器将任务分为两种：
+微任务
+宏任务
+
+微任务总是在调用栈里的函数清空后立马执行，调用栈清空后，执行微前，浏览器是不做渲染的
+
+宏任务在执行前，浏览器还会绘制一下dom，即paint（当然也会有layout）
+
+宏任务：setTimeout/Interval，click事件这种,postMessage
+微任务：promise的回调，queueMicrotask，（注意浏览器里没有nextTick）, MutationObserver
+
+MutationObserver可以监控一个dom元素的变化，变了以后它会调用我们提供的函数，是通过微任务的方式调用的该函数
+var mo = new MutationObserver(function moFunc() {
+  console.log(1)
+})
+mo.observe(document.body, {attributes: true})
+document.body.setAttribute('foo', 'bar') // 将会触发log（1）
+
+
+promise的回调在promise成功的那一记得被放进微任务队列（或说者promise回调队列）
+
+
+async function foo() {
+  console.log(4)
+  await baz()
+  console.log(6)
+  await baz()
+  console.log(6)
+}
+async function baz() {
+  console.log(1)
+}
+async function bar() {
+  console.log(2)
+  await Promise.resolve(5)
+  console.log(3)
+}
+foo() 
+bar()
+等价于：
+function foo() {
+  console.log(4)
+  baz().then(() => {
+    console.log(6)
+    // baz().then(() => {
+    //   console.log(6)
+    // })
+  })
+  
+}
+function baz() {
+  console.log(1)
+  return Promise.resolve()
+}
+function bar() {
+  console.log(2)
+  Promise.resolve(5).then(() => {
+    console.log(3)
+  })
+}
+foo() 
+bar()
+
+
+
+
+搜：事件循环面试题
+
+
+
+
+
+
+
+作业答案：/author
+
+server.on('request', (req, res) => {
+  if (req.url == '/author') {
+    var accept = req.headers['accept']
+
+    if (accept == 'text/plain') {
+      res.writeHead(200, {
+        'content-type': 'text/plain; charset=utf8'
+      })
+      res.end("I'm Marjin Heveberk .....")
+    } else if (accept == 'text/html') {
+      res.writeHead(200, {
+        'content-type': 'text/html; charset=utf8'
+      })
+      res.end(`
+        <h1>Author</h1>
+        <span>Marjin</span>
+        <div>intro...</div>
+      `)
+    } else if (accept == 'application/json') {
+      res.writeHead(200, {
+        'content-type': 'application/json; charset=utf8'
+      })
+      res.end(JSON.stringify({
+        name: 'Marjin Heveberk',
+        book: 'eloquent javascript',
+      }))
+    } else {
+      res.end('unkown requst type')
+    }
+
+  } else {
+    res.end()
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+21:11 11/20谢然===============
+
+
+express的use方法对路径的处理与get/post/put/delete等方法对路径的处理不一样，use时，请求路径只要以给定的路径开始就会进入该中间件
+而get/post/put/delete等方法的路径，则是要完全匹配（最后一个斜杠可以选择不匹配）
+同时，带path的use，后面的中间件读取到的req.url是以路径开头的后续部分
+
+
+http head请求方法：相当于获取get请求的响应头
+
+
+
+触发浏览器下载对话框的响应头
+content-disposition:
+attachment; filename="package.json"
+
+浏览器里<a download="xxx.yyy"></a>也可以触发下载，但它跟上面的原理不一样的
+
+
+
+express中如何算出错了？
+1 中间件抛出的错误被express捕获到
+2 调用next的时候传入了第一个参数（也是可以的唯一一个）
+
+
+
+
+
+
+app.use(express.json())
+
+app.use((req, res, next) => {
+  if (req.headers['content-type'] == 'application/json') {
+    var body = ''
+    for await (var d of req) {
+      body += d.toString()
+    }
+    req.body = JSON.parse(body)
+  } else {
+    next()
+  }
+})

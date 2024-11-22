@@ -71,10 +71,11 @@ server.on('request',(req,res)=>{
               return `<tr><td>${entry.isFile() ? entry.size : ''}</td><td><a href="${entry.name}${sep}">${entry.name}${sep}</a></td></tr>`
             }).join("")//map返回的数组字符串是带有逗号的
           }
+          </table> 
           <p>
             <address>Node.js v20.13.1/ http-server server running @ 127.0.0.1:${/*address斜体*/PORT}</address>        
           </p>
-        </table>  
+         
         `
         res.writeHead(200,{
           'content-type':'text/html; charset=utf8'

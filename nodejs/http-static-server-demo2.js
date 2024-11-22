@@ -18,7 +18,7 @@ const http = require('node:http')
 const path = require('node:path')
 const mime = require('mime-types')
 
-const PORT = 8082
+const PORT = 8083
 const baseDir = path.resolve(process[2] ?? './') //直接拿绝对路径
 
 const server = http.createServer()
@@ -43,14 +43,20 @@ server.on('request',(req,res)=>{
         res.end()
         return //结束当前的请求处理,必须
       }
-      const entries = fs.readdirSync(targetPath,{withFileTypes: true})
+      const entries = fs.readdirSync(targetPath,{withFileTypes: true})//查看文件夹及其路径 返回的是文件和文件夹名的字符串数组
+      entries.forEach(entry => {
+        let stat = fs.statSync(path.join(targetPath,entry.name))//检测文件夹下路径的状态
+        if (stat.isFile()) {
+          entry.size=stat.size
+        }
+      });
       //在页面中展示
       const page = `
         <h1>Index of ${urlObj.pathname/*readdirSync true 没有直接拿到路径的方法*/}</h1>
         ${
           entries.map((entry,idx)=>{
             const sep = entry.isFile() ? '':'/'
-            return `<div><a href='${entry.name}${sep}'>${entry.name}${sep}</a></div>`
+            return `<div><span>${entry.isFile() ? entry.size : ''}</span><a href='${entry.name}${sep}'>${entry.name}${sep}</a></div>`
           }).join("")
         }
       `

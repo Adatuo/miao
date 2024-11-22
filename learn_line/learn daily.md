@@ -921,7 +921,7 @@ window也有focus,在线考试
 20:20 worker在mini-regex的调用
  data-tabname ?? data?
 20:43 false
-21:06 定时器
+21:06 定时器 会返回一个ID 可以调用此ID清除定时器
 21:14 setTimeout = setInterval  0 没有即刻调用的用法,现有的代码执行完后才会运行
 21:18 一些细节
 21:20 Debouncing
@@ -1543,7 +1543,7 @@ console.log(xhr.responseText)
 21:46 async function
 21:51 为何async要会promise
 21:55 async function *
-22:04 for await of 异步生成器不能迭代
+22:04 for await of 专门用来迭代异步生成器
 22:09 await在控制台可以直接使用
 
 ## 9-26
@@ -2787,3 +2787,421 @@ fs.readFile(aaa.txt',(etror, data) =>{}) 小本本
 22:46 error error.code错误代号
 22:51 _dirname _filename 在模块内全局 小本本 
  
+## 11-13 nodeAPI
+20:02 setTimeout等都有 node里面返回的是是一个对象而不是一个整数 小本本
+20:08 ref unref 整个node程序不要再对这个任务有所"引用”了，即这个任务的运行与否不影响程序的退出，即使这个任务还没有运行
+20:08~20:14 程序在服务器与网页里面的运行模型
+20:16 nodejs unref程序执行顺序 很少面试 小本本
+20:21 Events EventEmitter 事件监听触发器 
+20:25 emit(用了,但是没说)
+20:28 class类里面也可以通过extend来使用
+20:29 addListener
+20:32 prependListener(提了一下) 还可以绑定多次事件 也可以解绑off
+20:34 react里面没有事件机制 给组件传递函数在合适时机调用
+20:35 EventEmitter常见面试题 实现一个EventEmitter类  小本本
+20:39 EventTarget 浏览器nodejs都有
+20:41 浏览器的EventTarget 返回true表示有代码处理这个事件
+20:43 nodejs的EventTarget
+20:44 浏览器不同类型的new Event
+20:46 EventSource
+20:47 nodejs buffer(放在全局,也可以require)
+20:49 Buffer 重载
+21:03 Buffer.allocUnsafe 内存分配,不一定会把之前的数据清除掉,不过一般没有这样做
+21:08 buffer from
+21:12 buffer里面字节的存储方法 字节序 LE BE
+21:16 从左边存储的话加法会从右边叠加,从右边存储的话就不会
+21:18 所以可以自信选择大端序或者小端序
+21:20 大端序BE 小端序LE演示
+21:24 atob btoa legacy已过时 已被Buffer.from('','')代替
+21:30 localstorage指定存储地点
+21:32 解构化克隆算法structuredClone 只有支持的数据才会被克隆 小本本
+21:36 异步版本与同步版本风格read File例子
+21:40 statSync里面一些状态的解析 小本本
+21:48 net connect 如果就在本机上运行,可以直接把网址换成文件路径
+21:52 isFIFO()是否是FIFO FIFO 是一种特殊的文件类型，允许数据以先进先出的方式进行读写
+21:54 linux一切都是文件
+22:07 文件太大readFileSync是读不出来的
+fd:filedescriptor 文件描述符
+22:09 用fileHandle 文件句柄 由文件描述符构造的class，可以直接调用class的方法案实现对文件的操作，而不必每次调用函数时传入文件描述符 小本本
+22:14 fs.readSync(fd,buffer,offset,length[,position])一点一点的读buffer的数据
+22:17 access权限检测
+22:19 glob 一般配合ls查询用 小本本
+22:24 **/* 深度不限 可以放到异步生成器
+22:26 readdir fs.Dirent 可以结合异步生成器慢慢迭代大文件夹
+22:30 FileHandle文件句柄 小本本
+22:35 fs.FSWatcher 监控文件变化,但是不太好用
+Chokidar更好用
+22:38 arg parse yargs参数解析库 自动将命令行参数转换成对象
+22:45 errors cause查看错误源
+22:48 读文档的重要性
+
+## 11-14
+20:02 流Streams
+20:04 什么是可写流 createWriteStream
+20:09 write process.stdout.write是如何消耗数据的
+20:12 流对象
+20:13 write流的消耗是把数据放到硬盘里面
+20:15 end关掉就write就写不进去了
+20:18 read write也能通过buffer一点一点操作文件的片段
+20:22 膜概念图 任何一个对象先想想里面在干嘛
+20:28 可写流与可读流
+20:32 一般来说服务器req是可读流,res是可写流;客户端req是可写流,res是可读流
+20:34 node里面都有可能是异步的
+20:36 可读流的一般写法,防止没有数据 on
+20:39 浏览器也是有请求体的 放在流里面 试例
+21:04 API for stream consumers API流消费者
+21:08 Duplex 双攻流(在内部直接转换) Transform转换流(压缩流/解压流 加密解密流) 二者都可读可写
+21:12 流 示例图 搬砖 
+21:17 缓冲区的作用
+21:20 back pressure 背压
+21:24 objectmode dataView是TypeArray具体的数据类型
+21:26 buffering缓冲区从数据源拿来会放到一个缓冲区(数组或者链表)然后再给你
+21:29 缓冲区大小决定内存多少 highWaterMark
+21:36 write返回false说明缓冲区满了,因为用户写得太快了占满了内存
+21:38 读取大流的实例(读取了一个1G电影)
+21:45 pause暂停从数据源读取数据 缓冲区满了先暂停 防止水位过高
+21:47 drain resume 可写流完成时触发
+21:50 pipe一个全部干了 限制缓冲
+22:08 流在网络中整个传输的过程
+22:14 逐级传导背压 因为每个阶段传导数据的速度不一样,所以用pipe来平衡,防止超过内存
+22:18 pipe可以指定缓冲区大小,即使超过也不会丢掉数据(但是也可以设置丢掉)
+22:23 后端中相对重要的概念 "流"
+22:25 流对象的消费者 
+22:27 流对象的实现者
+22:28 流的使用者应该关心什么 小本本
+22:29 流的实现者应该关心什么 小本本
+22:32 drain 可写流里面的数据已经或者即将被用光 小本本
+22:32 一些可写流重要的API close pipe 小本本
+22:35 crock塞子 堵住流数据暂时不处理 uncrock
+22:38 可读流 主动与被动读取 三种readableFlowing状态
+(暂停,恢复,null)
+22:40 readableFlowing null buffer会是[]空的
+22:46 node里面几乎所有事件都是异步的 直接读取可能还没有加载到缓冲区中 读出来可能是空的
+22:48 readable比起data可以精细控制读多少 data读多少有多少,一般64k 65536字节 
+22:51 unshift 一般主动用 把读多了的数据放回去
+22:55 对象模式的可读流就是数组 只不过数组分布在时间上
+22:56 map
+22:59 异步生成器也是随着时间变化慢慢出来若干数据
+23:00 可读流也可以转换成异步生成器(二者可以相互转换) for await
+23:01 RxJS 足够复杂才用
+
+## 11-15
+20:05~ 一些可读流数组上的node API
+every map some toArray 返回的是promise,会在不同情况下返回 
+20:09 迭代可读流 必须使用for await(var data of readable)处理异步可迭代对象
+20:11 为什么可以for of一个可读流 因为可读流的形式与异步生成器很接近,所有都有相同的接口
+20:14 readable.fromWeb迭代器创建可读流 生成器是迭代器: 生成器函数返回的生成器对象是一个迭代器，因此所有生成器都是迭代器。
+20:17 readable.fromWeb异步生成器也可以创建可读流
+20:20 rs.pipe(ws).pipe(ws2).pipe(ws3) 基本等价于下面,下面更好
+20:21 stream.pipeline(rs,ws,ws2,ws3)
+20:25 取消控制器AbortController 实例用法 虽然用起来很奇怪但是可以通用 小本本
+20:29 node里面的AbortSignal
+20:32 compose能组合流对象
+20:37 compose还能搭配转换流,N多个流合成一个
+20:38 Duplex and transform streams 双工流与转换流详解 转换流一定是双工流 双工流不一定是转换流
+20:40 一些压缩与解压的流 zip Deflate
+20:44 Gzip 实例
+20:49 await fetch 返回的promise 可读流对象就是在读取body
+20:53 tee 分流 三通
+21:07 API for stream implementers 流的实现者
+21:10 可读流读取数据 实例
+21:11 生产数据read()
+21:16 流里面不是对象模式都是存储的buffer
+21:19 highWaterMark可以设置缓冲区最高字节读取数量
+21:27 可写流读取数据 实例 write(chunk数据, encoding类型,callback数据处理完后的回调)promise API 有问题 不用看这段视频
+21:31 appendFile(这是promise)有问题不用看这段视频
+21:35 destroy
+21:40 File system flags 可以添加状态来使文件夹修改或者添加等功能
+21:41 虽然写入了数据,但是文件不一定有 promise API 有问题不用看这段视频
+21:49 可写流读取数据 实例同步写法 
+21:54 promise API 有问题 似乎是调用的时间顺序有问题
+22:07 流不同的对象使用者和消费者是变化的
+22:07 writev() 不需要按照顺序消费
+22:11 writev() 图 多片段同时处理
+22:13 双攻流\transform流实现简单实例
+22"24 继承流的话想要成为可读流必须_read()
+22:26 read()与_read()
+22:30 一点点read()源码解析
+22:33 异步生成器创建可读流
+22:35 流还用在进程间的通信中 process.stdin(进程的标准输入流(可读流)) process.stdout(进程的标准输出流（可写流）) process.stderr (进程的标准错误流（可写流）)小本本 实际上它们是可以被视为 Socket 对象的一种实现
+22:40 process.stdin process.stdout 实例
+22:44 process.stderr 实例
+22:48 可写流不能pipe 将可读流的数据通过 pipe 方法传输到可写流(双工流)
+22:49 进程树 process monitor
+
+## 11-16
+20:02 class EventEmitter 面试常见??
+20:15 EventTarget 与 EventEmit是有区别的 因为浏览器有DOM树的存在所以事件有可能连带触发 但是node没有
+20:23 很少既写emit又写on
+20:25 类型组合,很少用不如继承
+20:35 交互控制台不可枚举的属性不可联想
+20:38 socket其实继承自双攻流
+20:50 进程的标准输入输出流
+20:57 child_process 会返回一个ChildProcess对象
+20:58 child_process.exec('ls -ha')
+21:00 md5sum
+21:04 unref解除绑定
+21:06 进程运行图,每一个都有stdin stdout
+21:09 两个程序的process对象都是不一样的
+21:10 父子进程的可读可写流是不一样的
+21:13 child_process.spawn('ls',['-l'])
+数据有可能会消失,再绑一次
+21:20 md5sum进程实例 ctrl+d结束
+21:24 process与pipe一起使用
+21:25 | 管道运算符
+21:30 process使用pipe 添加append:true达到 > >> 的效果
+21:35 0.0.0.0是任意网卡地址
+21:38 子进程就是干这事的
+21:39 detached解除绑定
+21:40 process也有同步版本
+21:41 node的一些用法 远程开发平台 wget curl
+21:46 UI自动化
+21:48 让异步process看起来像是同步 不常用
+22:08 process fork 另外启动一个新的分支node
+22:12 process send可以在不同work传递信息
+22:13 IPC跨进程通信 subprocess子进程模块
+22:17 SIGKILL 给进程发出exit信号,执行信号对应的操作
+22:22 OS模块能读到一些操作系统信息
+22:30 尽量用URL
+22:31 querystring ?? 一些其它的API
+22:33 qs模块 解析用
+22:35 Punycode 域名解析
+22:36 Util工具函数 现在似乎没啥用了
+22:38 until.promisify 实例 promise转会回调 很有可能面试会手写这个玩意
+22:42 Permission可以为node设定权限
+22:44 assert断言 deepEqual
+22:45 runner 测试运行器 与mocha效果一样
+22:51 string docder没用了 都用UTF-8
+22:51 single executable 单一运行环境exe,发给别人用不需要再安装依赖
+22:53 Net Tcp Udp 模块 TLS安全连接(https依赖这个)
+22:54 Domain 古早异步机制,早已不使用
+22:55 DNS 解析域名
+
+## 11-17
+20:02 C++
+20:04 Cluster 集群 让多个node看起来在同一个端口提供服务
+20:07 main thread 一般跑不满核
+20:09 可以开多个node跑 但是一个程序占用了端口另一个就不能用 Cluster解决它
+20:11 Cluster原理 20:16 接收到链接,转发编号FD(由OS实现),这个编号就代表了链接的请求??
+20:18 进程之间能通信但是不一定能共享数据
+20:20 Cluster实例(并不能运行) 以及解析图
+20:24 为什么次node节点都能监听80端口 实际上是主进程在看次node进程是不是需要,然后传递描述符
+20:33 Cluster根本原理 一个链接一个数 然后传递
+20:34 Crypto会调用TLS/SSL加密解密
+20:35 diagnostics_channel 诊断 错误报告
+20:37 Inspector 更加精细的调试 
+20:39 Intl 国际化功能
+20:40 node现在也有TS模块 直接运行TS
+20:41 node版本,每半年发布一个大版本,奇数版本一般都不会是长期支持版本 LTS长期支持版本 面试
+20:46 -g的安装与普通安装的区别 -g全局安装 小本本
+20:48 npm run安装 run是怎样在文件里面运行的 小本本
+20:50 npx 解决不同项目全局使用使用某工具不同版本的问题 
+20:53 tsx安装后运行ts
+20:55 settimeout在node里面返回一个timeout流对象 timeout和settimeoutID(在浏览器中的)在TS也是一个类型
+21:07 Performance hooks Asynchooks在某些性能指标关键点上运行代码
+21:08 异步上下文追踪
+21:09 readline 在命令行里面请求用户输入 各种语言都有 小本本
+21:14 process.stdin 将输入流打印到屏幕 不过不好用
+21:15 在命令行输入的作用 以及大致运行图
+21:20 realine用法 实例 await rl.question单次输入前面用错了
+21:38 REPL 交互式命令行的对话
+21:40 repl-play 实例 read eval
+21:46 AI响应返回实例
+21:50 流式返回,一个一个返回
+21:51 key怎么找到的 
+22:01 writer(output)
+22:21 report 测试开发用
+22:13 SQLite
+22:14~27 Worker threads node里面的多线程 文档有现成的代码
+22:15 主线程可以导出一些函数 parser
+22:17 require一开始其实只是导出主线程后面就不是
+2:18 __filename 双下划线就是代指所在文件的文件名
+22:25 浏览器里面的worker()
+22:27 crypto.randomUUID() 浏览器返回随机UUID 也称加密ID
+22:30 V8引擎 虚拟机介绍
+22:37 VM
+22:42 但是最好不要在VM里面运行不受信任的代码
+22:45 不能当作安全机制,除非限制 图
+22:48 什么时候能用到VM
+22:50 代码与副作用
+22:54 WASI WebAssembly 杀手级应用 复杂程序运行在网页上也不会卡顿
+
+## 11-18
+20:02 简易文件服务器
+20:06 http只是规定了格式 但是传递其它任方法或者头都可以,但是服务器要承认才有意义
+20:26 同一个模块再次加载会直接从缓存里面跑一遍
+20:33 error.code == "ENOENT"不存在这个文件
+20:34 500 服务器错误
+20:37 只要涉及到硬盘转动都是异步的
+20:38 不能预料到的错误一般写500
+20:51 不存在文件不算是错误返回204即可,成功但是无响应体
+20:54 为什么删文件rmdir不需要error
+20:56 idempotent幂等
+21:01 为什么删除多次也要返回?
+21:09 代码出错的时候如何找出问题的 确定问题是什么 测试 工作经验
+21:18 结论mime-types是会区分正反斜杠的
+21:22 curl
+21:41 错误处理
+21:42 异步错误不会向外层传 AI??
+21:46 异步加 try catch已经没用了
+21:51 集中式错误处理 同步处理
+21:54 使用promise cath 来进行错误处理
+22:00 promise抛出错误会直接失败 如果任何一个 Promise 被拒绝，后续的 then() 将不会被执行，直到遇到 catch()
+22:07 bind(thisArg,arg1[, arg2[, ...]])
+22:10 远程关机代码 
+
+## 11-19
+20:02 浏览器的事件循环
+20:04 已经完成了的promise的回调是比setTimeout快的 这是由事件循环决定的 event loop
+20:07~10 事件循环 面试必问 什么是异步IO 不会阻塞主线程
+20:13 *poll*
+20:18 C里面如何做到先有数据先等谁 select epoll(更高效)
+20:24~30 Event LoopExplained图 ?? input 
+20:26 setTimeout/Inter/Immediate... 没有进入循环,是在初始化阶段执行的 其中的回调是进入了事件循环的
+20:29 每一个阶段都有FIFO队列
+20:31 timers队列可以是有回调函数个数限制的
+20:35 poll 回调太多了执行不了回到下一个pending里面去执行
+20:36 node卡在poll的情况
+20:40 setTimeout 修改含义 比预定延迟过后就不会执行了 图 AI??
+20:42 timers 时间不一定准确,但是会尽量准确
+20:43 为什么说timeers是由poll决定 
+20:47 libuv 防止其它阶段没有函数,运行到一定时间必须离开
+20:58 poll阶段 1.等待多久2.处理这个事件
+21:02 close back控制不了什么时候调用
+21:03 setTimeout-VS-setImmediate 实例 为什么有时候immediate先有时候settimeout先(先后顺序不确定的,i7似乎需要4ms才能看出差异)
+21:08 process.nexTick() 每次调用栈清空就会执行这个回调 21:12 实例 运行图
+21;21 证明每次调用栈清空才会执行
+21:24 几秒中能运行几次的代码
+21:25~21:27 setImmediate安排的回调运行图 
+21:29 什么时候用process.nexTick() server.listen 
+21:32 promise.resolve.then 21:33 resolve一按下去就是成功的了,而就在这一刻回调会被安排
+21:36~38 process先Promise后 如果陷入了其中一个回调队列中间都会等待调用栈清空后执行
+21:39 浏览器里面的事件循环 event loop 微任务与宏任务 小本本
+21:43 MutationObserver 可以监控一个dom元素的变化，变了以后它会调用我们提供的函数，是通过微任务的方式调用的该函数 小本本
+21:48 在元素变化然后在运行MutationObserver之前是没有进行渲染操作的 21:50火焰图
+21:55 不同微任务有可能区分谁先谁后吗? AI??
+21:56 为什么浏览器setTimeout与queueMicrotas在浏览器的运行时机不一样 因为谷歌浏览器的微任务是早于宏任务把浏览器的结果返回控制台 小本本
+22:11 promise.resolve.then 在浏览器中 小本本 面试调用时机 
+22:15 promise队列运行图 画一个队列图,promise只有在成功的时候才会加入队列 5与6的时机
+22:22 还可以加上await版本
+22:27 await也是在等待promise.then 可以搜时间循环面试题 7是在2完成后才加入队列的,3的加入要早于7
+22:31 异步函数一定返回promise AI??
+22:35 /author作业
+
+## 11-20
+20:02~20 一些题目时间循环题目 nextTick promise await setTimeout大集合 面试
+20:25 express5.x 可以有很多插件 其它node框架几乎都是这个改过来的
+20:30 express实例
+20:31 node里面的use 
+20:34 多个use会依次穿越处理 也叫中间键
+20:38 如何知道函数参数数量 f.length
+20:39 setTimeout是捕获不到throw的
+20:40 中间件抛出怎么捕获 ,会抛出到处理错误的中间件里
+20:42 next应该是最后一个逻辑
+20:44 最后一个中间件调用end不掉next
+20:59 express初始化项目
+21:01 get也是中间件 get请求参数里的地址才会访问这个中间件
+21:05 最后一个中间件应该处理404
+21:07 express生成器 简介
+21:08 express基本路由 app.METHOD(PATH,HANDLER)方法,路径,函数
+21:10 use与其它方法的请求路径是由区别的 use是开头匹配就会进入中间件,其它是相同()除了/ 小本本
+21:13 静态文件
+21:21 如何给用户提供静态文件 用户需要哪个文件就返回哪一个 写出来的代码,现在一个中间件找,找不到就下一个再找
+21:30 express.static
+21:38 use一些的路径问题,中间件读到的是匹配路径后面的东西 小本本
+21:43 也可以直接使用绝对路径
+21:44 如何处理错误
+21:45 node后端路由
+21:47 head方法 相当于获取get请求的响应头小本本
+21:49 不用写?=查询
+21:50 正则表达式路由,几乎不会用
+21:52 两种get多个中间件的不同写法
+22:02 静态路由,数组中间件
+22:04 一个中间件处理不了用另一个
+22:08 响应方法res
+22:11 触发浏览器下载对话框的响应头content-disposition: attachment;filename=["package.json"] 小本本 a标签的download的下载原理与这个是不一样的
+22:14 route一个路径下多种请求方式
+22:16 router效果解释图(子路由更贴切)
+22:20 如何开发中间件
+22:22 使用中间件 应用级(层)中间件
+22:23 路由的路径参数 req.params.ID读取路径参数
+22:26 都可以接多个中间件
+22:27 '/',router 以router开头,怎么走看router里面怎么写的了
+22:28 错误中间件一定是有四个参数 前面一个出错了会找到最近的一个
+22:30 express中如何算出错了?  小本本
+22:31 express.json
+22:33 req上的body是空的,需要通过on 和async,await循环解析读出来 22:36 使用use(express.json)来解决 如果请求体是json格式（根据请求头的content-type）则把它读取并解析，放到req.body上
+22:40 express.urlencoded() 如果请求体是url编码（普通的表单提交）（a=1&b=2这种形式）（根据请求头的content-type）则把它读取并解析
+22:41 express.text() 如果请求体是纯文本（根据请求头的content-type）则把它读取并转换为宇符串，放到reg.body上
+22"43 Overriding the Express APl
+22:45 异步错误处理不掉直接next()
+22:46 express5现在的函数也可以是异步的了
+22:46 promise失败也算是中间件出错了 ??
+22:48 promise抛错
+router导出
+## 11-21
+20:01 express-generator
+20:09 app.set 可以与get形成映射
+20:14 app.use(logger('[string]'))morgan包
+20:17 render
+20:21 node环境变量是如何读取的 process.env
+20:26 set aaa=888 echo $888 linux添加环境变量 SET aaa=888 windows添加环境变量
+20:30~44 SET DEBUG=myapp:* & npm start 是给debugger看的
+20:31 npm run xxx 的运行逻辑 小本本
+20:35 debugger 
+20:38 debug的log标签调用 可以打印出不同的debug日志 会有颜色的区别 推荐阅读debug文档
+20:48 说明APP就是一个函数
+21:03 express API 
+21:05 Methods
+Application
+21:10 app.rout
+21:10 app.set(name,value) 有一些自带设置(大小写敏感,环境变量设置,etag响应头设置,)
+21:12 set里面reolace的用法与JSON.stringify是差不多的,涉及到json格式之外的数据会用到比如函数
+21:17 同时也能通过JSON.parse返回去
+21:20 定制json序列化与返序列化有可能面试 小本本
+21:22 query parser
+21:22 strict routing 严格路由 /foo /foo/
+21:23 views模板文件夹
+21:24 x-powered-by 响应头添加
+21:26 Request
+21:28 req.baseUrl
+21:28 req.body 用的比较多 根据中间件来确定body里面的值
+21:30 req.fresh
+21:30 req.host 请求方域名带端口,从请求头找出来的
+21:21 req.ip 请求IP,从TCP找出来的(message.socket)
+21:35 req.params
+21:36 req.path
+21:36 req.query 查询参数
+21:38 req.subdomains 把子域名取出来
+21:39 req.url最常用
+21:39 Request Method
+21:42 req.accepts() 解决了请求无法判断的问题 /author
+21:44 req.accepts() tu req.acceptsCharsets() req.acceptsEncodings() req.acceptsLanguages()
+21:45 req.is()请求头是什么
+21:45 req.range() 实例 面试 小本本 断点续传是如何实现的
+22:00 Response
+22:01 res.attachment 下载
+22:02 res.download可以指定文件名下载以及其它功能 断点续传
+22:03 res.format 返回不同的函数
+22:04 res.get(field) 匹配响应头
+22:04 res.json 
+22:05 rel.links翻页
+22:07 res.location(path) 跳转 'back'会跳回上一个界面
+22:11 res.set()
+22;11 res.status(code). 可以链式调用
+22:12 res.type 设置响应类型
+22:12 res.vary() 添加vary头
+22:13 常用的res
+22:13 Router
+22:15 thinkjs 目录结构与express是不一样的 快废了
+22:16 hapi
+22:24~4 jsonp 是什么 小本本
+22:26 只有头里面有允许跨域的话才能跨域 cors跨域资源共享
+22:27 以前没有cors的时候怎么做到的
+22:29 通过script标签可以跨域加载其它域的资源 只能是get
+22:30 为什么？xhr、fetch有跨域限制，为什么script加载没有限制? 小本本
+script是我们信任服务器,除了流量外没有风险;xhr、fetch是服务器信任我们,拿到了完整资源随意处置,会有风险
+22:43 还可以把数据抱在一个函数里面,但是需要声明函数 也可以放在一个变量上
+22:47 jsonp的js扩展写法
+22:52 jsonp与普通请求的区别 小本本
+22:53 jsonp的函数实现 小本本 面试 cors AI??

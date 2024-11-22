@@ -53,7 +53,7 @@
       }
 
 
-      function next() {        
+      function next() {//不用callback包一层其实不用i=> 但是写上也没关系,那就写上
         // setI(i + 1)//在当前周期中不会更新要下一次才有效,放在if之后是可以的但是依然会存在不更新问题
         // if (i == photo.length) {
         //   i = 0
@@ -61,7 +61,7 @@
         setI(i=> i+1 === image.length ? 0:i+1)//image.length属于属性不需要{}            
       } 
 
-      function pre() {
+      function pre() {//不用callback包一层其实不用i=> 但是写上也没关系,那就写上
         setI(i=> i-1 === -1 ? image.length-1:i-1)
       }
 

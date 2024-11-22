@@ -30,7 +30,7 @@
   </div>
   <!-- <div id="tips"></div>一个提示 暂时还未想到能抱什么错误-->
   <div>
-     <svg id = "canvas" width="1000" height="800" xmlns="http://www.w3.org/2000/svg"></svg><!-- 如果图形过大会无法显示完全 -->
+     <svg id = "canvas" width="800" height="800" xmlns="http://www.w3.org/2000/svg"></svg><!-- 如果图形过大会无法显示完全 -->
   </div>
 
 
@@ -337,7 +337,7 @@
       g.append(bg)
 
       //圆居中
-      let translateX = (1000 - width)/2
+      let translateX = (800 - width)/2
       let translateY = (800 - height)/2
       g.setAttribute('transform',`translate(${translateX},${translateY})`)
 
@@ -498,8 +498,8 @@
     }
     function drawCaptureGroupGraph(node) {//画出捕获分组的框
       
-      let branchesGraphs = drawBranchesGraph(node.branches) //分组就是包含了分支图形  分支图形
-      let width = branchesGraphs.width + graphPadding * 2 //框进整个元素
+      let branchesGraphs = drawBranchesGraph(node.branches) //分组就是包含了分支图形
+      let width = branchesGraphs.width + graphPadding * 6 //框进整个元素
       let height = branchesGraphs.height + graphPadding * 2
 
       let g = elt('g')
@@ -507,7 +507,7 @@
         fill:"none",
         width,
         height,
-      })      
+      })
       g.append(bg)
 
       //虚线框
@@ -517,23 +517,23 @@
         'stroke-dasharray':'5,5',
         rx:"3",
         ry:"3",
-        width,
-        height,
+        width:width,
+        height:height - graphPadding,
         fill:"none",
       })
 
       branchesGraphs.g.setAttribute('transform',`translate(${graphPadding},${graphPadding})`)//希望整个分支图形(以及分子中的每一个小图形)放在虚线框里面
 
       g.append(dashedBorder)//虚框放入
-      g.append(branchesGraphs.g)//把画出来的g放入带虚框的g中
-
-      //group #num 文字 前面
-      let groupNumber = elt('text',{
-        y:-graphPadding
-      }," group #" + node.groupIndex)
       
+      g.append(branchesGraphs.g)//把画出来的g放入虚框中
+
+      //group #num 文字
+      let groupNumber = elt('text',{
+        y:graphPadding*2
+      }," group #" + node.groupIndex)
       g.append(groupNumber)
-     
+
       //因为虚线框的缘故连接处被断开,再次加上去
       let paddingLine = elt('path',{
         d:`M 0 ${height/2}
@@ -545,25 +545,18 @@
         fill:'none'
       })
       g.append(paddingLine)
-
-
-
+       
       let bbox = g.getBBox()//简化最小矩形拿取
-      let groupNumberBbox = groupNumber.getBBox()//简化group文字最小矩形拿取
-      let dashedBorderBbox=dashedBorder.getBBox()//虚线框
-      
-      let groupNumberBboxHeightCranny = (bbox.height-dashedBorderBbox.height-groupNumberBbox.height)/2
       return {
         g,
         width:bbox.width,
-        height:bbox.height - groupNumberBbox.height - groupNumberBboxHeightCranny - 3,
+        height:bbox.height,
       }
     }
     function drawBranchGraph(node) {//画出每一个顺序图形,并添加横线横向链接起来
       //只是改变了字符内容,但是没有改变绘图方式let continueString = node.elements.map(it => it.type == 'Character' ? it:'').reduce((a,b) => a + b)
       let continueString = ''
       let continueCharacter = []
-      let CaptureGroupHeightHelper = 0
       node.elements.forEach(it => {
         if (it.type == 'Character') {
           continueString += it.character
@@ -577,9 +570,6 @@
         }
         continueCharacter.push(it)//如果不是连续的如ab+c情况,就直接将这个DOM加进去
       } 
-      if (it.type == 'CaptureGroup') {
-            CaptureGroupHeightHelper = -graphPadding - 7
-          }
       });
 
       if (continueString.length > 0) {//ab+cde情况,cde是后面的,但是已经结束没有被push所以要写这个函数
@@ -588,13 +578,6 @@
         character: continueString
       });
     }
-
-      // let CaptureGroupHeightHelper = 0 //必须是全局的
-      //   for (const it of node.elements) {
-      //     if (it.type == 'CaptureGroup') {
-      //       CaptureGroupHeightHelper = -graphPadding - 7
-      //     }
-      //   }
 
       let graphs = continueCharacter.map(drawGraph)//由于每个元素的结点类型不确定，所以是调用drawGraph函数// 隐式传递了当前元素作为参数
 
@@ -616,7 +599,7 @@
         x2:graphPadding,
         y2:height/2,
         stroke:"black",//颜色
-        'stroke-width':2,//粗细
+        'stroke-width':2,//外轮廓的宽度
       })
       g.append(line)//要是位置偏移就对不上了
 
@@ -635,17 +618,21 @@
         'stroke-width':2,//外轮廓的宽度 
       })  
         g.append(line)
+ 
+
       }
       
+
+
       let bbox = g.getBBox()//简化最小矩形拿取
       return {
         g,
         width:bbox.width,
-        height:bbox.height + CaptureGroupHeightHelper,
+        height:bbox.height,
       }
     }
     function drawBranchesGraph(nodes) {//有分支画出分支图形,但是它返回的是DOM节点组成的数组(分支的不同顺序),可能会有不同的处理      
-      let graphs = nodes.map(drawGraph) //Branch的bbox
+      let graphs = nodes.map(drawGraph) //每一个元素的DOM
       //整个元素图形的宽高
       let width = Math.max(...graphs.map(it => it.width)) + graphPadding * 4 //+ graphPadding * 4给左右弧线留白  
       let height = graphs.map(it => it.height).reduce((a,b) => a + b) + graphPadding * (graphs.length - 1) //顶上一般不需要留白
@@ -659,7 +646,7 @@
       g.append(bg)
 
       //图形居中
-      let translateX = (1000 - width)/2
+      let translateX = (800 - width)/2
       let translateY = (800 - height)/2
       g.setAttribute('transform',`translate(${translateX},${translateY})`)
 
@@ -687,6 +674,7 @@
         g.append(graph.g)
         g.append(line)
         h += graph.height + graphPadding   
+
         } 
        
       let bbox = g.getBBox()

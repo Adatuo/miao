@@ -499,8 +499,8 @@
     function drawCaptureGroupGraph(node) {//画出捕获分组的框
       
       let branchesGraphs = drawBranchesGraph(node.branches) //分组就是包含了分支图形
-      let width = branchesGraphs.width + graphPadding * 2 //框进整个元素
-      let height = branchesGraphs.height + graphPadding * 2
+      let width = branchesGraphs.width + graphPadding * 4 //框进整个元素
+      let height = branchesGraphs.height + graphPadding * 4
 
       let g = elt('g')
       let bg = elt('rect',{ //解决g靠不到边的问题
@@ -517,19 +517,20 @@
         'stroke-dasharray':'5,5',
         rx:"3",
         ry:"3",
-        width,
-        height,
+        width:width,
+        height:height,
         fill:"none",
       })
 
-      branchesGraphs.g.setAttribute('transform',`translate(${graphPadding},${graphPadding})`)//希望整个分支图形(以及分子中的每一个小图形)放在虚线框里面
+      branchesGraphs.g.setAttribute('transform',`translate(${graphPadding*2},${graphPadding*2})`)//希望整个分支图形(以及分子中的每一个小图形)放在虚线框里面
 
       g.append(dashedBorder)//虚框放入
+      
       g.append(branchesGraphs.g)//把画出来的g放入虚框中
 
       //group #num 文字
       let groupNumber = elt('text',{
-        y:graphPadding *2
+        y:graphPadding*1.7
       }," group #" + node.groupIndex)
       g.append(groupNumber)
 
@@ -544,8 +545,6 @@
         fill:'none'
       })
       g.append(paddingLine)
-
-      
        
       let bbox = g.getBBox()//简化最小矩形拿取
       return {
