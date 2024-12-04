@@ -2546,3 +2546,195 @@ function jsonp(url, callback) {
 jsonp('https://api.github.com/search/repositories?q=java', (data) => {
   console.log(data)
 })
+
+21:25 11/23谢然==========================
+
+http basic authorization:
+
+get / http1.1
+===============
+http/1.1 401 unautorized
+www-authorization: realm=basic
+===============
+弹窗要求用户输入账户
+==============
+get / http/1.1
+authorization: Basic base64(user:pass)
+=============
+http/1.1 200 OK
+
+
+
+
+cookie:
+
+
+POST /login HTTP/1.1
+====================
+HTTP/1.1 301 Found
+Set-Cookie: a=b; Expires=xxxxxx; Path=; 是否仅https生效; 
+Set-Cookie: x=yyyy; 过期时间; 路径; 是否仅https生效; 
+Location: /
+====================
+GET / HTTP/1.1
+Cookie: a=b; x=yyyy
+====================
+HTTP/1.1 200 OK
+
+登陆成功后看到的页面
+====================
+
+
+
+
+
+22:14 11/24谢然===================
+"database"这个词在关系型数据库中有特殊的含义：
+即多个表的文件夹
+
+而sqlite里这个概念被弱化了，因为一个sqlite的数据库文件就是一个"database"，里面包含多个表
+
+in mysql:
+CREATE DATABASE testDB
+use database testDB
+SHOW DATABASES
+
+
+create strict table foo (name string, age number);
+
+
+
+leetcode database题目
+175
+181
+182
+183
+197
+595
+596
+620
+
+
+
+
+
+20:13 11/25谢然=======================
+
+表的连接：
+
+交叉连接
+
+
+
+并发：同时开始发生，如同时有很多用户发来请求
+并行：同时运行，时间跨度可能较长
+
+
+
+RDBMS 关系型数据库管理系统
+ralational db  management system
+
+
+
+
+
+21:00 11/27谢然====================
+
+js binding
+python binding
+指其它语言实现的某种功能在js/py语言中以几乎相同的形式出现，但函数实际调用的是更底层的语言版本的实现，上层语言自身什么也没做
+
+
+
+什么是cookie？
+什么是session？
+什么是token？
+
+
+
+前端cookie的操作：
+document.cookie = <the value of Set-Cookie response header>
+document.cookie  读取到的内容等价于  <the cookie request Header>
+
+
+
+作业：
+为用户密码加盐后哈希存储
+  login
+  register
+  修改密码
+
+
+
+
+
+20:14 11/28谢然===============================
+
+
+
+刷库：业务逻辑以及数据库表结构发生变化后，有些时候需要将数据库的数据也批量更新为匹配新的业务逻辑的数据，这个时候就需要刷库了
+这个操作非常敏感，因为它会对数据进行永久性变更，一旦操作错了，损失是无法估量的！
+所以操作前一定要备份数据
+
+
+
+
+
+网站常见的安全漏洞：
+XSS Cross Site Scripting 跨站脚本攻击（此处跨站指跨越整个站点，即可能影响整个站点）
+  解决方案就是把用户输入的东西进行转义后显示，而不是直接显示。即不要将用户输入的东西当代码
+
+csrf Cross Site Request forgery 跨站请求伪造（此时跨站指的是跨越两个不同的站点）
+  某其它站点在同一浏览器向我们的站点服务器发起请求，以往，浏览器会自动带上我们站点的cookie，即带上了用户的登陆身份，相当于这个请求是伪造用户发出的
+  但是csrf攻击已死，因为现代浏览器默认不在跨站请求中携带cookie
+  有一个cookie的选项叫sameSite可以设置跨站时是否以及如何携带cookie
+   那以前是怎么解决的呢？
+     以前是再额外携带一个其它站点无法获取到的csrf token，跨站请求只会自动带cookie，csrf token只在自己的页面，其它站点的页面无法获取到，发到我们服务器的请求就会认为是无效的
+
+SQL Inject sql注入
+  用户输入的内容被服务器“拼接”成了sql语句并执行，有可能触发各种服务器的漏洞。
+  sql注入在2000年前后的时候几乎所有的网站都有
+  解决方案：sql语句的占位符，占位符的内容一定是不会被当成代码执行的，而是当成语句中的数据
+
+
+
+
+
+
+20:09 11/29谢然============================
+
+
+koa跟express几个重要的不同点：
+
+中间件函数只接ctx，next两个参数
+koa的中间件是异步函数
+koa的next调用可以被await，等待后续中间件执行完成后再继续执行当前中间件的功能
+而在express4中，next调用一般应该是一个中间件的最后一句话
+
+
+
+
+
+
+
+app.use((req, res, next) => {
+  if (req.is('json')) {
+    var body = ''
+    req.on('data', data => {
+      body += data.toString()
+    })
+    req.on('end', () => {
+      req.body = JSON.parse(body)
+    })
+  } else {
+    next()
+  }
+})
+
+app.use( express.json() )
+
+vote 9-14============================================
+要区分“开发服务器”和“后端服务器”
+开发服务器提供编译，自动刷新等功能，没有api
+后端服务器(api服务器)是普通后端逻辑，提供api，后端本身可能还会查询数据等操作
+开发过程中这两个服务器是很难集成一个程序里的,也是跑在不同端口上的
