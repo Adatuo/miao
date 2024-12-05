@@ -3456,3 +3456,7 @@ ctx.cookie ctx.throw ctx.respond
 11:14 要区分开发服务器与后端服务器 小本本
 11:24 跨域要带cookie必须是https但是express里面默认发的是HTTP,所以是开发服务器代理页面请求给API服务器 图
 11:51 vite代理配置
+14:50 登录请求的时序问题
+15:02 router-link-exact-active 前端路由地址就是某个RouterLink的地址时，它就有这个类名
+      router-link-active 前端路由地址以某个RouterLink的地址开头，它就有这个类名
+15:05 push无法后退的一些细节,使用replace
